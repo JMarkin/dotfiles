@@ -1,0 +1,28 @@
+{
+  "title": "Map Option to soft-meta for Warp",
+  "rules": [
+    {
+      "description": "Map left_option to soft-meta for Warp",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "left_option"
+          },
+          "to": [
+            {
+              "key_code": "left_option",
+              "lazy": true
+            }
+          ],
+          "conditions": [
+            {
+              "type": "frontmost_application_if",
+              "bundle_identifiers": ["^dev.warp.Warp-Stable$"]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
