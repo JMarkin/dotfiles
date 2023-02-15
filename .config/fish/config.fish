@@ -360,5 +360,11 @@ function backup -d "backup to yandex"
     rustic -P common backup
 end
 
+if test -z (pgrep ssh-agent)
+  eval (ssh-agent -c) > /dev/null
+  set -Ux SSH_AUTH_SOCK $SSH_AUTH_SOCK
+  set -Ux SSH_AGENT_PID $SSH_AGENT_PID
+end
+
 pyenv init - | source
 starship init fish | source
