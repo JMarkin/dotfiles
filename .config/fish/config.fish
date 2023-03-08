@@ -25,6 +25,31 @@ bind "\eOF" end-of-line
 bind "\e[H" beginning-of-line
 bind "\e[F" end-of-line
 
+# PATH
+set -e PATH
+
+set -gx PATH /bin $PATH
+set -gx PATH /sbin $PATH
+set -gx PATH /usr/bin $PATH
+set -gx PATH /usr/sbin $PATH
+set -gx PATH /usr/local/bin $PATH
+set -gx PATH /usr/local/sbin $PATH
+
+set -gx PATH $HOME/go/bin $PATH
+set -gx PATH $HOME/Android/platform-tools $PATH
+set -gx PATH $HOME/scripts $PATH
+set -gx PATH $HOME/.local/bin $PATH
+set -gx PATH $HOME/.poetry/bin $PATH
+set -gx PATH $HOME/.cargo/bin $PATH
+set -gx PATH $HOME/.npm/bin $PATH
+
+set -gx PATH $PYENV_ROOT/libexec/pyenv $PATH
+set -gx PATH $PYENV_ROOT/libexec $PATH
+set -gx PATH $PYENV_ROOT/shims $PATH
+set -gx PATH $PYENV_ROOT/bin $PATH
+
+
+set -gx PATH /usr/lib/ccache/bin/ $PATH
 
 # ENVS
 
@@ -63,31 +88,6 @@ set -Ux SCARF_ANALYTICS false
 set -Ux DOTNET_CLI_TELEMETRY_OPTOUT 1
 
 set -Ux npm_config_prefix $HOME/.npm
-
-# PATH
-set -e PATH
-
-set -gx PATH /bin $PATH
-set -gx PATH /usr/bin $PATH
-set -gx PATH /usr/local/bin $PATH
-set -gx PATH /usr/local/sbin $PATH
-
-set -gx PATH $HOME/go/bin $PATH
-set -gx PATH $HOME/Android/platform-tools $PATH
-set -gx PATH $HOME/scripts $PATH
-set -gx PATH $HOME/.local/bin $PATH
-set -gx PATH $HOME/.poetry/bin $PATH
-set -gx PATH $HOME/.cargo/bin $PATH
-set -gx PATH $HOME/.npm/bin $PATH
-
-set -gx PATH $PYENV_ROOT/libexec/pyenv $PATH
-set -gx PATH $PYENV_ROOT/libexec $PATH
-set -gx PATH $PYENV_ROOT/shims $PATH
-set -gx PATH $PYENV_ROOT/bin $PATH
-
-
-set -gx PATH /usr/lib/ccache/bin/ $PATH
-
 
 set fzf_preview_dir_cmd exa --all --color=always
 set fzf_fd_opts --hidden
@@ -360,7 +360,7 @@ function backup -d "backup to yandex"
     rustic -P common backup
 end
 
-if test -z (pgrep ssh-agent)
+if command -v ssh-agent >/dev/null
   eval (ssh-agent -c) > /dev/null
   set -Ux SSH_AUTH_SOCK $SSH_AUTH_SOCK
   set -Ux SSH_AGENT_PID $SSH_AGENT_PID
