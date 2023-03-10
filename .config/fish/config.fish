@@ -43,6 +43,11 @@ set -gx PATH $HOME/.poetry/bin $PATH
 set -gx PATH $HOME/.cargo/bin $PATH
 set -gx PATH $HOME/.npm/bin $PATH
 
+
+set -gx PYENV_ROOT "$HOME/.pyenv"
+set -Ux PYTHON2 "$HOME/.pyenv/shims/python2"
+set -Ux PYTHON3 "$HOME/.pyenv/shims/python3"
+
 set -gx PATH $PYENV_ROOT/libexec/pyenv $PATH
 set -gx PATH $PYENV_ROOT/libexec $PATH
 set -gx PATH $PYENV_ROOT/shims $PATH
@@ -66,17 +71,12 @@ set -Ux VISUAL nvim
 
 set -Ux VAGRANT_DEFAULT_PROVIDER libvirt
 
-set -Ux AUTOSWITCH_DEFAULT_REQUIREMENTS $HOME/scripts/base_py_reqs.txt
+set -Ux AUTOSWITCH_DEFAULT_REQUIREMENTS ~/scripts/base_py_reqs.txt
 
 set -Ux BAT_THEME "TwoDark"
 
 set -Ux pure_show_jobs true
 set -Ux pure_show_system_time true
-
-
-set -gx PYENV_ROOT "$HOME/.pyenv"
-set -Ux PYTHON2 "$HOME/.pyenv/shims/python2"
-set -Ux PYTHON3 "$HOME/.pyenv/shims/python3"
 
 # set -Ux HTTP_PROXY http://169.254.0.1:3128
 # set -Ux HTTPS_PROXY http://169.254.0.1:3131
@@ -141,13 +141,6 @@ if test -n "$KITTY_WINDOW_ID"
         kitty +kitten ssh $argv
     end
 end
-
-if test -n "$WEZTERM_PANE"
-    function ssh
-        wezterm ssh $argv
-    end
-end
-
 
 function change_ttl
     sudo sysctl -w net.inet.ip.ttl=65
