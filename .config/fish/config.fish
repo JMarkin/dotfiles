@@ -80,8 +80,9 @@ set -Ux pure_show_system_time true
 
 # set -Ux HTTP_PROXY http://169.254.0.1:3128
 # set -Ux HTTPS_PROXY http://169.254.0.1:3131
+# IF CACHE PROXY
 # set -Ux CURL_CA_BUNDLE ""
-set -Ux OPENSSL_CONF "/home/kron/.config/openssl.cnf"
+# set -Ux OPENSSL_CONF "/home/kron/.config/openssl.cnf"
 
 # DISABLE TELEMETRY
 set -Ux SCARF_ANALYTICS false
@@ -353,10 +354,16 @@ function backup -d "backup to yandex"
     rustic -P common backup
 end
 
-if command -v ssh-agent >/dev/null
-  eval (ssh-agent -c) > /dev/null
-  set -Ux SSH_AUTH_SOCK $SSH_AUTH_SOCK
-  set -Ux SSH_AGENT_PID $SSH_AGENT_PID
+if test -z "$SSH_AUTH_SOCK"
+    if command -v ssh-agent >/dev/null
+      eval (ssh-agent -c) > /dev/null
+      set -Ux SSH_AUTH_SOCK $SSH_AUTH_SOCK
+      set -Ux SSH_AGENT_PID $SSH_AGENT_PID
+    end
+end
+
+function flush_dns_cache -d "flush dns chache"
+    sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
 end
 
 pyenv init - | source
