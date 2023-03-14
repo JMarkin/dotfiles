@@ -190,88 +190,9 @@ end
 
 
 
-# AUTOVENV
-function _activate
-    source (head -n 1 .venv)/bin/activate.fish
-end
-
-function _create_poetry_venv
-    poetry install $argv
-    set -l venv_path (poetry env list --full-path | sort -k 2 | tail -n 1 | cut -d' ' -f1)
-    echo "$venv_path" >.venv
-    _activate
-end
-
-function _create_pdm_venv
-    pdm install $argv
-    set -l venv_path (dirname $(dirname $(pdm config python.path)))
-    echo "$venv_path" >.venv
-    _activate
-end
-
-
-function _create_virtualenv
-    set -l venv_path $HOME/.virtualenvs/(basename $PWD)
-    if command -v virtualenv
-        virtualenv $venv_path
-    else
-        python -m venv $venv_path
-    end
-    echo "$venv_path" >.venv
-    _activate
-end
-
-function mkvenv
-    if test -f .venv
-        _activate
-        return
-    end
-
-    if test -f poetry.lock
-        _create_poetry_venv
-    else
-        _create_virtualenv
-    end
-
-end
-
-function rmvenv
-    if not test -f .venv
-        return
-    end
-
-    set -l venv_path (head -n 1 .venv)
-    deactivate
-    rm -rf $venv_path
-    rm -f .venv
-end
-
-function _switch_venv --on-variable PWD
-    if test -f .venv && test -z $VIRTUAL_ENV
-        mkvenv
-        return
-    end
-
-    if test -z $VIRTUAL_ENV
-        return
-    end
-
-    if not string match -q -- "*$VIRTUAL_ENV*" $PWD
-        deactivate
-    end
-end
-
-# _switch_venv
-
-if test -n $VIRTUAL_ENV
-    set -gx PATH $VIRTUAL_ENV/bin $PATH
-end
-
-# END AUTOVENV
-
 # AUTODOTENV
 function sourcedotenv
-    set -g DOTENV_WORK_DIR $PWD
+    set -gx DOTENV_WORK_DIR $PWD
 
     for i in (cat $DOTENV_WORK_DIR/.env)
         if test (echo $i | sed -E 's/^[[:space:]]*(.).+$/\\1/g') != "#"
@@ -293,6 +214,7 @@ function unsourcedotenv
             end
         end
     end
+    set -e DOTENV_WORK_DIR
 end
 
 
@@ -316,6 +238,91 @@ end
 # _dotenv
 
 # END AUTODOTENV
+
+# AUTOVENV
+function _activate
+    source (head -n 1 .venv)/bin/activate.fish
+end
+
+function _create_poetry_venv
+    poetry install $argv
+    set -l venv_path (poetry env list --full-path | sort -k 2 | tail -n 1 | cut -d' ' -f1)
+    echo "$venv_path" >.venv
+    _activate
+end
+
+
+function _create_pdm_venv
+    pdm install $argv
+    set -l venv_path (dirname $(dirname $(pdm config python.path)))
+    echo "$venv_path" >.venv
+    _activate
+end
+
+function _create_virtualenv
+    set -l venv_path $HOME/.virtualenvs/(basename $PWD)
+    if command -v virtualenv
+        virtualenv $venv_path
+    else
+        python -m venv $venv_path
+    end
+    echo "$venv_path" >.venv
+    _activate
+end
+
+function mkvenv
+    _dotenv
+    set -gx VENV_WORK_DIR $PWD
+    if test -f .venv
+        _activate
+        return
+    end
+
+    if test -f poetry.lock
+        _create_poetry_venv
+    # else if test -f pdm.lock
+    #     _create_pdm_venv
+    else
+        _create_virtualenv
+    end
+
+end
+
+function rmvenv
+    set -e VENV_WORK_DIR
+    if not test -f .venv
+        return
+    end
+
+    set -l venv_path (head -n 1 .venv)
+    deactivate
+    rm -rf $venv_path
+    rm -f .venv
+end
+
+function _switch_venv --on-variable PWD
+    if test -f .venv && test -z $VIRTUAL_ENV
+        mkvenv
+        return
+    end
+
+    if test -z $VIRTUAL_ENV
+        return
+    end
+
+    if not string match -q -- "$VENV_WORK_DIR*" $PWD
+        deactivate
+    end
+end
+
+# _switch_venv
+
+if test -n $VIRTUAL_ENV
+    set -gx PATH $VIRTUAL_ENV/bin $PATH
+end
+
+# END AUTOVENV
+
 
 # START LS utils
 
