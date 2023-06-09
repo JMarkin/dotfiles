@@ -1,0 +1,8 @@
+[build]
+rustc-wrapper = "/usr/bin/sccache"
+rustflags = "-C link-arg=-fuse-ld=lld -C target-feature=-crt-static"
+rustc = "/home/kron/.cargo/bin/rustc"
+
+[http]
+check-revoke = false
+

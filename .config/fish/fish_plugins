@@ -1,12 +1,15 @@
 jorgebucaran/fisher
-acomagu/fish-async-prompt
 2m/fish-history-merge
 oh-my-fish/plugin-pyenv
 mattmc3/cd-ls.fish
-halostatue/fish-docker@v1.x
+ankitsumitg/docker-fish-completions
 gazorby/fish-exa
 OakNinja/MakeMeFish
 oh-my-fish/plugin-python
 oh-my-fish/plugin-gi
 oh-my-fish/plugin-archlinux
 patrickf1/fzf.fish
+jorgebucaran/replay.fish
+danhper/fish-ssh-agent
+joseluisq/gitnow
+

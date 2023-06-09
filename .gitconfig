@@ -1,0 +1,40 @@
+[user]
+    name = jmarkin
+    email = me@jmarkin.ru
+
+[core]
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only --features=interactive
+
+[delta]
+    line-numbers = true
+    theme = Monokai Extended
+    features = decorations
+
+
+[delta "interactive"]
+    keep-plus-minus-markers = true
+
+[delta "decorations"]
+    commit-decoration-style = blue ol
+    commit-style = raw
+    file-style = omit
+    hunk-header-decoration-style = blue box
+    hunk-header-file-style = red
+    hunk-header-line-number-style = "#067a00"
+    hunk-header-style = file line-number syntax
+
+
+[pull]
+	rebase = false
+
+[http]
+    sslVerify = false
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default

@@ -1,6 +1,0 @@
-pynvim
-yapf
-ruff
-isort
-mypy
-pip
