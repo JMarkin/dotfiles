@@ -40,8 +40,7 @@ ENV CARGO_HOME /opt/cargo
 ENV PATH ${CARGO_HOME}/bin:$PATH
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
-    rustup default stable && \
-    cargo install --locked cargo-update
+    rustup default stable
 
 
 RUN git clone -b nightly https://github.com/neovim/neovim.git && \
