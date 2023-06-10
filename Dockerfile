@@ -1,20 +1,20 @@
-FROM alpine:latest
-
-
-RUN apk update && \
-    apk add --no-cache alpine-sdk build-base bash sudo git curl fish nodejs \
-    lazygit btop openssh openssh-client-common go cmake \
-    libtool pkgconf coreutils unzip gettext-tiny-dev starship shadow perl tree-sitter tree-sitter-cli \
-    gcc gdbm-dev libc-dev libffi libffi-dev libnsl-dev libtirpc-dev  \
-    make ncurses ncurses-dev openssl openssl-dev patch zlib-dev bzip2 bzip2-dev sqlite-dev xz-dev \
-    readline readline-dev rsync tmux musl-dev boost-dev samurai sccache ctags npm re2 re2-dev \
-    bat starship exa ripgrep fd skim zoxide delta
+FROM alpine
 
 RUN adduser -s /usr/bin/fish -D kron && \
     mkdir -p /etc/sudoers.d && \
     echo "kron ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/kron && \
     chmod 0440 /etc/sudoers.d/kron && \
     mkdir -p /opt && chmod -R 777 /opt
+
+RUN apk update && \
+    apk add --no-cache alpine-sdk build-base bash sudo git curl fish nodejs \
+    lazygit btop htop openssh-client-common go cmake \
+    libtool pkgconf coreutils unzip gettext-tiny-dev shadow perl tree-sitter tree-sitter-cli \
+    gcc gdbm-dev libc-dev libffi libffi-dev libnsl-dev libtirpc-dev  \
+    make ncurses ncurses-dev openssl openssl-dev patch zlib-dev bzip2 bzip2-dev sqlite-dev xz-dev \
+    readline readline-dev rsync tmux musl-dev boost-dev samurai sccache ctags npm re2 re2-dev \
+    bat starship exa ripgrep fd skim zoxide delta && \
+    apk add --no-cache vivid --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/
 
 USER kron
 ENV HOME=/home/kron
@@ -41,10 +41,7 @@ ENV PATH ${CARGO_HOME}/bin:$PATH
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
     rustup default stable && \
-    rustup component add rust-analyzer && \
-    cargo install --locked cargo-update \
-    vivid \
-    ptags
+    cargo install --locked cargo-update
 
 
 RUN git clone -b nightly https://github.com/neovim/neovim.git && \
