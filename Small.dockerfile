@@ -11,7 +11,7 @@ RUN apk update && \
     lazygit btop unzip gettext tree-sitter tree-sitter-cli \
     gcc make openssl ctags npm re2 re2-dev \
     bat starship exa ripgrep fd skim zoxide delta neovim openssh-client-common \
-    samurai python3 python3-dev py3-pip && \
+    samurai python3 python3-dev py3-pip docker && \
     apk add --no-cache vivid --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/ && \
     pip install -U pip && \
     pip install pynvim pyre2
@@ -25,6 +25,9 @@ COPY --chown=kron . $HOME
 
 RUN fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && \
     fisher update"
+
+RUN git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm && \
+    ~/.tmux/plugins/tpm/bin/install_plugins
 
 RUN nvim --headless "+Lazy! sync" +qa
 

@@ -13,7 +13,7 @@ RUN apk update && \
     gcc gdbm-dev libc-dev libffi libffi-dev libnsl-dev libtirpc-dev  \
     make ncurses ncurses-dev openssl openssl-dev patch zlib-dev bzip2 bzip2-dev sqlite-dev xz-dev \
     readline readline-dev rsync tmux musl-dev boost-dev samurai sccache ctags npm re2 re2-dev \
-    bat starship exa ripgrep fd skim zoxide delta && \
+    bat starship exa ripgrep fd skim zoxide delta docker && \
     apk add --no-cache vivid --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/
 
 USER kron
