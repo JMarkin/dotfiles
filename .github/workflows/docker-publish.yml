@@ -26,7 +26,7 @@ jobs:
           file: ./Small.dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: jmarkin/dotfiles:small
+          tags: jmarkin/dotfiles:small,jmarkin/dotfiles:latest
       -
         name: Build and push FULL
         uses: docker/build-push-action@v4

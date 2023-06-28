@@ -7,14 +7,14 @@ RUN adduser -s /usr/bin/fish -D kron && \
     mkdir -p /opt && chmod -R 777 /opt
 
 RUN apk update && \
-    apk add --no-cache build-base bash sudo git curl fish nodejs \
+    apk add --no-cache build-base bash sudo git curl fish \
     lazygit btop unzip gettext tree-sitter tree-sitter-cli \
-    gcc make openssl ctags npm re2 re2-dev \
+    gcc make openssl ctags \
     bat starship exa ripgrep fd skim zoxide delta neovim openssh-client-common \
-    samurai python3 python3-dev py3-pip docker && \
+    samurai python3 py3-pip docker-cli docker-cli-compose tmux && \
     apk add --no-cache vivid --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/ && \
-    pip install -U pip && \
-    pip install pynvim pyre2
+    pip install --no-cache -U pip && \
+    pip install --no-cache pynvim
 
 USER kron
 ENV HOME=/home/kron
@@ -29,6 +29,7 @@ RUN fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main
 RUN git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm && \
     ~/.tmux/plugins/tpm/bin/install_plugins
 
+RUN nvim --headless "+Lazy! sync" +qa
 RUN nvim --headless "+Lazy! sync" +qa
 
 VOLUME $HOME

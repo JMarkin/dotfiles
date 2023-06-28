@@ -12,8 +12,8 @@ RUN apk update && \
     libtool pkgconf coreutils unzip gettext-tiny-dev shadow perl tree-sitter tree-sitter-cli \
     gcc gdbm-dev libc-dev libffi libffi-dev libnsl-dev libtirpc-dev  \
     make ncurses ncurses-dev openssl openssl-dev patch zlib-dev bzip2 bzip2-dev sqlite-dev xz-dev \
-    readline readline-dev rsync tmux musl-dev boost-dev samurai sccache ctags npm re2 re2-dev \
-    bat starship exa ripgrep fd skim zoxide delta docker && \
+    readline readline-dev rsync tmux musl-dev boost-dev samurai sccache ctags npm \
+    bat starship exa ripgrep fd skim zoxide delta docker-cli docker-cli-compose && \
     apk add --no-cache vivid --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/
 
 USER kron
@@ -56,12 +56,13 @@ ENV POETRY_HOME=/opt/poetry
 RUN fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && \
     fisher update && \
     pip install -U pip && \
-    pip install pynvim pyre2 && \
+    pip install pynvim && \
     curl -sSL https://install.python-poetry.org | python3 -"
 
 RUN git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm && \
     ~/.tmux/plugins/tpm/bin/install_plugins
 
+RUN nvim --headless "+Lazy! sync" +qa
 RUN nvim --headless "+Lazy! sync" +qa
 RUN nvim "+InstallDefault" +qa
 

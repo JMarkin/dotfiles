@@ -115,7 +115,7 @@ set -Ux pure_show_system_time true
 # set -Ux HTTPS_PROXY http://169.254.0.1:3131
 # IF CACHE PROXY
 # set -Ux CURL_CA_BUNDLE ""
-set -Ux OPENSSL_CONF "/home/kron/.config/openssl.cnf"
+# set -Ux OPENSSL_CONF "/home/kron/.config/openssl.cnf"
 
 # DISABLE TELEMETRY
 set -Ux SCARF_ANALYTICS false
