@@ -50,7 +50,7 @@ rustup default stable
 
 cp ~/.config/alpine/cargo $CARGO_HOME/config
 
-cargo install bob-nvim cargo-nextest du-dust ptags vivid eza
+cargo install bob-nvim cargo-nextest du-dust ptags vivid eza rustic-rs cargo-update
 
 bob install nightly
 bob install stable
