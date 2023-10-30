@@ -1,0 +1,31 @@
+[repository]
+repository = "rclone:yandex:rustic"
+password-file = "/home/kron/.config/secrets/rustic_passwd"
+
+# backup options: These options are used for all sources when calling the backup command.
+# They can be overwritten by source-specific options (see below) or command line options.
+[backup]
+git-ignore = true
+with-atime = true
+one-file-system = false
+glob = [
+  "!**/.venv/**",
+  "!**/.*cache/**",
+  "!**/node_modules/**",
+  "!**/.pnpm-store/**",
+  "!**/target/**",
+  "!**/venv/**",
+]
+
+[[backup.sources]]
+source = "/projects"
+
+[[backup.sources]]
+source = "/srv"
+
+
+# forget options
+[forget]
+keep-within-daily = "2 days"
+keep-monthly = 5
+keep-yearly = 2

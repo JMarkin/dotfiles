@@ -52,40 +52,53 @@ bind "\eOF" end-of-line
 bind "\e[H" beginning-of-line
 bind "\e[F" end-of-line
 
+# ROOTS
+
+set -Ux PYENV_ROOT "/opt/pyenv"
+set -Ux CARGO_HOME "/opt/cargo"
+set -Ux RUSTUP_HOME "/opt/rustup"
+set -Ux POETRY_HOME "/opt/poetry"
+set -Ux GOPATH "/opt/go"
+set -Ux PACKER_CONFIG_DIR  "/opt/packer"
+set -Ux PACKER_CACHE_DIR  "/images/packer_cache"
+
 # PATH
-set -e PATH
+fish_add_path /bin
+fish_add_path /sbin
+fish_add_path /usr/bin
+fish_add_path /usr/sbin
+fish_add_path /usr/local/bin
+fish_add_path /usr/local/zfs/bin
+fish_add_path /usr/local/sbin
+fish_add_path /opt/homebrew/bin
+fish_add_path /opt/homebrew/sbin
+fish_add_path /opt/local/bin
 
-set -gx PATH /bin $PATH
-set -gx PATH /sbin $PATH
-set -gx PATH /usr/bin $PATH
-set -gx PATH /usr/sbin $PATH
-set -gx PATH /usr/local/bin $PATH
-set -gx PATH /usr/local/sbin $PATH
+fish_add_path $HOME/Android/platform-tools
+fish_add_path $HOME/scripts
+fish_add_path $HOME/.local/bin
+fish_add_path $HOME/.cargo/bin
+fish_add_path $HOME/.npm/bin
+fish_add_path $HOME/.nix-profile/bin
+fish_add_path $HOME/.local/share/bob/nvim-bin
 
-set -gx PATH $HOME/go/bin $PATH
-set -gx PATH $HOME/Android/platform-tools $PATH
-set -gx PATH $HOME/scripts $PATH
-set -gx PATH $HOME/.local/bin $PATH
-set -gx PATH $HOME/.poetry/bin $PATH
-set -gx PATH $HOME/.cargo/bin $PATH
-set -gx PATH $HOME/.npm/bin $PATH
-set -gx PATH /opt/cargo/bin $PATH
+fish_add_path $GOPATH/bin
+fish_add_path $POETRY_HOME/bin
+fish_add_path $CARGO_HOME/bin
+fish_add_path $PYENV_ROOT/bin
 
+fish_add_path $PYENV_ROOT/libexec/pyenv
+fish_add_path $PYENV_ROOT/libexec
+fish_add_path $PYENV_ROOT/shims
 
-set -gx PYENV_ROOT "/opt/pyenv"
-set -Ux PYTHON2 "$PYENV_ROOT/shims/python2"
-set -Ux PYTHON3 "$PYENV_ROOT/shims/python3"
-
-set -gx PATH $PYENV_ROOT/libexec/pyenv $PATH
-set -gx PATH $PYENV_ROOT/libexec $PATH
-set -gx PATH $PYENV_ROOT/shims $PATH
-set -gx PATH $PYENV_ROOT/bin $PATH
-
-
-set -gx PATH /usr/lib/ccache/bin/ $PATH
-
+fish_add_path /usr/lib/ccache/bin
 
 # ENVS
+
+set -Ux SHELL (which fish)
+
+set -Ux PYTHON2 "$PYENV_ROOT/shims/python2"
+set -Ux PYTHON3 "$PYENV_ROOT/shims/python3"
 
 set -gx LANG C.UTF-8
 set -gx LC_TYPE C.UTF-8
@@ -95,16 +108,16 @@ set -Ux OS (uname -s)
 
 set -Ux LS_COLORS (vivid generate jellybeans)
 
-set -Ux PYTHON_CONFIGURE_OPTS --enable-shared
+set -Ux PYTHON_CONFIGURE_OPTS '--enable-optimizations --with-lto=full --with-computed-gotos --enable-ipv6 --enable-loadable-sqlite-extensions'
+set -Ux PYTHON_CFLAGS '-O3 -march=native -fuse-ld=mold'
 set -Ux PYTHONPYCACHEPREFIX /tmp/cpython
 
 set -Ux PAGER bat
+set -Ux MANPAGER 'nvim +Man!'
 set -Ux EDITOR nvim
 set -Ux VISUAL nvim
 
 set -Ux VAGRANT_DEFAULT_PROVIDER libvirt
-
-set -Ux AUTOSWITCH_DEFAULT_REQUIREMENTS ~/scripts/base_py_reqs.txt
 
 set -Ux BAT_THEME "Monokai Extended"
 
@@ -115,7 +128,7 @@ set -Ux pure_show_system_time true
 # set -Ux HTTPS_PROXY http://169.254.0.1:3131
 # IF CACHE PROXY
 # set -Ux CURL_CA_BUNDLE ""
-# set -Ux OPENSSL_CONF "/home/kron/.config/openssl.cnf"
+set -Ux OPENSSL_CONF "/home/kron/.config/openssl.cnf"
 
 # DISABLE TELEMETRY
 set -Ux SCARF_ANALYTICS false
@@ -123,13 +136,11 @@ set -Ux DOTNET_CLI_TELEMETRY_OPTOUT 1
 
 set -Ux npm_config_prefix $HOME/.npm
 
-set fzf_preview_dir_cmd exa --all --color=always
+set -Ux NVIM_LOG_FILE $HOME/RAMDisk/nvim/log
+
 set fzf_fd_opts --hidden
 
 # ALIASES
-function sudo
-    command sudo -E $argv
-end
 
 function win10
     sudo virsh start win10_small
@@ -189,16 +200,11 @@ function sudo
 end
 
 
-function optimize-build-kron-pc
-    set -gx CXXFLAGS "-O3 -march=znver3"
-    set -gx CFLAGS "-O3 -march=znver3"
+function optimize-build
+    set -gx CFLAGS "-O3 -march=native -fuse-ld=mold"
+    set -gx CXXFLAGS "$CFLAGS"
+    set -gx CPPFLAGS "$CFLAGS"
 end
-
-function optimize-build-mac-m1
-    set -gx CXXFLAGS "-O3 -mcpu=apple-m1"
-    set -gx CFLAGS "-O3 -mcpu=apple-m1"
-end
-
 
 
 if command -v pigz >/dev/null
@@ -209,12 +215,12 @@ end
 
 function vpn-ocn -a name
     source ~/.config/vpn/$name.fish
-    set -l cmd (string join ' ' 'vpn-slice -vvv' $VPN_SLICE)
+    set -l cmd (string join ' ' '/opt/pyenv/shims/vpn-slice -vvv' $VPN_SLICE)
     echo $cmd
-    sudo openconnect --os=win --local-hostname="yurymarkin.local" \
-    --useragent="Cisco AnyConnect Secure Mobility Client Version 4.10.05111"\
-    --version-string="4.10.05111"\
-    --pid-file=/tmp/openconnect_$name.pid --background -u $VPN_USER $VPN_URL -s $cmd
+    sudo openconnect --os=mac-intel \
+    --useragent="Cisco AnyConnect Secure Mobility Client Version 5.0.03072"\
+    --version-string="5.0.03072"\
+    --pid-file=/tmp/openconnect_$name.pid  -u $VPN_USER $VPN_URL -s $cmd
 
     sudo systemctl restart dnsmasq
 end
@@ -365,10 +371,11 @@ end
 
 # START LS utils
 
-if command -v exa >/dev/null
+if command -v eza >/dev/null
 
+    set fzf_preview_dir_cmd eza --all --color=always
     function ls
-        exa --icons --classify --group-directories-first --time-style=long-iso --group --color=auto $argv
+        eza --icons --classify --group-directories-first --group --color=auto $argv
     end
 
     function l
@@ -380,7 +387,7 @@ if command -v exa >/dev/null
     end
 
     function ll
-        ls --header --long $argv
+        ls --header -l --time-style=long-iso -M -m $argv
     end
 
     function lla
@@ -390,21 +397,11 @@ end
 
 # END LS utils
 
-
-function backup_projects -d "backup_projects to yandex"
-    rustic -P projects backup
-end
-
-function backup -d "backup to yandex"
-    rustic -P projects backup
-    rustic -P common backup
-end
-
 function flush_dns_cache -d "flush dns chache"
     sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
 end
 
-# pyenv init - | source
+pyenv init - | source
 zoxide init --cmd cd fish | source
 starship init fish | source
 

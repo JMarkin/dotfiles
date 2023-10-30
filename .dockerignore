@@ -1,6 +1,0 @@
-Dockerfile
-*.dockerfile
-.git
-.gitmodules
-.github
-.dockerignore

@@ -1,0 +1,17 @@
+[build]
+rustc-wrapper = "/usr/bin/sccache"
+rustflags = "-C target-feature=-crt-static"
+rustc = "/opt/cargo/bin/rustc"
+
+[target.x86_64-unknown-linux-gnu]
+linker = "clang"
+rustflags = ["-C", "link-arg=-fuse-ld=/usr/bin/mold"]
+
+
+[target.aarch64-unknown-linux-gnu]
+linker = "clang"
+rustflags = ["-C", "link-arg=-fuse-ld=/usr/bin/mold"]
+
+[http]
+check-revoke = false
+
