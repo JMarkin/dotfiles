@@ -17,7 +17,7 @@ libtool pkgconf coreutils unzip gettext-tiny-dev shadow perl tree-sitter tree-si
 gcc gdbm-dev libc-dev libffi libffi-dev libnsl-dev libtirpc-dev  \
 make ncurses ncurses-dev openssl openssl-dev patch zlib-dev bzip2 bzip2-dev sqlite-dev xz-dev \
 readline readline-dev rsync tmux musl-dev boost-dev sccache ctags npm docker \
-bat starship ripgrep fd skim zoxide delta
+bat starship ripgrep fd skim zoxide delta fzf procps
 
  sudo usermod -aG docker kron
 
