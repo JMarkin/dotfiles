@@ -4,11 +4,15 @@
 
 [core]
     pager = delta
+    fscache = true
+    packedGitLimit = 512m
+    packedGitWindowSize = 512m
 
 [interactive]
     diffFilter = delta --color-only --features=interactive
 
 [delta]
+    navigate = true
     line-numbers = true
     theme = Monokai Extended
     features = decorations
@@ -28,13 +32,30 @@
 
 
 [pull]
-	rebase = false
+    rebase = false
 
 [http]
     sslVerify = false
+    postBuffer = 157286400
 
 [merge]
     conflictstyle = diff3
 
 [diff]
     colorMoved = default
+
+[push]
+    autoSetupRemote = true
+
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+
+[pack]
+    window = 1
+    deltaCacheSize = 2047m
+    packSizeLimit = 2047m
+    windowMemory = 2047m
+

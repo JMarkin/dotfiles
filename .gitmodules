@@ -4,6 +4,3 @@
 [submodule ".config/alacritty/themes"]
 	path = .config/alacritty/themes
 	url = https://github.com/alacritty/alacritty-theme
-[submodule "/home/kron/.tmux/plugins/tpm"]
-	path = /home/kron/.tmux/plugins/tpm
-	url = https://github.com/tmux-plugins/tpm

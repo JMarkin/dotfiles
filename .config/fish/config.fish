@@ -1,35 +1,71 @@
 set -U fish_greeting
 
 # COLORS
-set -U fish_color_autosuggestion d7ffaf
-set -U fish_color_cancel \x2d\x2dreverse
-set -U fish_color_command 5fff00
-set -U fish_color_comment 5C9900
-set -U fish_color_cwd green
-set -U fish_color_cwd_root red
-set -U fish_color_end 8EEB00
-set -U fish_color_error 60B9CE
-set -U fish_color_escape 00a6b2
-set -U fish_color_history_current \x2d\x2dbold
-set -U fish_color_host normal
-set -U fish_color_host_remote yellow
-set -U fish_color_match \x2d\x2dbackground\x3dbrblue
-set -U fish_color_normal normal
-set -U fish_color_operator 00a6b2
-set -U fish_color_param ffffaf
-set -U fish_color_quote d75f5f
-set -U fish_color_redirection 7CB02C
-set -U fish_color_search_match bryellow\x1e\x2d\x2dbackground\x3dbrblack
-set -U fish_color_selection white\x1e\x2d\x2dbold\x1e\x2d\x2dbackground\x3dbrblack
-set -U fish_color_status red
-set -U fish_color_user brgreen
-set -U fish_color_valid_path \x2d\x2dunderline
-set -U fish_key_bindings fish_default_key_bindings
-set -U fish_pager_color_completion normal
-set -U fish_pager_color_description B3A06D
-set -U fish_pager_color_prefix normal\x1e\x2d\x2dbold\x1e\x2d\x2dunderline
-set -U fish_pager_color_progress brwhite\x1e\x2d\x2dbackground\x3dcyan
-set -U fish_pager_color_selected_background \x2d\x2dbackground\x3dbrblack
+# set -U fish_color_autosuggestion d7ffaf
+# set -U fish_color_cancel \x2d\x2dreverse
+# set -U fish_color_command 5fff00
+# set -U fish_color_comment 5C9900
+# set -U fish_color_cwd green
+# set -U fish_color_cwd_root red
+# set -U fish_color_end 8EEB00
+# set -U fish_color_error 60B9CE
+# set -U fish_color_escape 00a6b2
+# set -U fish_color_history_current \x2d\x2dbold
+# set -U fish_color_host normal
+# set -U fish_color_host_remote yellow
+# set -U fish_color_match \x2d\x2dbackground\x3dbrblue
+# set -U fish_color_normal normal
+# set -U fish_color_operator 00a6b2
+# set -U fish_color_param ffffaf
+# set -U fish_color_quote d75f5f
+# set -U fish_color_redirection 7CB02C
+# set -U fish_color_search_match bryellow\x1e\x2d\x2dbackground\x3dbrblack
+# set -U fish_color_selection white\x1e\x2d\x2dbold\x1e\x2d\x2dbackground\x3dbrblack
+# set -U fish_color_status red
+# set -U fish_color_user brgreen
+# set -U fish_color_valid_path \x2d\x2dunderline
+# set -U fish_key_bindings fish_default_key_bindings
+# set -U fish_pager_color_completion normal
+# set -U fish_pager_color_description B3A06D
+# set -U fish_pager_color_prefix normal\x1e\x2d\x2dbold\x1e\x2d\x2dunderline
+# set -U fish_pager_color_progress brwhite\x1e\x2d\x2dbackground\x3dcyan
+# set -U fish_pager_color_selected_background \x2d\x2dbackground\x3dbrblack
+
+# Nightfox Color Palette
+# Style: carbonfox
+# Upstream: https://github.com/edeneast/nightfox.nvim/raw/main/extra/carbonfox/carbonfox.fish
+set -l foreground f2f4f8
+set -l selection 2a2a2a
+set -l comment 6e6f70
+set -l red ee5396
+set -l orange 3ddbd9
+set -l yellow 08bdba
+set -l green 25be6a
+set -l purple be95ff
+set -l cyan 33b1ff
+set -l pink ff7eb6
+
+# Syntax Highlighting Colors
+set -g fish_color_normal $foreground
+set -g fish_color_command $cyan
+set -g fish_color_keyword $pink
+set -g fish_color_quote $yellow
+set -g fish_color_redirection $foreground
+set -g fish_color_end $orange
+set -g fish_color_error $red
+set -g fish_color_param $purple
+set -g fish_color_comment $comment
+set -g fish_color_selection --background=$selection
+set -g fish_color_search_match --background=$selection
+set -g fish_color_operator $green
+set -g fish_color_escape $pink
+set -g fish_color_autosuggestion $comment
+
+# Completion Pager Colors
+set -g fish_pager_color_progress $comment
+set -g fish_pager_color_prefix $cyan
+set -g fish_pager_color_completion $foreground
+set -g fish_pager_color_description $comment
 
 # BIND
 
@@ -54,13 +90,13 @@ bind "\e[F" end-of-line
 
 # ROOTS
 
-set -Ux PYENV_ROOT "/opt/pyenv"
-set -Ux CARGO_HOME "/opt/cargo"
-set -Ux RUSTUP_HOME "/opt/rustup"
-set -Ux POETRY_HOME "/opt/poetry"
-set -Ux GOPATH "/opt/go"
-set -Ux PACKER_CONFIG_DIR  "/opt/packer"
-set -Ux PACKER_CACHE_DIR  "/images/packer_cache"
+set -Ux PYENV_ROOT /opt/pyenv
+set -Ux CARGO_HOME /opt/cargo
+set -Ux RUSTUP_HOME /opt/rustup
+set -Ux POETRY_HOME /opt/poetry
+set -Ux GOPATH /opt/go
+set -Ux PACKER_CONFIG_DIR /opt/packer
+set -Ux PACKER_CACHE_DIR /images/packer_cache
 
 # PATH
 fish_add_path /bin
@@ -79,6 +115,7 @@ fish_add_path $HOME/scripts
 fish_add_path $HOME/.local/bin
 fish_add_path $HOME/.cargo/bin
 fish_add_path $HOME/.npm/bin
+fish_add_path $HOME/.gem/ruby/3.0.0/bin
 fish_add_path $HOME/.nix-profile/bin
 fish_add_path $HOME/.local/share/bob/nvim-bin
 
@@ -94,8 +131,6 @@ fish_add_path $PYENV_ROOT/shims
 fish_add_path /usr/lib/ccache/bin
 
 # ENVS
-
-set -Ux SHELL (which fish)
 
 set -Ux PYTHON2 "$PYENV_ROOT/shims/python2"
 set -Ux PYTHON3 "$PYENV_ROOT/shims/python3"
@@ -119,7 +154,11 @@ set -Ux VISUAL nvim
 
 set -Ux VAGRANT_DEFAULT_PROVIDER libvirt
 
+set -Ux AUTOSWITCH_DEFAULT_REQUIREMENTS ~/scripts/base_py_reqs.txt
+
 set -Ux BAT_THEME "Monokai Extended"
+
+set -Ux ROCM_PATH /opt/rocm
 
 set -Ux pure_show_jobs true
 set -Ux pure_show_system_time true
@@ -136,9 +175,11 @@ set -Ux DOTNET_CLI_TELEMETRY_OPTOUT 1
 
 set -Ux npm_config_prefix $HOME/.npm
 
-set -Ux NVIM_LOG_FILE $HOME/RAMDisk/nvim/log
+set -Ux FZF_DEFAULT_OPTS '--bind=shift-tab:up,tab:down'
 
 set fzf_fd_opts --hidden
+fzf_configure_bindings --git_status=\cg --history=\cr --git_log=\cl --directory=\cf --variables= --processes=
+
 
 # ALIASES
 
@@ -195,10 +236,6 @@ function forward
     ssh -M -fNT $argv[1]
 end
 
-function sudo
-    command sudo -E $argv
-end
-
 
 function optimize-build
     set -gx CFLAGS "-O3 -march=native -fuse-ld=mold"
@@ -217,19 +254,15 @@ function vpn-ocn -a name
     source ~/.config/vpn/$name.fish
     set -l cmd (string join ' ' '/opt/pyenv/shims/vpn-slice -vvv' $VPN_SLICE)
     echo $cmd
-    sudo openconnect --os=mac-intel \
-    --useragent="Cisco AnyConnect Secure Mobility Client Version 5.0.03072"\
-    --version-string="5.0.03072"\
-    --pid-file=/tmp/openconnect_$name.pid  -u $VPN_USER $VPN_URL -s $cmd
+    sudo openconnect \
+        --useragent="AnyConnect" \
+        --pid-file=/tmp/openconnect_$name.pid -u $VPN_USER $VPN_URL -s $cmd
 
-    sudo systemctl restart dnsmasq
 end
 
 function vpn-ocn-down -a name
     sudo kill -INT (cat /tmp/openconnect_$name.pid)
 end
-
-
 
 # AUTODOTENV
 function sourcedotenv
@@ -325,8 +358,8 @@ function mkvenv
 
     if test -f poetry.lock
         _create_poetry_venv
-    # else if test -f pdm.lock
-    #     _create_pdm_venv
+        # else if test -f pdm.lock
+        #     _create_pdm_venv
     else
         _create_virtualenv
     end
@@ -398,11 +431,11 @@ end
 # END LS utils
 
 function flush_dns_cache -d "flush dns chache"
-    sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
+    sudo dscacheutil -flushcache
+    sudo killall -HUP mDNSResponder
 end
 
 pyenv init - | source
 zoxide init --cmd cd fish | source
 starship init fish | source
-
 
