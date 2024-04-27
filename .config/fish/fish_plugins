@@ -3,7 +3,6 @@ jorgebucaran/fisher
 oh-my-fish/plugin-pyenv
 mattmc3/cd-ls.fish
 ankitsumitg/docker-fish-completions
-gazorby/fish-exa
 OakNinja/MakeMeFish
 oh-my-fish/plugin-python
 oh-my-fish/plugin-gi
@@ -11,3 +10,6 @@ oh-my-fish/plugin-archlinux
 patrickf1/fzf.fish
 jorgebucaran/replay.fish
 joseluisq/gitnow
+plttn/fish-eza
+evanlucas/fish-kubectl-completions
+

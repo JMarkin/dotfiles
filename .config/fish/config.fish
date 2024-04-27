@@ -1,92 +1,57 @@
 set -U fish_greeting
 
 # COLORS
-# set -U fish_color_autosuggestion d7ffaf
-# set -U fish_color_cancel \x2d\x2dreverse
-# set -U fish_color_command 5fff00
-# set -U fish_color_comment 5C9900
-# set -U fish_color_cwd green
-# set -U fish_color_cwd_root red
-# set -U fish_color_end 8EEB00
-# set -U fish_color_error 60B9CE
-# set -U fish_color_escape 00a6b2
-# set -U fish_color_history_current \x2d\x2dbold
-# set -U fish_color_host normal
-# set -U fish_color_host_remote yellow
-# set -U fish_color_match \x2d\x2dbackground\x3dbrblue
-# set -U fish_color_normal normal
-# set -U fish_color_operator 00a6b2
-# set -U fish_color_param ffffaf
-# set -U fish_color_quote d75f5f
-# set -U fish_color_redirection 7CB02C
-# set -U fish_color_search_match bryellow\x1e\x2d\x2dbackground\x3dbrblack
-# set -U fish_color_selection white\x1e\x2d\x2dbold\x1e\x2d\x2dbackground\x3dbrblack
-# set -U fish_color_status red
-# set -U fish_color_user brgreen
-# set -U fish_color_valid_path \x2d\x2dunderline
-# set -U fish_key_bindings fish_default_key_bindings
-# set -U fish_pager_color_completion normal
-# set -U fish_pager_color_description B3A06D
-# set -U fish_pager_color_prefix normal\x1e\x2d\x2dbold\x1e\x2d\x2dunderline
-# set -U fish_pager_color_progress brwhite\x1e\x2d\x2dbackground\x3dcyan
-# set -U fish_pager_color_selected_background \x2d\x2dbackground\x3dbrblack
+set -U fish_color_autosuggestion d7ffaf
+set -U fish_color_cancel \x2d\x2dreverse
+set -U fish_color_command 5fff00
+set -U fish_color_comment 5C9900
+set -U fish_color_cwd green
+set -U fish_color_cwd_root red
+set -U fish_color_end 8EEB00
+set -U fish_color_error 60B9CE
+set -U fish_color_escape 00a6b2
+set -U fish_color_history_current \x2d\x2dbold
+set -U fish_color_host normal
+set -U fish_color_host_remote yellow
+set -U fish_color_match \x2d\x2dbackground\x3dbrblue
+set -U fish_color_normal normal
+set -U fish_color_operator 00a6b2
+set -U fish_color_param ffffaf
+set -U fish_color_quote d75f5f
+set -U fish_color_redirection 7CB02C
+set -U fish_color_search_match bryellow\x1e\x2d\x2dbackground\x3dbrblack
+set -U fish_color_selection white\x1e\x2d\x2dbold\x1e\x2d\x2dbackground\x3dbrblack
+set -U fish_color_status red
+set -U fish_color_user brgreen
+set -U fish_color_valid_path \x2d\x2dunderline
+set -U fish_key_bindings fish_default_key_bindings
+set -U fish_pager_color_completion normal
+set -U fish_pager_color_description B3A06D
+set -U fish_pager_color_prefix normal\x1e\x2d\x2dbold\x1e\x2d\x2dunderline
+set -U fish_pager_color_progress brwhite\x1e\x2d\x2dbackground\x3dcyan
+set -U fish_pager_color_selected_background \x2d\x2dbackground\x3dbrblack
 
-# Nightfox Color Palette
-# Style: carbonfox
-# Upstream: https://github.com/edeneast/nightfox.nvim/raw/main/extra/carbonfox/carbonfox.fish
-set -l foreground f2f4f8
-set -l selection 2a2a2a
-set -l comment 6e6f70
-set -l red ee5396
-set -l orange 3ddbd9
-set -l yellow 08bdba
-set -l green 25be6a
-set -l purple be95ff
-set -l cyan 33b1ff
-set -l pink ff7eb6
-
-# Syntax Highlighting Colors
-set -g fish_color_normal $foreground
-set -g fish_color_command $cyan
-set -g fish_color_keyword $pink
-set -g fish_color_quote $yellow
-set -g fish_color_redirection $foreground
-set -g fish_color_end $orange
-set -g fish_color_error $red
-set -g fish_color_param $purple
-set -g fish_color_comment $comment
-set -g fish_color_selection --background=$selection
-set -g fish_color_search_match --background=$selection
-set -g fish_color_operator $green
-set -g fish_color_escape $pink
-set -g fish_color_autosuggestion $comment
-
-# Completion Pager Colors
-set -g fish_pager_color_progress $comment
-set -g fish_pager_color_prefix $cyan
-set -g fish_pager_color_completion $foreground
-set -g fish_pager_color_description $comment
 
 # BIND
 
-bind "\e[1~" beginning-of-line
-bind "\e[4~" end-of-line
-bind "\e[5~" beginning-of-history
-bind "\e[6~" end-of-history
-bind "\e[7~" beginning-of-line
-bind "\e[3~" delete-char
-bind "\e[2~" quoted-insert
-bind "\e[5C" forward-word
-bind "\e[5D" backward-word
-bind "\e\e[C" forward-word
-bind "\e\e[D" backward-word
-bind "\e[1;5C" forward-word
-bind "\e[1;5D" backward-word
-bind "\e[8~" end-of-line
-bind "\eOH" beginning-of-line
-bind "\eOF" end-of-line
-bind "\e[H" beginning-of-line
-bind "\e[F" end-of-line
+# bind "\e[1~" beginning-of-line
+# bind "\e[4~" end-of-line
+# bind "\e[5~" beginning-of-history
+# bind "\e[6~" end-of-history
+# bind "\e[7~" beginning-of-line
+# bind "\e[3~" delete-char
+# bind "\e[2~" quoted-insert
+# bind "\e[5C" forward-word
+# bind "\e[5D" backward-word
+# bind "\e\e[C" forward-word
+# bind "\e\e[D" backward-word
+# bind "\e[1;5C" forward-word
+# bind "\e[1;5D" backward-word
+# bind "\e[8~" end-of-line
+# bind "\eOH" beginning-of-line
+# bind "\eOF" end-of-line
+# bind "\e[H" beginning-of-line
+# bind "\e[F" end-of-line
 
 # ROOTS
 
@@ -117,7 +82,7 @@ fish_add_path $HOME/.cargo/bin
 fish_add_path $HOME/.npm/bin
 fish_add_path $HOME/.gem/ruby/3.0.0/bin
 fish_add_path $HOME/.nix-profile/bin
-fish_add_path $HOME/.local/share/bob/nvim-bin
+# fish_add_path $HOME/.local/share/bob/nvim-bin
 
 fish_add_path $GOPATH/bin
 fish_add_path $POETRY_HOME/bin
@@ -141,10 +106,11 @@ set -gx LC_ALL C.UTF-8
 
 set -Ux OS (uname -s)
 
-set -Ux LS_COLORS (vivid generate jellybeans)
+set -Ux LS_COLORS (vivid generate $HOME/.config/bamboo.yml)
 
 set -Ux PYTHON_CONFIGURE_OPTS '--enable-optimizations --with-lto=full --with-computed-gotos --enable-ipv6 --enable-loadable-sqlite-extensions'
 set -Ux PYTHON_CFLAGS '-O3 -march=native -fuse-ld=mold'
+
 set -Ux PYTHONPYCACHEPREFIX /tmp/cpython
 
 set -Ux PAGER bat
@@ -156,7 +122,7 @@ set -Ux VAGRANT_DEFAULT_PROVIDER libvirt
 
 set -Ux AUTOSWITCH_DEFAULT_REQUIREMENTS ~/scripts/base_py_reqs.txt
 
-set -Ux BAT_THEME "Monokai Extended"
+set -Ux BAT_THEME "bamboo"
 
 set -Ux ROCM_PATH /opt/rocm
 
@@ -167,7 +133,7 @@ set -Ux pure_show_system_time true
 # set -Ux HTTPS_PROXY http://169.254.0.1:3131
 # IF CACHE PROXY
 # set -Ux CURL_CA_BUNDLE ""
-set -Ux OPENSSL_CONF "/home/kron/.config/openssl.cnf"
+set -Ux OPENSSL_CONF "/etc/openssl.cnf"
 
 # DISABLE TELEMETRY
 set -Ux SCARF_ANALYTICS false
@@ -292,7 +258,7 @@ function unsourcedotenv
 end
 
 
-function _dotenv --on-variable PWD
+function _dotenv --on-event fish_prompt --on-variable PWD
     if test -f .env && test -z $DOTENV_WORK_DIR
         sourcedotenv
         return
@@ -378,7 +344,7 @@ function rmvenv
     rm -f .venv
 end
 
-function _switch_venv --on-variable PWD
+function _switch_venv --on-event fish_prompt --on-variable PWD
     if test -f .venv && test -z $VIRTUAL_ENV
         mkvenv
         return
@@ -402,37 +368,18 @@ end
 # END AUTOVENV
 
 
-# START LS utils
-
-if command -v eza >/dev/null
-
-    set fzf_preview_dir_cmd eza --all --color=always
-    function ls
-        eza --icons --classify --group-directories-first --group --color=auto $argv
-    end
-
-    function l
-        ls --git-ignore $argv
-    end
-
-    function la
-        ls -a $argv
-    end
-
-    function ll
-        ls --header -l --time-style=long-iso -M -m $argv
-    end
-
-    function lla
-        ll -a $argv
-    end
-end
-
-# END LS utils
-
 function flush_dns_cache -d "flush dns chache"
     sudo dscacheutil -flushcache
     sudo killall -HUP mDNSResponder
+end
+
+function yy
+    set tmp (mktemp -t "yazi-cwd.XXXXXX")
+    yazi $argv --cwd-file="$tmp"
+    if set cwd (cat -- "$tmp"); and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
+        cd "$cwd"
+    end
+    rm -f -- "$tmp"
 end
 
 pyenv init - | source

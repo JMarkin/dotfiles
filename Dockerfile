@@ -7,10 +7,11 @@ RUN apk update && apk add sudo && adduser -D kron && \
     mkdir -p /opt && chmod -R 777 /opt
 
 USER kron
-ENV HOME=/home/kron
+ENV HOME=/home/kron \
+    USER=kron
 
 WORKDIR /home/kron
 
 COPY --chown=kron . .
 
-RUN ./scripts/setup_alpine.sh
+RUN ls -a && sh ./scripts/setup_alpine.sh
