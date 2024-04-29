@@ -2,10 +2,8 @@
 
 USER=${USER:-root}
 
-cd $HOME
-
-sudo chmod 700 ~/.ssh
-sudo chmod 600 ~/.ssh/authorized_keys
+sudo chmod 700 $HOME/.ssh
+sudo chmod 600 $HOME/.ssh/authorized_keys
 
 sudo mkdir -p /opt && sudo chmod -R 777 /opt
 sudo mkdir -p /projects && sudo chmod -R 777 /projects
@@ -58,3 +56,5 @@ curl -sSL https://install.python-poetry.org | python3 -
 fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher update"
 fish -c "bat cache --build"
 
+sudo chown -R $USER $HOME
+sudo chown -R /opt
