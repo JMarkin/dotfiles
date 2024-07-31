@@ -7,9 +7,6 @@
 [submodule ".tmux/plugins/tpm"]
 	path = .tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
-[submodule ".config/yazi/plugins/fg.yazi"]
-	path = .config/yazi/plugins/fg.yazi
-	url = https://github.com/DreamMaoMao/fg.yazi.git
 [submodule ".config/yazi/plugins/starship.yazi"]
 	path = .config/yazi/plugins/starship.yazi
 	url = https://github.com/Rolv-Apneseth/starship.yazi.git
