@@ -122,7 +122,7 @@ set -Ux VAGRANT_DEFAULT_PROVIDER libvirt
 
 set -Ux AUTOSWITCH_DEFAULT_REQUIREMENTS ~/scripts/base_py_reqs.txt
 
-set -Ux BAT_THEME "bamboo"
+set -Ux BAT_THEME bamboo
 
 set -Ux ROCM_PATH /opt/rocm
 
@@ -382,7 +382,18 @@ function yy
     rm -f -- "$tmp"
 end
 
-pyenv init - | source
-zoxide init --cmd cd fish | source
-starship init fish | source
 
+if test -z "$SSH_AUTH_SOCK"
+    if command -v ssh-agent >/dev/null
+        eval (ssh-agent -c) >/dev/null
+        set -Ux SSH_AUTH_SOCK $SSH_AUTH_SOCK
+        set -Ux SSH_AGENT_PID $SSH_AGENT_PID
+    end
+end
+
+
+if status --is-interactive
+    pyenv init - --no-rehash | source
+    zoxide init --cmd cd fish | source
+    starship init fish | source
+end
