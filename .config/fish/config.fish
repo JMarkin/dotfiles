@@ -89,16 +89,9 @@ fish_add_path $POETRY_HOME/bin
 fish_add_path $CARGO_HOME/bin
 fish_add_path $PYENV_ROOT/bin
 
-fish_add_path $PYENV_ROOT/libexec/pyenv
-fish_add_path $PYENV_ROOT/libexec
-fish_add_path $PYENV_ROOT/shims
-
 fish_add_path /usr/lib/ccache/bin
 
 # ENVS
-
-set -Ux PYTHON2 "$PYENV_ROOT/shims/python2"
-set -Ux PYTHON3 "$PYENV_ROOT/shims/python3"
 
 set -gx LANG C.UTF-8
 set -gx LC_TYPE C.UTF-8
@@ -393,7 +386,6 @@ end
 
 
 if status --is-interactive
-    pyenv init - --no-rehash | source
     zoxide init --cmd cd fish | source
     starship init fish | source
 end

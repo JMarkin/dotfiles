@@ -29,14 +29,6 @@ sudo make install
 cd -
 
 
-export PYENV_ROOT=/opt/pyenv
-export PATH=$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
-
-set -ex \
-    && curl https://pyenv.run | bash \
-    && pyenv update \
-    && pyenv rehash
-
 export RUSTUP_HOME=/opt/rustup
 export CARGO_HOME=/opt/cargo
 export PATH=$CARGO_HOME/bin:$PATH
@@ -50,8 +42,7 @@ cargo install cargo-nextest du-dust ptags vivid eza rustic-rs cargo-update
 
 cargo install --locked --git https://github.com/sxyazi/yazi.git yazi-fm
 
-export POETRY_HOME=/opt/poetry
-curl -sSL https://install.python-poetry.org | python3 -
+curl -LsSf https://astral.sh/uv/install.sh | sh
 
 fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher update"
 fish -c "bat cache --build"
