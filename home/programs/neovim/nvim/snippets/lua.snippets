@@ -1,0 +1,96 @@
+snippet neogen
+    require("neogen").setup({
+        enabled = true,
+        input_after_comment = true,
+        snippet_engine = "luasnip",
+        languages = {
+            python = {
+                template = {
+                    annotation_convention = "reST",
+                },
+            },
+        },
+    })
+
+snippet jinja
+    vim.filetype.add({
+        extension = {
+            html = "jinja",
+            htm = "jinja",
+        }
+    })
+
+snippet tests
+    require("neotest").setup({})
+
+snippet pytest
+    require("neotest").setup({
+      adapters = {
+        require("neotest-python")({
+            dap = { justMyCode = false },
+            args = {"--log-level", "DEBUG"},
+            runner = "pytest",
+        })
+      }
+    })
+
+snippet unittest
+    require("neotest").setup({
+      adapters = {
+        require("neotest-python")({
+            dap = { justMyCode = false },
+            args = {"--log-level", "DEBUG"},
+            runner = "pytest",
+        })
+      }
+    })
+
+snippet db
+    vim.g.db = "postgresql://postgres:postgres@localhost:5432/postgres"
+
+snippet py-lint
+    require("lint").linters_by_ft = {
+        python = { "mypy", "bandit" },
+    }
+
+snippet py-proj
+    require("neogen").setup({
+        enabled = true,
+        input_after_comment = true,
+        snippet_engine = "luasnip",
+        languages = {
+            python = {
+                template = {
+                    annotation_convention = "google",
+                },
+            },
+        },
+    })
+    require("neotest").setup({
+        adapters = {
+            require("neotest-python")({
+                dap = { justMyCode = false },
+                args = { "--log-level", "DEBUG" },
+                runner = "pytest",
+            }),
+        },
+    })
+    vim.g.db = "postgresql://postgres:postgres@localhost:5432/postgres"
+
+    require("lint").linters_by_ft = {
+        python = { "mypy", "bandit" },
+    }
+
+snippet ignore
+    -- stylua: ignore start
+
+    -- stylua: ignore end
+
+snippet jinja_lsp
+    local utils = require("lsp.utils")
+    utils.setup_lsp("jinja_lsp", {
+        templates = "./templates",
+        backend = { "./src" },
+        lang = "python",
+    })
+

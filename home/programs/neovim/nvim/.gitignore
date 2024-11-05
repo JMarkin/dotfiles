@@ -1,0 +1,10 @@
+packer_compiled.lua
+.DS_Store
+.luarc.json
+build
+.dmypy.json
+.ruff_cache
+.mypy_cache
+tests/data
+*.log
+!tests/t.log

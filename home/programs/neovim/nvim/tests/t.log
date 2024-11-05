@@ -1,0 +1,15 @@
+[DEBUG Thu Jun 13 10:31:20 2024] ...hare/nvim/lazy/neo-tree.nvim/lua/neo-tree/setup/init.lua:491: setup
+[DEBUG Thu Jun 13 10:31:20 2024] ...are/nvim/lazy/neo-tree.nvim/lua/neo-tree/events/init.lua:83: Defining autocmd event: %s vim_diagnostic_changed
+[DEBUG Thu Jun 13 10:31:20 2024] ...are/nvim/lazy/neo-tree.nvim/lua/neo-tree/events/init.lua:83: Defining autocmd event: %s vim_after_session_load
+[DEBUG Thu Jun 13 10:31:20 2024] ...are/nvim/lazy/neo-tree.nvim/lua/neo-tree/events/init.lua:83: Defining autocmd event: %s vim_buffer_added
+[DEBUG Thu Jun 13 10:31:20 2024] ...are/nvim/lazy/neo-tree.nvim/lua/neo-tree/events/init.lua:83: Defining autocmd event: %s vim_buffer_changed
+[DEBUG Thu Jun 13 10:31:20 2024] ...are/nvim/lazy/neo-tree.nvim/lua/neo-tree/events/init.lua:83: Defining autocmd event: %s vim_buffer_deleted
+[DEBUG Thu Jun 13 10:31:20 2024] ...are/nvim/lazy/neo-tree.nvim/lua/neo-tree/events/init.lua:83: Defining autocmd event: %s vim_buffer_enter
+[DEBUG Thu Jun 13 10:31:20 2024] ...are/nvim/lazy/neo-tree.nvim/lua/neo-tree/events/init.lua:83: Defining autocmd event: %s vim_buffer_modified_set
+[DEBUG Thu Jun 13 10:31:20 2024] ...are/nvim/lazy/neo-tree.nvim/lua/neo-tree/events/init.lua:83: Defining autocmd event: %s vim_colorscheme
+[DEBUG Thu Jun 13 10:31:20 2024] ...are/nvim/lazy/neo-tree.nvim/lua/neo-tree/events/init.lua:83: Defining autocmd event: %s vim_cursor_moved
+[DEBUG Thu Jun 13 10:31:20 2024] ...are/nvim/lazy/neo-tree.nvim/lua/neo-tree/events/init.lua:83: Defining autocmd event: %s vim_dir_changed
+[DEBUG Thu Jun 13 10:31:20 2024] ...are/nvim/lazy/neo-tree.nvim/lua/neo-tree/events/init.lua:83: Defining autocmd event: %s vim_insert_leave
+[DEBUG Thu Jun 13 10:31:20 2024] ...are/nvim/lazy/neo-tree.nvim/lua/neo-tree/events/init.lua:83: Defining autocmd event: %s vim_leave
+[DEBUG Thu Jun 13 10:31:20 2024] ...are/nvim/lazy/neo-tree.nvim/lua/neo-tree/events/init.lua:83: Defining autocmd event: %s vim_resized
+
