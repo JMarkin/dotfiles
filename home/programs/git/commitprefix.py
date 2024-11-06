@@ -7,7 +7,7 @@ commit_msg_filepath = sys.argv[1]
 
 branch = check_output(["git", "symbolic-ref", "--short", "HEAD"]).strip().decode()
 
-prefixes = "(feature|feat|fix|hotfix|refactor|docs|temp)(\/|-)"
+prefixes = "(feature|feat|fix|hotfix|refactor|docs|temp)(/|-)"
 
 issue_ = re.compile(rf"{prefixes}(\w+-\d+).*")
 semantic_ = re.compile(rf"{prefixes}(\w+)")
