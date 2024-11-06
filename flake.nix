@@ -72,6 +72,13 @@
             ./home/users/kron.nix
           ];
         };
+        "kron@base-alpine-nix" = home-manager.lib.homeManagerConfiguration {
+          pkgs = x86Pkgs;
+
+          modules = [
+            ./home/users/kron.nix
+          ];
+        };
       };
 
       nixosConfigurations = {
