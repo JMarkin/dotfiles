@@ -10,18 +10,29 @@ local function draw_footer(dashboard)
         M.plugins,
     }
     if type(M.neofetch) ~= "string" then
-        table.insert(footer, string.format("%s\t%s", M.neofetch["OS"], M.neofetch["Kernel"]))
-        table.insert(footer, string.format("uptime: %s", M.neofetch["Uptime"]))
+        table.insert(
+            footer,
+            string.format("%s\t%s", M.neofetch[1]["result"]["prettyName"], M.neofetch[2]["result"]["release"])
+        )
+        local uptime = M.neofetch[3]["result"]["uptime"] / 1000
+        local h = uptime / 3600
+        local m = 60 - (math.ceil(h) - h) * 60
+        local s = 60 - math.floor((math.ceil(m) - m) * 60)
+        m = math.floor(m)
+        h = math.floor(h)
+        table.insert(footer, string.format("uptime: %sh %sm %ss", h, m, s))
     end
     dashboard.section.footer.val = footer
     vim.cmd.AlphaRedraw()
 end
 
-local function run_neofetch(dashboard)
-    local neofetch = vim.fn.executable("neofetch")
+local function fetch(dashboard)
+    local neofetch = vim.fn.executable("fastfetch")
     if neofetch == 0 then
         return
     end
+    local cmd = "fastfetch"
+    local args = { "--structure", "OS:Kernel:Uptime", "--format", "json" }
 
     local t = ""
     local stdout = function(error, data)
@@ -44,15 +55,15 @@ local function run_neofetch(dashboard)
         )
     end
     if vim.system then
-        vim.system({ "neofetch", "--json" }, {
+        vim.system({ cmd, table.unpack(args) }, {
             text = true,
             stdout = stdout,
         }, on_exit)
     else
         require("plenary.job")
             :new({
-                command = "neofetch",
-                args = { "--json" },
+                command = cmd,
+                args = args,
                 on_stdout = stdout,
                 on_exit = on_exit,
             })
@@ -63,7 +74,8 @@ end
 return {
     "goolord/alpha-nvim",
     cond = function()
-        if #vim.v.argv > 2 then
+        -- nix 8..
+        if #vim.v.argv > 8 then
             return false
         end
         return not vim.env.YAZI_ID
@@ -103,7 +115,7 @@ return {
         if height > 40 then
             local header = require("banner")
             dashboard.section.header.val = header
-            run_neofetch(dashboard)
+            fetch(dashboard)
         else
             dashboard.section.header.val = ""
         end

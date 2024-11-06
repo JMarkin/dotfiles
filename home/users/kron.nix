@@ -7,8 +7,6 @@
   home.stateVersion = "24.05";
 
   home.packages = with pkgs; [
-    neofetch
-
     zip
     xz
     unzip
@@ -58,6 +56,7 @@
     nodejs_22
   ];
 
+  programs.fastfetch.enable = true;
   programs.ripgrep.enable = true;
   programs.fd.enable = true;
   programs.fzf.enable = true;
