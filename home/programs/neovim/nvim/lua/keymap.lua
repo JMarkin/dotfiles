@@ -83,3 +83,6 @@ vim.keymap.set("n", "<leader>lcl", function()
 end, { noremap = true, desc = "Copy as: line" })
 
 vim.cmd([[command CDC lcd %:p:h]])
+
+
+vim.keymap.set("n", "<A-g>", ":Neogit<cr>", { desc = "Neogit" })

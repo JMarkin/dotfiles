@@ -31,9 +31,6 @@ Terminal.open = function(command, split_dir)
     if command == "" or command == nil then
         local shell = vim.o.shell
 
-        if vim.fn.executable("fish") then
-            shell = "fish"
-        end
         command = shell
     end
 

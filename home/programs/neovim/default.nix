@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 let
 
+  # treesitterWithGrammars = pkgs.vimPlugins.nvim-treesitter.withAllGrammars;
   treesitterWithGrammars = (pkgs.vimPlugins.nvim-treesitter.withPlugins (p: [
     # languages
     p.rust
@@ -71,6 +72,10 @@ let
     name = "treesitter-parsers";
     paths = treesitterWithGrammars.dependencies;
   };
+  nvim-spell-ru-utf8-dictionary = builtins.fetchurl {
+    url = "http://ftp.vim.org/vim/runtime/spell/ru.utf-8.spl";
+    sha256 = "sha256:0kf5vbk7lmwap1k4y4c1fm17myzbmjyzwz0arh5v6810ibbknbgb";
+  };
 in
 {
   home.packages = with pkgs; [
@@ -118,13 +123,10 @@ in
   };
 
   home.file = {
-    ".config/nvim/" = {
-      source = ./nvim;
-      recursive = true;
-    };
-    ".config/nvim/lazy-lock.json".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/home/programs/neovim/lazy-lock.json";
+    ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/home/programs/neovim/nvim";
 
-    ".config/nvim/lua/runtimes.lua".text = ''
+    ".local/share/nvim/spell/ru.utf-8.spl".source = nvim-spell-ru-utf8-dictionary;
+    ".local/share/nvim/nix/lua/runtimes.lua".text = /*lua*/''
       vim.opt.runtimepath:append("${treesitter-parsers}")
     '';
 

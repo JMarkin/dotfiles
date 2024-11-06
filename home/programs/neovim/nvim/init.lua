@@ -91,7 +91,9 @@ require("lazy").setup({ import = "plugins" }, {
     },
 })
 
+vim.opt.runtimepath:prepend(vim.fn.stdpath("data") .. "/nix")
 require("runtimes")
+
 local should_profile = os.getenv("NVIM_PROFILE")
 if should_profile then
     vim.cmd([[

@@ -3,7 +3,7 @@
 {
   home.username = "kron";
   home.homeDirectory = "/home/kron";
-  
+
   home.stateVersion = "24.05";
 
   home.packages = with pkgs; [
@@ -19,12 +19,11 @@
     zstd
     gnupg
     pigz
-    
+
     # utils
     procps
     jaq
     iotop
-    htop
     ethtool
     pciutils
     usbutils
@@ -38,9 +37,9 @@
     tree-sitter
     rustic-rs
     ptags
-    mold
     gnumake
     inotify-tools
+    # cgrc
 
     # networking tools
     mtr
@@ -50,7 +49,9 @@
     nmap
 
     # lang
-    llvm_18
+    llvm
+    clang
+    mold
     rustc
     cargo
     go
@@ -60,16 +61,16 @@
   programs.ripgrep.enable = true;
   programs.fd.enable = true;
   programs.fzf.enable = true;
-  programs.yazi.enable = true;
   programs.zoxide.enable = true;
   programs.eza.enable = true;
-  programs.bat.enable = true;
 
   imports = [
     ../programs/git
     ../programs/bash.nix
     ../programs/tmux.nix
     ../programs/fish
+    ../programs/bat.nix
+    ../programs/htop.nix
     ../programs/neovim
     ../programs/direnv.nix
     ../programs/gpg.nix
@@ -77,7 +78,7 @@
   ];
 
   home.file = {
-    ".config/openssl.cnf".source = ./openssl.cnf;
+    ".config/openssl.cnf".source = ../legacyconfig/openssl.cnf;
   };
 
   home.sessionVariables = {
@@ -85,15 +86,15 @@
     VISUAL = "nvim";
     PAGER = "bat";
     MANPAGER = "nvim +Man!";
-    LS_COLORS = (builtins.readFile ./ls_colors);
+    LS_COLORS = (builtins.readFile ../legacyconfig/ls_colors);
     CLICOLOR = 1;
     PYTHONPYCACHEPREFIX = "/tmp/cpython";
     OPENSSL_CONF = "${config.home.homeDirectory}/.config/openssl.cnf";
 
-    SCARF_ANALYTICS="false";
-    DOTNET_CLI_TELEMETRY_OPTOUT="1";
+    SCARF_ANALYTICS = "false";
+    DOTNET_CLI_TELEMETRY_OPTOUT = "1";
 
-    FZF_DEFAULT_OPTS="--bind=shift-tab:up,tab:down";
+    FZF_DEFAULT_OPTS = "--bind=shift-tab:up,tab:down";
   };
 
   programs.home-manager.enable = true;

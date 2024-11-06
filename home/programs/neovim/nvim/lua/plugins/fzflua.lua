@@ -174,6 +174,9 @@ return {
             async_or_timeout = 3000,
             global_resume = true,
             global_resume_query = true,
+            preview = {
+                default = "bat", -- override the default previewer?
+            },
             -- winopts = {
             --     height = 0.8,
             --     width = 0.75,

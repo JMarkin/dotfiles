@@ -6,15 +6,16 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ./hardware/vm.nix
       ./modules/common.nix
     ];
 
   virtualisation.docker.enable = true;
   boot.kernelParams = [
-     "console=ttyS0"
-     "console=tty1"
+    "console=ttyS0"
+    "console=tty1"
   ];
 
   boot.loader.systemd-boot.enable = true;
@@ -24,7 +25,7 @@
     dhcpcd.enable = true;
     hostName = "nixos";
     firewall = {
-       enable = false;
+      enable = false;
     };
   };
 

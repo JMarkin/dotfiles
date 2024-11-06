@@ -9,7 +9,7 @@
     home-manager.url = "github:nix-community/home-manager/master";
 
     neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay/flake-update";
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     agenix.url = "github:ryantm/agenix";
@@ -34,6 +34,7 @@
     let
       overlays = [
         inputs.neovim-nightly-overlay.overlays.default
+        (import ./overlays/cgrc.nix)
       ];
 
       config = {
@@ -76,7 +77,14 @@
           pkgs = x86Pkgs;
 
           modules = [
-            ./home/users/kron.nix
+            ./home/users/vm.nix
+          ];
+        };
+        "kron@nixos" = home-manager.lib.homeManagerConfiguration {
+          pkgs = x86Pkgs;
+
+          modules = [
+            ./home/users/vm.nix
           ];
         };
       };

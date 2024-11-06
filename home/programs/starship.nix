@@ -4,19 +4,19 @@
 
   programs.starship.settings = {
     format = lib.concatStrings [
-    "$time"
-    "$username@$localip"
-    "$memory_usage"
-    "$directory"
-    "$git_branch"
-    "$git_state"
-    "$git_status"
-    "$cmd_duration"
-    "$line_break"
-    "$container"
-    "$python"
-    "$status"
-    "$character"
+      "$time"
+      "$username@$localip"
+      "$memory_usage"
+      "$directory"
+      "$git_branch"
+      "$git_state"
+      "$git_status"
+      "$cmd_duration"
+      "$line_break"
+      "$container"
+      "$python"
+      "$status"
+      "$character"
     ];
 
     directory = {

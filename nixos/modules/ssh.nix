@@ -2,7 +2,7 @@
 {
   services.openssh = {
     enable = true;
-    ports = [324];
+    ports = [ 324 ];
     settings = {
       X11Forwarding = true;
       PermitRootLogin = "no";

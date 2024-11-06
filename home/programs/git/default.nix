@@ -48,7 +48,7 @@
       pull = {
         rebase = false;
       };
-      http =  {
+      http = {
         sslVerify = false;
         postBuffer = "157286400";
       };
@@ -60,7 +60,7 @@
       push = {
         autoSetupRemote = true;
       };
-      
+
       pack = {
         window = 1;
         deltaCacheSize = "2047m";

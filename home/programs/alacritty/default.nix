@@ -37,8 +37,8 @@
         dynamic_title = true;
         option_as_alt = "OnlyLeft";
         padding = {
-          x=2;
-          y=2;
+          x = 2;
+          y = 2;
         };
       };
       terminal = {
@@ -68,12 +68,14 @@
 
   home.file = {
     "./.config/alacritty/bamboo.toml".text = builtins.readFile
-    (pkgs.fetchFromGitHub {
-      owner = "ribru17";
-      repo = "bamboo.nvim";
-      rev = "57e1bff1c0df29d7ec0071baf49210c48fc4a98b";
-      hash = "sha256-HhRrap1JBiFMcwHkR77JGqvay777bp281G6+xE+IoW8=";
-    } + "/extras/alacritty/bamboo.toml");
+      (pkgs.fetchFromGitHub
+        {
+          owner = "ribru17";
+          repo = "bamboo.nvim";
+          rev = "57e1bff1c0df29d7ec0071baf49210c48fc4a98b";
+          hash = "sha256-HhRrap1JBiFMcwHkR77JGqvay777bp281G6+xE+IoW8=";
+        } + "/extras/alacritty/bamboo.toml");
+
     "./.config/alacritty/keys.toml".source = ./keys.toml;
   };
 }

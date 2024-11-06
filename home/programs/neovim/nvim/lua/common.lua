@@ -7,7 +7,6 @@ vim.g.post_load_events = { "BufReadPost", "FileReadPost", "TermOpen" }
 vim.g.pre_load_events = { "BufReadPre", "FileReadPre", "BufNewFile", "TermOpen" }
 
 -- stylua: ignore start
-opt.shell                             = 'sh'
 g.snips_author                        = vim.env.AUTHOR or "Jury Markin"
 g.snips_email                         = vim.env.EMAIL or "me@jmarkin.ru"
 g.snips_github                        = vim.env.GITHUB or "https://github.com/JMarkin"
@@ -134,10 +133,6 @@ if not vim.g.modern_ui then
     opt.termguicolors = false
 end
 
-if vim.fn.executable("bash") then
-    opt.shell = "bash"
-end
-
 ---Restore 'shada' option and read from shada once
 ---@return true
 local function _rshada()
@@ -205,6 +200,7 @@ g.formatters_by_ft = {
     json = { "fixjson" },
     jinja = { "djlint" },
     htmldjango = { "djlint" },
+    nix = { "nixpkgs_fmt" },
 }
 
 for _, lang in ipairs({

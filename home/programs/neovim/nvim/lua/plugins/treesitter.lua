@@ -99,9 +99,11 @@ end
 
 return {
     "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate",
+    -- build = ":TSUpdate",
     -- enabled = false,
     lazy = true,
+    dir = vim.fn.stdpath("data") .. "/nix/nvim-treesitter",
+    dev = true,
     -- ft = "qf",
     event = vim.g.post_load_events,
     -- event = "VeryLazy",
