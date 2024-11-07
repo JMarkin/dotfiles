@@ -70,7 +70,7 @@
           pkgs = darwinPkgs;
 
           modules = [
-            ./home/users/kron.nix
+            ./home/users/kron_darwin.nix
           ];
         };
         "kron@base-alpine-nix" = home-manager.lib.homeManagerConfiguration {
@@ -112,7 +112,7 @@
       };
 
       darwinConfigurations = {
-        "kron-work.local" = darwin.lib.darwinSystem {
+        "kron-work" = darwin.lib.darwinSystem {
           system = "aarch64-darwin";
           inputs = { inherit darwin nixpkgs; };
           pkgs = import nixpkgs {
@@ -125,14 +125,24 @@
         };
       };
 
-      devShell.x86_64-linux = x86Pkgs.mkShell
-        {
-          nativeBuildInputs = [ x86Pkgs.bashInteractive ];
-          buildInputs = with x86Pkgs; [
-            nil
-            nixpkgs-fmt
-          ];
-        };
+      devShell = {
+        x86_64-linux = x86Pkgs.mkShell
+          {
+            nativeBuildInputs = [ x86Pkgs.bashInteractive ];
+            buildInputs = with x86Pkgs; [
+              nil
+              nixpkgs-fmt
+            ];
+          };
+        aarch64-darwin = darwinPkgs.mkShell
+          {
+            nativeBuildInputs = [ darwinPkgs.bashInteractive ];
+            buildInputs = with darwinPkgs; [
+              nil
+              nixpkgs-fmt
+            ];
+          };
+      };
     };
 
 }

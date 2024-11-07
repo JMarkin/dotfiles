@@ -2,7 +2,11 @@
 
 {
 
+  imports = [
+    ./kron.nix
+  ];
   home.homeDirectory = "/Users/kron";
+
 
   home.packages = with pkgs; [
     zip
@@ -21,10 +25,6 @@
     # utils
     procps
     jaq
-    iotop
-    ethtool
-    pciutils
-    usbutils
     rsync
     delta
     sccache
@@ -36,7 +36,6 @@
     rustic-rs
     ptags
     gnumake
-    inotify-tools
     # cgrc
 
     # networking tools
@@ -56,7 +55,5 @@
     nodejs_22
   ];
 
-  imports = [
-    ./kron.nix
-  ];
 }
+

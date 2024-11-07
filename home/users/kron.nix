@@ -2,61 +2,8 @@
 
 {
   home.username = "kron";
-  home.homeDirectory = "/home/kron";
 
   home.stateVersion = "24.05";
-
-  home.packages = with pkgs; [
-    zip
-    xz
-    unzip
-    p7zip
-    gnused
-    gnutar
-    gawk
-    zstd
-    gnupg
-    pigz
-    curl
-    wget
-
-    # utils
-    procps
-    jaq
-    iotop
-    ethtool
-    pciutils
-    usbutils
-    rsync
-    delta
-    sccache
-    universal-ctags
-    man
-    docker-compose
-    dust
-    tree-sitter
-    rustic-rs
-    ptags
-    gnumake
-    inotify-tools
-    # cgrc
-
-    # networking tools
-    mtr
-    iperf3
-    dnsutils
-    socat
-    nmap
-
-    # lang
-    llvm
-    clang
-    mold
-    rustc
-    cargo
-    go
-    nodejs_22
-  ];
 
   programs.fastfetch.enable = true;
   programs.ripgrep.enable = true;
@@ -76,6 +23,7 @@
     ../programs/direnv.nix
     ../programs/gpg.nix
     ../programs/starship.nix
+    ../programs/nix-flake-templates
   ];
 
   home.file = {
