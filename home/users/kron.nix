@@ -17,6 +17,8 @@
     zstd
     gnupg
     pigz
+    curl
+    wget
 
     # utils
     procps

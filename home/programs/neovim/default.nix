@@ -125,7 +125,7 @@ in
   home.file = {
     ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/home/programs/neovim/nvim";
 
-    ".local/share/nvim/spell/ru.utf-8.spl".source = nvim-spell-ru-utf8-dictionary;
+    ".local/share/nvim/site/spell/ru.utf-8.spl".source = nvim-spell-ru-utf8-dictionary;
     ".local/share/nvim/nix/lua/runtimes.lua".text = /*lua*/''
       vim.opt.runtimepath:append("${treesitter-parsers}")
     '';
