@@ -35,6 +35,7 @@
       overlays = [
         inputs.neovim-nightly-overlay.overlays.default
         (import ./overlays/cgrc.nix)
+        (import ./overlays/jedi_language_server.nix)
       ];
 
       config = {

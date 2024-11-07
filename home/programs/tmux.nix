@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   programs.tmux = {
     enable = true;
@@ -7,14 +7,14 @@
     clock24 = true;
 
     keyMode = "vi";
-    shell = "/home/kron/.nix-profile/bin/fish";
+    # shell = "${config.home.homeDirectory}/.nix-profile/bin/fish";
     terminal = "tmux-256color";
     plugins = with pkgs; [
       tmuxPlugins.yank
       tmuxPlugins.better-mouse-mode
       tmuxPlugins.prefix-highlight
     ];
-    extraConfig = ''
+    extraConfig = /*tmux*/''
       # if multiple clients are attached to the same window, maximize it to the
       # bigger one
       set-window-option -g aggressive-resize

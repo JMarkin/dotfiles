@@ -6,6 +6,11 @@
     pkgs.home-manager
   ];
 
+
+  programs.fish.enable = true;
+  environment.shells = [ pkgs.fish ];
+  users.users.kron.shell = pkgs.fish;
+
   documentation.enable = false;
   documentation.doc.enable = false;
   documentation.info.enable = false;

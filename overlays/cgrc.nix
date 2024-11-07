@@ -1,6 +1,6 @@
 self: super: {
 
-  cgrc = super.rustPlatform.buildRustPackage rec {
+  cgrc = super.rustPlatform.buildRustPackage {
     pname = "cgrc";
     version = "2.0.5";
 
@@ -10,7 +10,7 @@ self: super: {
       rev = "v2.0.5";
       hash = "sha256-aJpQzyzN5mLHnrzBmXA6YhHEzE/aIDtX0r2Dv/E0OCU=";
     };
-    sourceRoot = "${src.name}/cgrc-rust";
+    sourceRoot = "${self.src.name}/cgrc-rust";
 
     cargoHash = "sha256-2rKI3NTunmSKbFdDJDVsmy/kp5U3ZZ9cIxtqPvbee9A=";
 

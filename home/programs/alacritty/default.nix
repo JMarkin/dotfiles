@@ -6,6 +6,7 @@
     settings = {
       import = [
         "~/.config/alacritty/keys.toml"
+        "~/.config/alacritty/bamboo.toml"
       ];
       cursor = {
         blink_interval = 500;
@@ -26,10 +27,6 @@
             mouse = "Middle";
           }
         ];
-      };
-      scrolling = {
-        save_to_clipboard = false;
-        semantic_escape_chars = ",│`|:\"' ()[]{}<>";
       };
       window = {
         decorations = "buttonless";

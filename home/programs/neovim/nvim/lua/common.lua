@@ -113,7 +113,7 @@ g.ollama_generate_endpoint            = string.format("%s/api/generate", g.ollam
 g.ollama_chat_endpoint                = string.format("%s/api/chat", g.ollama_url)
 
 
-g.lsp_autostart                       = false
+g.lsp_autostart                       = vim.env.LSP_AUTOSTART
 
 -- stylua: ignore end
 
