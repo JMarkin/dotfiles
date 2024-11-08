@@ -38,6 +38,8 @@
     ptags
     gnumake
     hyperfine
+    createnv
+    dotenv-linter
     # cgrc
 
     # networking tools

@@ -91,11 +91,13 @@ in
     python312Packages.jedi-language-server
     bash-language-server
     biome
+    nil
 
     # lsp features
     fswatch
 
     #tools
+    nixpkgs-fmt
     ruff
     python312Packages.mypy
     python312Packages.sqlfmt
