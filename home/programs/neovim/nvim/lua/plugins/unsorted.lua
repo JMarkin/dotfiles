@@ -36,7 +36,7 @@ return {
     {
         "farmergreg/vim-lastplace",
         init = function()
-            vim.g.lastplace_ignore = "gitcommit,gitrebase,svn,hgcommit"
+            vim.g.lastplace_ignore = "largefile,gitcommit,gitrebase,svn,hgcommit"
             vim.g.lastplace_ignore_buftype = "quickfix,nofile,help"
             vim.g.lastplace_open_folds = 1
         end,

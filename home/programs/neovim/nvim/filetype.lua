@@ -56,5 +56,10 @@ vim.filetype.add({
         [".*/templates/.*.yaml"] = "helm",
         [".*/templates/.*.tpl"] = "helm",
         [".*/helm/.*.yaml"] = "helm",
+        [".*"] = {
+            function(path, buf)
+                return require("largefiles").is_large_file(buf, true, path) and "largefile" or nil
+            end,
+        },
     },
 })

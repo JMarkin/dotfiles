@@ -133,8 +133,11 @@ local function optimize_buffer(args)
     pcall(function()
         require("rainbow-delimiters").disable(bufnr)
     end)
-    pcall(vim.api.nvim_command, "UfoDisable")
+    pcall(function()
+        require("ufo").detach(bufnr)
+    end)
     pcall(vim.api.nvim_command, "NoMatchParen")
+    pcall(vim.api.nvim_command, "Gitsigns detach")
     -- if vim.opt_local.eventignore == nil then
     --     vim.opt_local.eventignore = {}
     -- end

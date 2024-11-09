@@ -90,6 +90,7 @@ in
     rust-analyzer-unwrapped
     python312Packages.jedi-language-server
     bash-language-server
+    vscode-langservers-extracted
     biome
     nil
 

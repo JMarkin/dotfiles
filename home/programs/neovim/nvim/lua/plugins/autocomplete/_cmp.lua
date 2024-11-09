@@ -90,6 +90,17 @@ local default_comparators = function(compare)
     }
 end
 
+local large_comparators = function(compare)
+    return {
+        require("plugins.autocomplete._cmp_tools").put_down_snippet,
+        compare.length,
+        compare.exact,
+        compare.score,
+        compare.recently_used,
+        compare.order,
+    }
+end
+
 local rust_comparators = function(compare)
     return {
         require("plugins.autocomplete._cmp_tools").put_down_snippet,
@@ -229,6 +240,7 @@ local cmp_config = function(sources, buffer, comparators)
             disabled = disabled or (vim.api.nvim_buf_get_option(0, "buftype") == "prompt")
             disabled = disabled or (vim.fn.reg_recording() ~= "")
             disabled = disabled or (vim.fn.reg_executing() ~= "")
+            disabled = disabled or require("largefiles").is_large_file(vim.api.nvim_get_current_buf(), true)
             if is_not_mini() then
                 disabled = disabled or require("cmp_dap").is_dap_buffer()
             end
@@ -307,6 +319,8 @@ local cmp_config = function(sources, buffer, comparators)
             }),
             ["<Tab>"] = move_down,
             ["<S-Tab>"] = move_up,
+            ["<c-x><c-n>"] = move_down,
+            ["<c-x><c-p>"] = move_up,
             -- ["<C-]>"] = cmp.mapping(
             --     cmp.mapping.complete({
             --         config = {
@@ -443,13 +457,14 @@ if enabled then
     --     end,
     -- })
 
-    autocmd("User", {
-        pattern = "LargeFile",
-        group = gr,
-        callback = function(opts)
-            cmp_config(default_sources, opts.buf)
-        end,
-    })
+    -- autocmd("User", {
+    --     pattern = "LargeFile",
+    --     group = gr,
+    --     callback = function(opts)
+    --         cmp_config(mini_sources, opts.buf, large_comparators)
+    --         cmp_cmdline(true)
+    --     end,
+    -- })
 end
 
 return {
@@ -588,7 +603,6 @@ return {
             -- it does not respect the completion option of `input()`/`vim.ui.input()`, see
             -- https://github.com/hrsh7th/nvim-cmp/issues/1690
             -- https://github.com/hrsh7th/nvim-cmp/discussions/1073
-            cmp.setup.cmdline("@", { enabled = false })
             cmp.setup.cmdline(">", { enabled = false })
             cmp.setup.cmdline("-", { enabled = false })
             cmp.setup.cmdline("=", { enabled = false })
