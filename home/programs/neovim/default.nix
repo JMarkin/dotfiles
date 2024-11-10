@@ -93,6 +93,7 @@ in
     vscode-langservers-extracted
     biome
     nil
+    taplo
 
     # lsp features
     fswatch
