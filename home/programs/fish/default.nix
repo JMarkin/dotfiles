@@ -163,12 +163,12 @@
 
         source ~/.config/vpn/$name.fish
 
-        set -l cmd (string join ' ' $VPN_SLICE_PATH '-vvv' $VPN_SLICE)
+        set -l cmd $VPN_SLICE_PATH "-vvv" $VPN_SLICE
 
         echo $cmd
         sudo openconnect \
             --useragent="AnyConnect" \
-            --pid-file=/tmp/openconnect_$name.pid -u $VPN_USER $VPN_URL -s $cmd
+            --pid-file=/tmp/openconnect_$name.pid -u $VPN_USER $VPN_URL -s "$cmd"
       '';
       vpn-ocn-down = /*fish*/ ''
         sudo kill -INT (cat /tmp/openconnect_$name.pid)
