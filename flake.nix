@@ -37,6 +37,7 @@
         (import ./overlays/cgrc.nix)
         (import ./overlays/createnv.nix)
         (import ./overlays/jedi_language_server.nix)
+        (import ./overlays/vpn_slice.nix)
       ];
 
       config = {
@@ -80,6 +81,13 @@
 
           modules = [
             ./home/users/vm.nix
+          ];
+        };
+        "kron@alpine-gw" = home-manager.lib.homeManagerConfiguration {
+          pkgs = x86Pkgs;
+
+          modules = [
+            ./home/users/alpine_gw.nix
           ];
         };
         "kron@nixos" = home-manager.lib.homeManagerConfiguration {
