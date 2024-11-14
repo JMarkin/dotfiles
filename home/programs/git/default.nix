@@ -4,17 +4,11 @@
   home.packages = with pkgs; [
     python3
   ];
-
+  imports = [ ./gitignore_global.nix ];
   programs.git = {
     enable = true;
     userName = "jmarkin";
     userEmail = "me@jmarkin.ru";
-    ignores = [
-      ".direnv/"
-      ".go/"
-      ".cargo/"
-      ".npm/"
-    ];
     lfs = {
       enable = true;
       skipSmudge = true;

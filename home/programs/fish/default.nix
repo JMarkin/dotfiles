@@ -149,7 +149,14 @@
             set -gx DOCKER_HOST unix:///var/run/docker.sock
         end
       '';
-
+      open-vim.body = /*fish*/''
+        if test -d $argv[1]
+            cd $argv[1]
+            vim
+        else
+            vim $argv
+        end
+      '';
 
     };
   };

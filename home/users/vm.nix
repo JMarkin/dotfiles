@@ -2,7 +2,7 @@
 
 {
 
-  home.homeDirectory = "/Users/kron";
+  home.homeDirectory = "/home/kron";
 
   home.packages = with pkgs; [
     # utils

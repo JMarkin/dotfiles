@@ -53,6 +53,9 @@ require("lazy").setup({ import = "plugins" }, {
         patterns = {},
         fallback = true, -- Fallback to git when local plugin doesn't exist
     },
+    install = {
+        missing = false,
+    },
     performance = {
         cache = {
             enabled = true,

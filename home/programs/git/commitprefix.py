@@ -1,4 +1,4 @@
-#!/home/kron/.nix-profile/bin/python
+#!/usr/bin/env python
 # set ft=python
 import sys, re
 from subprocess import check_output

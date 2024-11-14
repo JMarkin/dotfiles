@@ -53,7 +53,8 @@ return {
     {
         "mrcjkb/rustaceanvim",
         cond = is_not_mini,
-        lazy = true,
+        version = "^5", -- Recommended
+        lazy = false,
         -- enabled = false,
     },
     {
