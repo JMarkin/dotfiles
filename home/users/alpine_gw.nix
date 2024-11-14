@@ -10,4 +10,8 @@
     vpn-slice
     openconnect
   ];
+
+  home.file = {
+    ".config/vpn/template.fish".source = ../legacyconfig/vpn/template.fish;
+  };
 }

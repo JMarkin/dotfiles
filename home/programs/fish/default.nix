@@ -157,7 +157,22 @@
             vim $argv
         end
       '';
+      vpn-ocn = /*fish*/''
+        set -l name $argv[1]
+        set -l VPN_SLICE_PATH $(which vpn-slice)
 
+        source ~/.config/vpn/$name.fish
+
+        set -l cmd (string join ' ' $VPN_SLICE_PATH '-vvv' $VPN_SLICE)
+
+        echo $cmd
+        sudo openconnect \
+            --useragent="AnyConnect" \
+            --pid-file=/tmp/openconnect_$name.pid -u $VPN_USER $VPN_URL -s $cmd
+      '';
+      vpn-ocn-down = /*fish*/ ''
+        sudo kill -INT (cat /tmp/openconnect_$name.pid)
+      '';
     };
   };
 }
