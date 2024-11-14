@@ -166,7 +166,7 @@
         set -l cmd $VPN_SLICE_PATH "-vvv" $VPN_SLICE
 
         echo $cmd
-        sudo openconnect \
+        sudo OPENSSL_CONF=/home/kron/.config/openssl.cnf openconnect \
             --useragent="AnyConnect" \
             --pid-file=/tmp/openconnect_$name.pid -u $VPN_USER $VPN_URL -s "$cmd"
       '';

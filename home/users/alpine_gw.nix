@@ -8,7 +8,6 @@
 
   home.packages = with pkgs; [
     vpn-slice
-    openconnect
   ];
 
   home.file = {
