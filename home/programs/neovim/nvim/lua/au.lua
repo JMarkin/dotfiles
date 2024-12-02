@@ -4,9 +4,21 @@ local groupid = vim.api.nvim_create_augroup
 local lf = require("largefiles")
 
 autocmd(vim.g.pre_load_events, {
-    group = groupid("large_fiels", { clear = true }),
+    group = groupid("large_files", { clear = true }),
     pattern = { "*" },
-    callback = lf.optimize_buffer,
+    callback = function(event)
+        lf.optimize_buffer(event.buf, event.match)
+    end,
+})
+
+vim.api.nvim_create_autocmd({ "BufWritePost", table.unpack(vim.g.post_load_events) }, {
+    group = groupid("linting", { clear = true }),
+    pattern = { "*" },
+    callback = function(data)
+        if not lf.is_large_file(data.buf, true) then
+            require("lint").try_lint()
+        end
+    end,
 })
 
 autocmd({ "LspAttach" }, {

@@ -35,10 +35,12 @@ return {
         "stevearc/dressing.nvim",
         lazy = true,
         config = function()
+            print(123)
             require("dressing").setup({
                 input = {
-                    winhighlight = vim.g.dressing_winhighlight,
-                    insert_only = false,
+                    win_options = {
+                        winhighlight = vim.g.dressing_winhighlight,
+                    },
                     override = function(conf)
                         conf.col = -1
                         conf.row = 0

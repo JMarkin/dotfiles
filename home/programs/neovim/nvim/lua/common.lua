@@ -3,8 +3,8 @@ local opt = vim.opt
 
 g.has_ui = #vim.api.nvim_list_uis() > 0
 g.modern_ui = (g.has_ui and vim.env.DISPLAY ~= nil) or string.format("%s", vim.env.TERM):find("256")
-vim.g.post_load_events = { "BufReadPost", "FileReadPost", "TermOpen" }
-vim.g.pre_load_events = { "BufReadPre", "FileReadPre", "BufNewFile", "TermOpen" }
+g.post_load_events = { "BufReadPost", "FileReadPost", "TermOpen" }
+g.pre_load_events = { "BufReadPre", "FileReadPre", "BufNewFile", "TermOpen" }
 
 -- stylua: ignore start
 g.snips_author                        = vim.env.AUTHOR or "Jury Markin"
@@ -115,6 +115,10 @@ g.ollama_chat_endpoint                = string.format("%s/api/chat", g.ollama_ur
 
 g.lsp_autostart                       = vim.env.LSP_AUTOSTART
 
+g.dbs = {
+      { name = 'local', url = 'postgresql://kron:@/postgres' },
+  }
+
 -- stylua: ignore end
 
 -- opt.clipboard:append("unnamedplus")
@@ -146,8 +150,7 @@ end
 
 opt.shada = ""
 vim.defer_fn(_rshada, 100)
-vim.api.nvim_create_autocmd("BufReadPre", { once = true, callback = _rshada })
-vim.api.nvim_create_autocmd("FileReadPre", { once = true, callback = _rshada })
+vim.api.nvim_create_autocmd(g.pre_load_events, { once = true, callback = _rshada })
 
 opt.backup = true
 opt.backupdir:remove(".")
@@ -158,12 +161,18 @@ g.netrw_winsize         = 20
 g.netrw_banner          = 0
 g.netrw_cursor          = 5
 g.netrw_keepdir         = 1
-g.netrw_list_hide       = [[\(^\|\s\s\)\zs\.\S\+]]
+local function _netrw_list_hide()
+  g.netrw_list_hide       = vim.fn['netrw_gitignore#Hide']() .. "," .. [[\(^\|\s\s\)\zs\.\S\+]]
+end
+vim.defer_fn(_netrw_list_hide, 100)
 g.netrw_liststyle       = 0
 g.netrw_localcopydircmd = "cp -r"
+g.netrw_localmkdir      = "mkdir -p"
 g.netrw_preview         = 1
 g.netrw_alto            = 1
 g.netrw_fastbrowse      = 2
+g.netrw_sizestyle       = "H"
+g.netrw_sort_options    = "i"
 -- stylua: ignore end
 
 -- disable plugins shipped with neovim

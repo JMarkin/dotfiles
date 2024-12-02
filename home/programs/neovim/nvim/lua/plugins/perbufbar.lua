@@ -1,42 +1,3 @@
-local is_empty = function(str)
-    return str == nil or str == ""
-end
-
-local shorting_target = 40
-
----shortens path by turning apple/orange -> a/orange
----@param path string
----@param sep string path separator
----@param max_len integer maximum length of the full filename string
----@return string
-local function shorten_path(path, sep, max_len)
-    local len = #path
-    if len <= max_len then
-        return path
-    end
-
-    local segments = vim.split(path, sep)
-    for idx = 1, #segments - 1 do
-        if len <= max_len then
-            break
-        end
-
-        local segment = segments[idx]
-        local shortened = segment:sub(1, vim.startswith(segment, ".") and 2 or 1)
-        segments[idx] = shortened
-        len = len - (#segment - #shortened)
-    end
-
-    return table.concat(segments, sep)
-end
-
-local get_filename = function(path)
-    if is_empty(path) then
-        return " %f"
-    end
-    return shorten_path(path, "/", shorting_target)
-end
-
 return {
     {
         "ramilito/winbar.nvim",
@@ -47,6 +8,8 @@ return {
                 -- your configuration comes here, for example:
                 icons = true,
                 filetype_exclude = {
+                    "vista",
+                    "dbui",
                     "help",
                     "startify",
                     "dashboard",

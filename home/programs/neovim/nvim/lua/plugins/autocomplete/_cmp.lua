@@ -331,12 +331,13 @@ local cmp_config = function(sources, buffer, comparators)
             --     }),
             --     { "i" }
             -- ),
+            -- ["<C-]>"] = require("minuet").make_cmp_map(),
         },
         sources = sources,
         formatting = {
             fields = { "abbr", "kind", "menu" },
             format = function(entry, vim_item)
-                if entry.source.name == "cmp_ai" then
+                if entry.source.name == "cmp_ai" or entry.source.name == "minuet" then
                     vim_item.menu = menu_map[entry.source.name]
                     local detail = (entry.completion_item.labelDetails or {}).detail
                     vim_item.kind = ""
@@ -469,46 +470,6 @@ end
 
 return {
     {
-        enabled = enabled,
-        "L3MON4D3/LuaSnip",
-        build = "make install_jsregexp",
-        ft = "snippets",
-        dependencies = {
-            "rafamadriz/friendly-snippets",
-        },
-        cond = is_not_mini,
-        lazy = true,
-        config = function(_, opts)
-            if opts then
-                require("luasnip").config.setup(opts)
-            end
-            local luasnip = require("luasnip")
-
-            luasnip.config.set_config({
-                region_check_events = "InsertEnter",
-                delete_check_events = "TextChanged,InsertLeave",
-            })
-            vim.tbl_map(function(type)
-                require("luasnip.loaders.from_" .. type).lazy_load()
-            end, { "vscode", "snipmate", "lua" })
-
-            -- -- friendly-snippets - enable standardized comments snippets
-            require("luasnip").filetype_extend("typescript", { "tsdoc" })
-            require("luasnip").filetype_extend("javascript", { "jsdoc" })
-            require("luasnip").filetype_extend("lua", { "luadoc" })
-            require("luasnip").filetype_extend("python", { "pydoc" })
-            require("luasnip").filetype_extend("rust", { "rustdoc" })
-            require("luasnip").filetype_extend("cs", { "csharpdoc" })
-            require("luasnip").filetype_extend("java", { "javadoc" })
-            require("luasnip").filetype_extend("c", { "cdoc" })
-            require("luasnip").filetype_extend("cpp", { "cppdoc" })
-            require("luasnip").filetype_extend("php", { "phpdoc" })
-            require("luasnip").filetype_extend("kotlin", { "kdoc" })
-            require("luasnip").filetype_extend("ruby", { "rdoc" })
-            require("luasnip").filetype_extend("sh", { "shelldoc" })
-        end,
-    },
-    {
         -- "JMarkin/nvim-cmp",
         -- branch = "perf-up",
         -- dev = true,
@@ -606,6 +567,8 @@ return {
             cmp.setup.cmdline(">", { enabled = false })
             cmp.setup.cmdline("-", { enabled = false })
             cmp.setup.cmdline("=", { enabled = false })
+            cmp.setup.cmdline("@", { enabled = false })
+            cmp.setup.cmdline("@", { enabled = false })
         end,
     },
 }

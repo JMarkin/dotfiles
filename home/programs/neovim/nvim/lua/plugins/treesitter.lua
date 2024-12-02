@@ -1,94 +1,6 @@
 local is_large_file = require("largefiles").is_large_file
 local FILE_TYPE = require("largefiles").FILE_TYPE
 
-local syntax_langs = {
-    -- languages
-    "rust",
-    "c",
-    "cpp",
-    "cuda",
-    "python",
-    "typescript",
-    "javascript",
-    "fish",
-    "go",
-    "lua",
-    "html",
-    "htmldjango",
-    "css",
-    "bash",
-    "vue",
-    "scss",
-    "sql",
-    "markdown",
-    "json",
-    "json5",
-    "jsonc",
-    "graphql",
-    "commonlisp",
-    "latex",
-    "glsl",
-    -- conf files
-    "ssh_config",
-    "jsdoc",
-    "yaml",
-    "toml",
-    "proto",
-    "http",
-    "hurl",
-    "make",
-    "cmake",
-    "dockerfile",
-    "ini",
-    "vim",
-    "vimdoc",
-    "passwd",
-    "requirements",
-    "hcl",
-    "xml",
-    "nginx",
-    "tmux",
-    "udev",
-    -- tools
-    "markdown_inline",
-    "jq",
-    "regex",
-    "query",
-    "comment",
-    "rst",
-
-    -- git
-    "gitcommit",
-    "git_rebase",
-    "gitignore",
-    "git_config",
-    "gitattributes",
-}
-
-vim.g.treesitter_langs = {}
-for _, value in ipairs(syntax_langs) do
-    vim.g.treesitter_langs[value] = 1
-end
-
-local install = function(sync)
-    require("nvim-treesitter")
-    for _, lang in ipairs(syntax_langs) do
-        if sync then
-            vim.cmd("TSUpdateSync " .. lang)
-        else
-            vim.cmd("TSUpdate " .. lang)
-        end
-    end
-end
-
-vim.api.nvim_create_user_command("TSInstallDefault", function(_)
-    install()
-end, {})
-
-vim.api.nvim_create_user_command("TSInstallDefaultSync", function(_)
-    install(true)
-end, {})
-
 ---@diagnostic disable-next-line: unused-local
 local is_disable = function(_lang, buf)
     local _type = is_large_file(buf)
@@ -135,12 +47,20 @@ return {
             "HiPhish/rainbow-delimiters.nvim",
             enabled = false,
             config = function()
-                local rainbow_delimiters = require("rainbow-delimiters")
+                local rainbow = require("rainbow-delimiters")
                 require("rainbow-delimiters.setup").setup({
                     strategy = {
-                        [""] = rainbow_delimiters.strategy["global"],
-                        vim = rainbow_delimiters.strategy["local"],
-                        commonlisp = rainbow_delimiters.strategy["local"],
+                        [""] = function(bufnr)
+                            if is_large_file(bufnr, true) then
+                                return nil
+                            else
+                                local line_count = vim.api.nvim_buf_line_count(bufnr)
+                                if line_count < 100 then
+                                    return rainbow.strategy["global"]
+                                end
+                            end
+                            return rainbow.strategy["local"]
+                        end,
                     },
                     query = {
                         [""] = "rainbow-delimiters",
@@ -152,13 +72,14 @@ return {
                     },
                     highlight = vim.g.rainbow_delimiters_highlight,
                 })
-                rainbow_delimiters.enable()
+                rainbow.enable()
             end,
         },
         {
             "nvim-treesitter/nvim-treesitter-context",
             config = function()
-                require("treesitter-context").setup({
+                local tsc = require("treesitter-context")
+                tsc.setup({
                     enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
                     max_lines = 5, -- How many lines the window should span. Values <= 0 mean no limit.
                     min_window_height = 30, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
@@ -168,11 +89,19 @@ return {
                     mode = "cursor", -- Line used to calculate context. Choices: 'cursor', 'topline'
                     -- Separator between context and content. Should be a single character string, like '-'.
                     -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
-                    separator = nil,
+                    -- separator = "-",
                     zindex = 20, -- The Z-index of the context window
                     on_attach = function(buf)
                         return not is_disable(nil, buf)
                     end, -- (fun(buf: integer): boolean) return false to disable attaching
+                })
+                vim.api.nvim_create_autocmd({ "DiagnosticChanged" }, {
+                    callback = function()
+                        if tsc.enabled() then
+                            tsc.disable()
+                            tsc.enable()
+                        end
+                    end,
                 })
             end,
         },

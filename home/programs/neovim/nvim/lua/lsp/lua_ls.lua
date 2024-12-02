@@ -1,10 +1,7 @@
 local utils = require("lsp.utils")
-local external_install = require("external_install")
 
 local M = {
-    install = function(sync, update)
-        external_install("lua-language-server", sync, update)
-    end,
+    install = function(sync, update) end,
     setup = function()
         local opts = {
             before_init = require("neodev.lsp").before_init,

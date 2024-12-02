@@ -242,6 +242,7 @@ return {
                 },
             },
             oldfiles = {
+                previewer = "bat",
                 include_current_session = true,
                 fzf_opts = { ["--tiebreak"] = "index" },
             },

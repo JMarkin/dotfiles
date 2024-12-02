@@ -2,31 +2,12 @@ local is_not_mini = require("funcs").is_not_mini
 
 local ftMap = {
     vim = "treesitter",
-    python = "treesitter",
+    python = "indent",
 }
-
-local function customizeSelector(bufnr)
-    local function handleFallbackException(err, providerName)
-        if type(err) == "string" and err:match("UfoFallbackException") then
-            return require("ufo").getFolds(bufnr, providerName)
-        else
-            return require("promise").reject(err)
-        end
-    end
-
-    return require("ufo")
-        .getFolds(bufnr, "lsp")
-        :catch(function(err)
-            return handleFallbackException(err, "treesitter")
-        end)
-        :catch(function(err)
-            return handleFallbackException(err, "indent")
-        end)
-end
 
 local handler = function(virtText, lnum, endLnum, width, truncate)
     local newVirtText = {}
-    local suffix = (" 󰁂 %d "):format(endLnum - lnum)
+    local suffix = (" lines %d "):format(endLnum - lnum)
     local sufWidth = vim.fn.strdisplaywidth(suffix)
     local targetWidth = width - sufWidth
     local curWidth = 0
@@ -57,13 +38,13 @@ return {
     -- enabled = false,
     cond = is_not_mini,
     dependencies = { "kevinhwang91/promise-async", "nvim-treesitter" },
-    event = { table.unpack(vim.g.post_load_events), "LspAttach" },
+    event = { table.unpack(vim.g.post_load_events) },
     opts = {
         fold_virt_text_handler = handler,
         provider_selector = function(_, filetype, _)
-            return ftMap[filetype] or customizeSelector
+            return ftMap[filetype] or { "treesitter", "indent" }
         end,
-        open_fold_hl_timeout = 200,
+        open_fold_hl_timeout = 50,
         close_fold_kinds_for_ft = {
             default = { "imports", "comment" },
             json = { "array" },
@@ -118,12 +99,7 @@ return {
             function()
                 local winid = require("ufo").peekFoldedLinesUnderCursor()
                 if not winid then
-                    local ok, _ = pcall(require, "lspsaga")
-                    if ok then
-                        vim.cmd([[ Lspsaga hover_doc ]])
-                    else
-                        vim.lsp.buf.hover()
-                    end
+                    vim.lsp.buf.hover()
                 end
             end,
             desc = "Hover doc",

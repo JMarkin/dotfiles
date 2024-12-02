@@ -1,6 +1,7 @@
 local doau = require("funcs").doau
 local maxline = require("funcs").maxline
 local ifind = require("funcs").ifind
+local pcall_notify = require("funcs").pcall_notify
 
 local max_file_size = 2
 local max_file_size_readonly = 100
@@ -99,15 +100,14 @@ local function is_large_file(bufnr, as_bool, path)
     return _t ~= FILE_TYPE.NORMAL
 end
 
-local function optimize_buffer(args)
-    local bufnr = args.buf
-
+local function optimize_buffer(bufnr, path)
     local status_ok, _ = pcall(vim.api.nvim_buf_get_var, bufnr, "large_buf")
+
     if status_ok then
         return
     end
 
-    local _type = is_large_file(bufnr, false, args.match)
+    local _type = is_large_file(bufnr, false, path)
 
     if _type == FILE_TYPE.NORMAL then
         return
@@ -120,28 +120,29 @@ local function optimize_buffer(args)
     vim.opt_local.hlsearch = false
     vim.opt_local.incsearch = false
     vim.opt_local.foldmethod = "manual"
+    vim.opt_local.foldenable = false
+    vim.opt_local.foldcolumn = "0"
     vim.opt_local.swapfile = false
     vim.opt_local.bufhidden = "unload"
+
+    vim.b.matchup_matchparen_fallback = 0
+    vim.b.matchup_matchparen_enabled = 0
+
     if _type == FILE_TYPE.LONG_LINE then
-        vim.cmd("syntax clear")
-        vim.opt_local.syntax = "off"
         vim.opt_local.list = false
         vim.opt_local.undolevels = -1
         vim.opt_local.undofile = false
     end
 
-    pcall(function()
+    pcall_notify(function()
         require("rainbow-delimiters").disable(bufnr)
     end)
-    pcall(function()
+    pcall_notify(function()
         require("ufo").detach(bufnr)
     end)
-    pcall(vim.api.nvim_command, "NoMatchParen")
-    pcall(vim.api.nvim_command, "Gitsigns detach")
-    -- if vim.opt_local.eventignore == nil then
-    --     vim.opt_local.eventignore = {}
-    -- end
-    -- vim.opt_local.eventignore:append(EVENTS)
+    pcall_notify(function()
+        require("gitsigns.attach").detach(bufnr)
+    end)
 
     if _type == FILE_TYPE.READ_ONLY then
         vim.opt_local.buftype = "nowrite"

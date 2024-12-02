@@ -4503,7 +4503,6 @@ def validate_div_container_json(data, custom_formats={}, name_prefix=None):
     if not (isinstance(data__type, str) and '@' in data__type):
      raise JsonSchemaValueException("" + (name_prefix or "data") + ".type must be one of ['container']", value=data__type, name="" + (name_prefix or "data") + ".type", definition={'type': 'string', 'enum': ['container']}, rule='enum')
   if "content_alignment_vertical" in data_keys:
-   data_keys.remove("content_alignment_vertical")
    data__contentalignmentvertical = data["content_alignment_vertical"]
    validate_div_content_alignment_vertical_json(data__contentalignmentvertical, custom_formats, (name_prefix or "data") + ".content_alignment_vertical")
   if "content_alignment_horizontal" in data_keys:

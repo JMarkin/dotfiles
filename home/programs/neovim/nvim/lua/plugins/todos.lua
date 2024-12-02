@@ -2,6 +2,7 @@ local is_not_mini = require("funcs").is_not_mini
 
 return {
     "folke/todo-comments.nvim",
+    enabled = false,
     keys = {
         {
             "]t",

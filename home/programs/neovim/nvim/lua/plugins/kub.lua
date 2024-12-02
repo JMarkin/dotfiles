@@ -4,7 +4,7 @@ local setup_kubectl = function()
         opts.kubectl_cmd = {
             cmd = "kubectl",
             env = { KUBECONFIG = vim.g.kubeconfig },
-            args = {},
+            args = { ["--insecure-skip-tls-verify"] = "true" },
         }
     end
     require("kubectl").setup(opts)

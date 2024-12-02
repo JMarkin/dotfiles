@@ -4,10 +4,12 @@
   programs.alacritty = {
     enable = true;
     settings = {
-      import = [
-        "~/.config/alacritty/keys.toml"
-        "~/.config/alacritty/bamboo.toml"
-      ];
+      general = {
+        import = [
+          "~/.config/alacritty/keys.toml"
+          "~/.config/alacritty/bamboo.toml"
+        ];
+      };
       cursor = {
         blink_interval = 500;
         unfocused_hollow = false;

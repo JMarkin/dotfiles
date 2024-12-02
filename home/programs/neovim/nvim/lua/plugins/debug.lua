@@ -39,7 +39,7 @@ local python_attach = function(options)
     require("dapui").open()
 end
 
-vim.api.nvim_create_user_command("PythonAttach", function(opts)
+vim.api.nvim_create_user_command("PythonRemoteAttach", function(opts)
     python_attach({ remote_root = opts.fargs[1] or vim.fn.getcwd() })
 end, {
     nargs = "*",
@@ -49,6 +49,7 @@ end, {
 return {
     "rcarriga/nvim-dap-ui",
     cond = is_not_mini,
+    lazy = true,
     dependencies = {
         {
             "mfussenegger/nvim-dap",
@@ -63,9 +64,12 @@ return {
             "LiadOz/nvim-dap-repl-highlights",
             dependencies = "nvim-treesitter",
         },
+        "mfussenegger/nvim-dap-python",
     },
     config = function()
         local dap, dapui = require("dap"), require("dapui")
+        require("dap-python").setup(require("utils.python_venv").getPythonEnv())
+
         dapui.setup()
         dap.listeners.after.event_initialized["dapui_config"] = function()
             dapui.open()
@@ -226,5 +230,5 @@ return {
             end,
         },
     },
-    cmd = { "PythonAttach" },
+    cmd = { "PythonRemoteAttach" },
 }

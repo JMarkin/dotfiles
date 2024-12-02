@@ -4,6 +4,8 @@ local function vim2ext(t, s, ft)
     end
 end
 
+local lf = require("largefiles")
+
 local ext = {
     dockerfile = "dockerfile",
     automount = "systemd",
@@ -58,7 +60,11 @@ vim.filetype.add({
         [".*/helm/.*.yaml"] = "helm",
         [".*"] = {
             function(path, buf)
-                return require("largefiles").is_large_file(buf, true, path) and "largefile" or nil
+                lf.optimize_buffer(buf, path)
+                if lf.is_large_file(buf, true, path) then
+                    return "largefile"
+                end
+                return nil
             end,
         },
     },

@@ -2,14 +2,7 @@ local is_large_file = require("largefiles").is_large_file
 local methods = vim.lsp.protocol.Methods
 local M = {}
 
-local diag_opts = {
-    focusable = false,
-    close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-    border = "rounded",
-    source = "always",
-    prefix = " ",
-    scope = "cursor",
-}
+local opts_l = { silent = true, noremap = true }
 
 local keys = {
     {
@@ -17,76 +10,54 @@ local keys = {
         function()
             require("fzf-lua").lsp_definitions({ multiprocess = true })
         end,
-        { desc = "Search: Definitions" },
+        { desc = "Search: Definitions", table.unpack(opts_l) },
     },
     {
         "<leader>sS",
         function()
             require("fzf-lua").lsp_live_workspace_symbols({ multiprocess = true })
         end,
-        { desc = "Search: Symbols" },
+        { desc = "Search: Symbols", table.unpack(opts_l) },
     },
     {
         "grr",
         function()
             require("fzf-lua").lsp_references({ multiprocess = true, ignore_current_line = true })
         end,
-        { silent = true, desc = "Search: references" },
-    },
-    {
-        "gf",
-        "<cmd>Lspsaga peek_definition<cr>",
-        { desc = "GoTo: definition float" },
+        { desc = "Search: references", table.unpack(opts_l) },
     },
     {
         "gd",
         vim.lsp.buf.definition,
-        { desc = "GoTo: definition" },
+        { desc = "GoTo: definition", table.unpack(opts_l) },
     },
     {
         "gD",
         vim.lsp.buf.declaration,
-        { desc = "GoTo: declarations" },
+        { desc = "GoTo: declarations", table.unpack(opts_l) },
     },
     {
         "gh",
-        "<cmd>Lspsaga finder<CR>",
-        { desc = "Lsp: Finder" },
+        function()
+            require("fzf-lua").lsp_finder({ multiprocess = true, ignore_current_line = true })
+        end,
+        { desc = "Lsp: Finder", table.unpack(opts_l) },
     },
     {
-
         "K",
-        "<cmd>Lspsaga hover_doc<CR>",
-        { silent = true, desc = "Lang: hover doc" },
-    },
-    {
-
-        "<leader>le",
-        "<cmd>Lspsaga show_buf_diagnostics<CR>",
-        { silent = true, desc = "Lang: show buf disagnostic" },
-    },
-    {
-
-        "<leader>lE",
-        "<cmd>Lspsaga show_workspace_diagnostics<CR>",
-        { silent = true, desc = "Lang: show workspace disagnostic" },
+        vim.lsp.buf.hover,
+        { silent = true, desc = "Lang: hover doc", table.unpack(opts_l) },
     },
     {
         "grn",
-        "<cmd>Lspsaga rename<CR>",
-        { silent = true, desc = "Lang: rename" },
+        vim.lsp.buf.rename,
+        { desc = "Lang: rename", table.unpack(opts_l) },
     },
     {
-
-        "grN",
-        "<cmd>Lspsaga rename ++project<CR>",
-        { silent = true, desc = "Lang: rename project" },
+        "gE",
+        vim.diagnostic.open_float,
+        { desc = "Lang: diagnistic", table.unpack(opts_l) },
     },
-    -- {
-    --     "<space>T",
-    --     ":Vista nvim_lsp<cr>",
-    --     { desc = "Tagbar", silent = true },
-    -- },
 }
 
 --- https://github.com/neovim/nvim-lspconfig/blob/f4619ab31fc4676001ea05ae8200846e6e7700c7/plugin/lspconfig.lua#L123
@@ -98,16 +69,16 @@ local keys = {
 ---@param bufnr integer
 local function on_attach(client, bufnr)
     if is_large_file(bufnr, true) then
-        vim.schedule(function()
-            vim.lsp.buf_detach_client(bufnr, client.id)
-        end)
         vim.bo[bufnr].tagfunc = nil
         return 0
     end
 
     for _, keymap in ipairs(keys) do
-        keymap[3].buffer = bufnr
-        vim.keymap.set("n", table.unpack(keymap))
+        if #keymap == 3 then
+            table.insert(keymap, 1, "n")
+        end
+        keymap[4].buffer = bufnr
+        vim.keymap.set(table.unpack(keymap))
     end
 
     if not client.supports_method(methods.textDocument_hover) then

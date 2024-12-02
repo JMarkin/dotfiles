@@ -1,5 +1,5 @@
 {
-  description = "A Nix-flake-based Python development environment";
+  description = "A Nix-flake-based development environment";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
@@ -13,14 +13,7 @@
     {
       devShells = forEachSupportedSystem ({ pkgs }: {
         default = pkgs.mkShell {
-          venvDir = ".venv";
-          packages = with pkgs; [ python311 poetry ] ++
-            (with pkgs.python311Packages; [
-              venvShellHook
-
-              debugpy
-              jedi-language-server
-            ]);
+          packages = [ pkgs.cargo pkgs.rustc pkgs.rust-analyzer pkgs.clippy];
         };
       });
     };

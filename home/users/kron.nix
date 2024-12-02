@@ -8,7 +8,7 @@
 
   home.username = "kron";
 
-  home.stateVersion = "24.05";
+  home.stateVersion = "24.11";
 
   home.packages = with pkgs; [
     zip
@@ -23,6 +23,7 @@
     pigz
     curl
     wget
+    nix-search-cli
 
     # utils
     ps
@@ -40,6 +41,7 @@
     hyperfine
     createnv
     dotenv-linter
+    kubectl
     # cgrc
 
     # networking tools
@@ -57,6 +59,10 @@
     cargo
     go
     nodejs_22
+
+    # for rustc
+    iconv
+    libiconv
   ];
 
   programs.fastfetch.enable = true;
@@ -101,6 +107,7 @@
     DOTNET_CLI_TELEMETRY_OPTOUT = "1";
 
     FZF_DEFAULT_OPTS = "--bind=shift-tab:up,tab:down";
+    LIBRARY_PATH = ''${lib.makeLibraryPath [pkgs.libiconv]}''${LIBRARY_PATH:+:$LIBRARY_PATH}'';
   };
 
 

@@ -30,16 +30,6 @@ vim.keymap.set(
     { silent = true, desc = "visual mode: escape to normal and save" }
 )
 
-vim.api.nvim_create_user_command("InstallDefault", function(_)
-    vim.cmd.TSInstallDefault()
-    vim.cmd.ExternalInstallDefault()
-end, {})
-
-vim.api.nvim_create_user_command("UpdateDefault", function(_)
-    vim.cmd.TSInstallDefault()
-    vim.cmd.ExternalUpdateDefault()
-end, {})
-
 vim.api.nvim_create_user_command("UnicodeUndoEscape", function(_)
     vim.cmd([[:%s/\\u\(\x\{4\}\)/\=nr2char('0x'.submatch(1),1)/g]])
 end, {})
@@ -64,8 +54,6 @@ vim.keymap.set({ "n", "x" }, "gT", tabswitch(vim.cmd.tabprev), { desc = "Tabs: p
 vim.keymap.set({ "n", "x" }, "gy", tabswitch(vim.cmd.tabprev), { desc = "Tabs: prev" }) -- gT is too hard to press
 
 vim.keymap.set("n", "<space>t", ":$tabnew<CR>", { desc = "Tabs: new" })
-vim.keymap.set("n", "<space>d", ":tabclose<CR>", { desc = "Tabs: close" })
-vim.keymap.set("n", "<space>D", ":tabonly<CR>", { desc = "Tabs: close other tabs" })
 vim.keymap.set("n", "<space>[", ":-tabmove<CR>", { desc = "Tabs: move to prev" })
 vim.keymap.set("n", "<space>]", ":+tabmove<CR>", { desc = "Tabs: move to next" })
 
@@ -84,5 +72,6 @@ end, { noremap = true, desc = "Copy as: line" })
 
 vim.cmd([[command CDC lcd %:p:h]])
 
-
 vim.keymap.set("n", "<A-g>", ":Neogit<cr>", { desc = "Neogit" })
+
+vim.keymap.set("n", "<space>D", ":DBUIToggle<CR>", { desc = "DBUI" })

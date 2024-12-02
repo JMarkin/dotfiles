@@ -5,14 +5,8 @@ return {
         "mfussenegger/nvim-lint",
         lazy = true,
         enabled = true,
-        event = "VeryLazy",
         config = function()
             require("lint").linters_by_ft = vim.g.linter_by_ft
-            vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "FileReadPost" }, {
-                callback = function()
-                    require("lint").try_lint()
-                end,
-            })
         end,
     },
     {
@@ -25,6 +19,11 @@ return {
                 -- Customize or remove this keymap to your liking
                 "<space>bf",
                 function()
+                    local buf = vim.api.nvim_get_current_buf()
+                    if require("largefiles").is_large_file(buf, true) then
+                        vim.notify_once("Large buf can't format", vim.log.levels.WARN)
+                        return
+                    end
                     require("conform").format({ async = true })
                 end,
                 mode = "",

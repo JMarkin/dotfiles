@@ -37,6 +37,7 @@
         fscache = true;
         packedGitLimit = "512m";
         packedGitWindowSize = "512m";
+        excludesfile = "${config.home.homeDirectory}/.config/git/ignore";
       };
 
       pull = {

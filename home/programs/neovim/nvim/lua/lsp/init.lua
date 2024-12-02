@@ -10,12 +10,9 @@ local default_lsp = function(bin_name, lsp_name, opts)
         opts = {}
     end
     local utils = require("lsp.utils")
-    local external_install = require("external_install")
 
     return {
-        install = function(sync, update)
-            external_install(bin_name, sync, update)
-        end,
+        install = function(sync, update) end,
         setup = function()
             if vim.fn.executable(bin_name) then
                 utils.setup_lsp(lsp_name, opts)

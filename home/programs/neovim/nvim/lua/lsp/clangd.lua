@@ -1,5 +1,4 @@
 local utils = require("lsp.utils")
-local external_install = require("external_install")
 
 return {
     install = function(sync, update)

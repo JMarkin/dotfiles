@@ -54,7 +54,8 @@ let
     # tools
     p.markdown_inline
     p.jq
-    p.regex
+    # currently not working
+    # p.regex
     p.query
     p.comment
     p.rst
@@ -94,6 +95,10 @@ in
     biome
     nil
     taplo
+    nodePackages.typescript-language-server
+    docker-compose-language-service
+    yaml-language-server
+    vim-language-server
 
     # lsp features
     fswatch
