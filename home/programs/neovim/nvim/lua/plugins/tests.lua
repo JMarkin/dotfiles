@@ -29,7 +29,9 @@ return {
     config = function()
         require("neotest").setup({
             adapters = {
-                require("neotest-python"),
+                require("neotest-python")({
+                    args = { "-vvv" },
+                }),
                 require("rustaceanvim.neotest"),
             },
         })

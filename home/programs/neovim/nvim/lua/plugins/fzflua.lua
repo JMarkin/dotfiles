@@ -61,14 +61,14 @@ return {
         {
             "<leader>sg",
             function()
-                require("fzf-lua").grep_project({ multiprocess = true, continue_last_search = true })
+                require("fzf-lua").grep_project({ multiprocess = true, resume = true })
             end,
             desc = "Search: project",
         },
         {
             "<leader>sg",
             function()
-                require("fzf-lua").grep_visual({ multiprocess = true, continue_last_search = true })
+                require("fzf-lua").grep_visual({ multiprocess = true, resume = true })
             end,
             desc = "Search: project",
             mode = "v",
@@ -174,19 +174,19 @@ return {
             async_or_timeout = 3000,
             global_resume = true,
             global_resume_query = true,
-            preview = {
-                default = "bat", -- override the default previewer?
+            winopts = {
+                preview = { default = "bat_native" },
+                on_create = function()
+                    vim.keymap.set("t", "<C-n>", "<Down>", { silent = true, buffer = true })
+                    vim.keymap.set("t", "<C-p>", "<Up>", { silent = true, buffer = true })
+                end,
             },
-            -- winopts = {
-            --     height = 0.8,
-            --     width = 0.75,
-            --     -- preview = {
-            --     --     scrollbar = false,
-            --     --     default = "builtin",
-            --     --     layout = "vertical",
-            --     --     title_align = "center",
-            --     -- },
-            -- },
+            previewers = {
+                builtin = {
+                    syntax = true, -- preview syntax highlight?
+                    treesitter = { enabled = true, disabled = {} },
+                },
+            },
             keymap = {
                 builtin = {
                     ["<F1>"] = "toggle-help",
@@ -216,7 +216,6 @@ return {
                 },
             },
             files = {
-                previewer = "bat",
                 actions = {
                     ["ctrl-g"] = { actions.toggle_ignore },
                     ["tab"] = false,
@@ -224,10 +223,10 @@ return {
             },
             fzf_opts = {
                 ["--ansi"] = "",
-                ["--info"] = "inline",
-                ["--height"] = "100%",
-                ["--layout"] = "reverse",
-                ["--border"] = "none",
+                -- ["--info"] = "inline",
+                -- ["--height"] = "100%",
+                -- ["--layout"] = "reverse",
+                -- ["--border"] = "none",
             },
             lsp = {
                 code_actions = {
@@ -242,18 +241,17 @@ return {
                 },
             },
             oldfiles = {
-                previewer = "bat",
                 include_current_session = true,
                 fzf_opts = { ["--tiebreak"] = "index" },
+            },
+            grep = {
+                rg_opts = "--multiline --column --line-number --no-heading --color=always --smart-case --max-columns=4096 -e",
             },
             git = {
                 files = {
                     prompt = "GitFiles❯ ",
                     cmd = "git ls-files --exclude-standard",
                     multiprocess = true, -- run command in a separate process
-                    git_icons = true, -- show git icons?
-                    file_icons = true, -- show file icons?
-                    color_icons = true, -- colorize file|git icons
                     -- force display the cwd header line regardles of your current working
                     -- directory can also be used to hide the header when not wanted
                     -- cwd_header = true
@@ -261,9 +259,6 @@ return {
                 status = {
                     prompt = "GitStatus❯ ",
                     cmd = "git -c color.status=false status -su",
-                    file_icons = true,
-                    git_icons = true,
-                    color_icons = true,
                     previewer = "git_diff",
                     -- uncomment if you wish to use git-delta as pager
                     preview_pager = "delta --width=${FZF_PREVIEW_COLUMNS}",
@@ -344,16 +339,6 @@ return {
                         ["--no-multi"] = "",
                         ["--delimiter"] = "'[:]'",
                     },
-                },
-
-                previewers = {
-                    builtin = {
-                        syntax = true, -- preview syntax highlight?
-                        treesitter = { enable = true, disable = {} },
-                    },
-                },
-                grep = {
-                    rg_opts = "--multiline --column --line-number --no-heading --color=always --smart-case --max-columns=4096 -e",
                 },
             },
         })

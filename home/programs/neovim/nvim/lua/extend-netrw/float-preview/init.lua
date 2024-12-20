@@ -102,9 +102,9 @@ end
 
 function FloatPreview:_close(reason)
     if self.path ~= nil and self.buf ~= nil then
-        if reason then
-            -- vim.notify(string.format("fp close %s", reason))
-        end
+        -- if reason then
+        --     vim.notify(string.format("fp close %s", reason))
+        -- end
         vim.api.nvim_win_close(self.win, true)
         self.win = nil
         st[self.buf] = nil
@@ -138,7 +138,10 @@ function FloatPreview:preview(path)
     local max_ = maxline(path)
     local height = vim.api.nvim_get_option_value("lines", {})
     local prev_height = math.ceil(height / 3)
-    local prev_width = math.ceil(width / 2)
+    local prev_width = vim.opt.textwidth._value
+    if prev_width > math.ceil(width / 3) then
+        prev_width = math.ceil(width / 3)
+    end
     if prev_width > max_ then
         prev_width = max_ + 1
     end

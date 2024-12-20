@@ -33,7 +33,7 @@ return {
     {
         "ZhiyuanLck/smart-pairs",
         event = "InsertEnter",
-        enabled = false,
+        enabled = true,
         config = function()
             require("pairs"):setup({
                 enter = {

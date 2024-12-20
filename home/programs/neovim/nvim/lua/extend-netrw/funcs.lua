@@ -30,20 +30,8 @@ M.get_node = function()
     return payload
 end
 
-
 M.debug = function()
     vim.print(M.get_node())
-end
-
--- error
-M.create_under_cursor = function()
-    local payload = get_payload()
-    vim.opt_local.modifiable = true
-    if payload.extension == nil then
-        mapcheck_call(M.open)
-    end
-    mapcheck_call("<Plug>NetrwOpenFile")
-    vim.opt_local.modifiable = false
 end
 
 M.split = function(mode)

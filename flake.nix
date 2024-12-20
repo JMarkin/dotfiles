@@ -17,7 +17,6 @@
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin/master";
 
-    nixpkgs-firefox-darwin.url = "github:bandithedoge/nixpkgs-firefox-darwin";
     mac-app-util.url = "github:hraban/mac-app-util";
 
     #impermanence.url = "github:nix-community/impermanence/63f4d0443e32b0dd7189001ee1894066765d18a5";
@@ -37,7 +36,6 @@
     let
       overlays = [
         inputs.neovim-nightly-overlay.overlays.default
-        inputs.nixpkgs-firefox-darwin.overlay
         (import ./overlays/cgrc.nix)
         (import ./overlays/createnv.nix)
         (import ./overlays/jedi_language_server.nix)

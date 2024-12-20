@@ -58,12 +58,23 @@ local keys = {
         vim.diagnostic.open_float,
         { desc = "Lang: diagnistic", table.unpack(opts_l) },
     },
+    {
+        "]d",
+        function()
+            vim.diagnostic.jump({ count = vim.v.count1, float=true })
+        end,
+        { desc = "Jump to the next diagnostic in the current buffer", table.unpack(opts_l) },
+    },
+    {
+        "[d",
+        function()
+            vim.diagnostic.jump({ count = -vim.v.count1, float=true })
+        end,
+        { desc = "Jump to the previous diagnostic in the current buffer", table.unpack(opts_l) },
+    },
 }
 
 --- https://github.com/neovim/nvim-lspconfig/blob/f4619ab31fc4676001ea05ae8200846e6e7700c7/plugin/lspconfig.lua#L123
----@param client vim.lsp.Client
----@param bufnr integer
-
 --- Sets up LSP keymaps and autocommands for the given buffer.
 ---@param client vim.lsp.Client
 ---@param bufnr integer

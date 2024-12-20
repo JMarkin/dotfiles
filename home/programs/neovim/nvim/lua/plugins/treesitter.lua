@@ -167,4 +167,11 @@ return {
             excluded_filetypes = { "jinja", "htmldjango" },
         })
     end,
+    init = function()
+    	local prev = vim.treesitter.language.get_lang
+        vim.treesitter.language.get_lang = function(...)
+            require("lazy").load({ plugins = { "nvim-treesitter" } })
+            return prev(...)
+        end
+    end,
 }

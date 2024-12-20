@@ -3,6 +3,7 @@ local is_not_mini = require("funcs").is_not_mini
 local ftMap = {
     vim = "treesitter",
     python = "indent",
+    log = "indent",
 }
 
 local handler = function(virtText, lnum, endLnum, width, truncate)

@@ -51,8 +51,6 @@ opt.bs                                = "indent,eol,start"
 g.editorconfig                        = true
 opt.synmaxcol                         = 2000
 opt.exrc                              = true
-opt.grepformat                        = "%f:%l:%c:%m"
-opt.grepprg                           = "rg --vimgrep"
 
 opt.guifont                           = "JetBrainsMonoNL Nerd Font Mono:h13"
 opt.guicursor                         = "a:block"
@@ -161,10 +159,7 @@ g.netrw_winsize         = 20
 g.netrw_banner          = 0
 g.netrw_cursor          = 5
 g.netrw_keepdir         = 1
-local function _netrw_list_hide()
-  g.netrw_list_hide       = vim.fn['netrw_gitignore#Hide']() .. "," .. [[\(^\|\s\s\)\zs\.\S\+]]
-end
-vim.defer_fn(_netrw_list_hide, 100)
+g.netrw_list_hide       =  "__pycache__," .. [[\(^\|\s\s\)\zs\.\S\+]]
 g.netrw_liststyle       = 0
 g.netrw_localcopydircmd = "cp -r"
 g.netrw_localmkdir      = "mkdir -p"
