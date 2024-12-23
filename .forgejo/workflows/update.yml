@@ -9,6 +9,11 @@ jobs:
   update_flake:
     runs-on: ubuntu-node
     steps:
+    - name: Set up git
+      run: |
+        git config --global user.email "github-actions[bot]"
+        git config --global user.name "actions[bot]"
+        git config --global http.sslVerify "false"
     - name: Checkout repository
       uses: actions/checkout@v4
     - name: Install Nix
