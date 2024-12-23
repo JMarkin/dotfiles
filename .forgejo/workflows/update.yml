@@ -7,24 +7,19 @@ on:
 
 jobs:   
   update_flake:
-    runs-on: native
+    runs-on: ubuntu-node
     steps:
     - name: Set up git
       run: |
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]"
+        git config --global user.name "actions[bot]"
         git config --global http.sslVerify "false"
     - name: Clone repository
       uses: actions/checkout@v4
       with:
         ssh-strict: false
-        github-server-url: https://git.home
-    - name: Update nixpkgs
-      run: nix flake lock --update-input nixpkgs
-    - name: Update nixos
-      run: nix flake lock --update-input nixos
-    - name: Update nixpkgs-wayland
-      run: nix flake lock --update-input nixpkgs-wayland
+    - name: update flake
+      run: nix flake update
     - name: Commit and push
       run: |
         if git diff --exit-code; then
