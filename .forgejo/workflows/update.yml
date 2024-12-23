@@ -9,23 +9,14 @@ jobs:
   update_flake:
     runs-on: ubuntu-node
     steps:
-    - name: Set up git
-      run: |
-        git config --global user.email "github-actions[bot]"
-        git config --global user.name "actions[bot]"
-        git config --global http.sslVerify "false"
-    - name: Clone repository
+    - name: Checkout repository
       uses: actions/checkout@v4
+    - name: Install Nix
+      uses: DeterminateSystems/nix-installer-action@main
+    - name: Update flake.lock
+      uses: DeterminateSystems/update-flake-lock@main
       with:
-        ssh-strict: false
-    - name: update flake
-      run: nix flake update
-    - name: Commit and push
-      run: |
-        if git diff --exit-code; then
-          echo "Found no changes"
-          exit 0
-        fi
-        git add .
-        git commit -m "flake.lock: Update"
-        git push
+        pr-title: "Update flake.lock" # Title of PR to be created
+        pr-labels: |                  # Labels to be set on the PR
+          dependencies
+          automated
