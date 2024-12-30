@@ -7,6 +7,20 @@ local setup_kubectl = function()
             args = { ["--insecure-skip-tls-verify"] = "true" },
         }
     end
+
+    local group = vim.api.nvim_create_augroup("kubectl_mappings", { clear = false })
+    vim.api.nvim_create_autocmd("FileType", {
+        group = group,
+        pattern = "k8s_*",
+        callback = function(ev)
+            local k = vim.keymap.set
+            local opts = { buffer = ev.buf }
+
+            k("n", "q", function()
+                require("kubectl").toggle()
+            end, opts) -- Help float
+        end,
+    })
     require("kubectl").setup(opts)
 end
 

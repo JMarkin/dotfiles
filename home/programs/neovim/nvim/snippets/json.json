@@ -1,0 +1,19 @@
+{
+  "tsserverjavascript": {
+    "prefix": "tsserverjavascript",
+    "body": [
+      "{",
+      "  \"compilerOptions\": {",
+      "\t\"module\": \"commonjs\",",
+      "\t\"target\": \"es6\",",
+      "\t\"checkJs\": false",
+      "  },",
+      "  \"exclude\": [",
+      "\t\"node_modules\"",
+      "  ]",
+      "}",
+      ""
+    ],
+    "description": "tsserverjavascript"
+  }
+}

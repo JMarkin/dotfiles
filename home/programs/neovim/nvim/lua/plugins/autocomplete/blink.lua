@@ -83,16 +83,14 @@ return {
     event = { "InsertEnter", "CmdlineEnter" },
     -- optional: provides snippets for the snippet source
     dependencies = {
-        "L3MON4D3/LuaSnip",
-        "saadparwaiz1/cmp_luasnip",
         "rafamadriz/friendly-snippets",
         "mikavilpas/blink-ripgrep.nvim",
         "danymat/neogen",
         "quangnguyen30192/cmp-nvim-tags",
         "JMarkin/cmp-diag-codes",
-
         { "saghen/blink.compat", opts = { impersonate_nvim_cmp = true } },
     },
+    -- version = "*",
     build = "nix run .#build-plugin",
     -- On musl libc based systems you need to add this flag
     -- build = 'RUSTFLAGS="-C target-feature=-crt-static" cargo build --release',
@@ -169,20 +167,20 @@ return {
                 "fallback",
             },
         },
-        snippets = {
-            expand = function(snippet)
-                require("luasnip").lsp_expand(snippet)
-            end,
-            active = function(filter)
-                if filter and filter.direction then
-                    return require("luasnip").jumpable(filter.direction)
-                end
-                return require("luasnip").in_snippet()
-            end,
-            jump = function(direction)
-                require("luasnip").jump(direction)
-            end,
-        },
+        -- snippets = {
+        --     expand = function(snippet)
+        --         require("luasnip").lsp_expand(snippet)
+        --     end,
+        --     active = function(filter)
+        --         if filter and filter.direction then
+        --             return require("luasnip").jumpable(filter.direction)
+        --         end
+        --         return require("luasnip").in_snippet()
+        --     end,
+        --     jump = function(direction)
+        --         require("luasnip").jump(direction)
+        --     end,
+        -- },
 
         completion = {
             accept = {

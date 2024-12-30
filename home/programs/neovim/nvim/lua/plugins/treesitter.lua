@@ -22,7 +22,7 @@ return {
     dependencies = {
         {
             "m-demare/hlargs.nvim",
-            -- dev = true,
+            dev = true,
         },
         "yioneko/nvim-yati",
         {

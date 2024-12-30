@@ -17,7 +17,7 @@
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin/master";
 
-    mac-app-util.url = "github:hraban/mac-app-util";
+    # mac-app-util.url = "github:hraban/mac-app-util";
 
     #impermanence.url = "github:nix-community/impermanence/63f4d0443e32b0dd7189001ee1894066765d18a5";
 
@@ -32,7 +32,7 @@
 
   };
 
-  outputs = { self, nixpkgs, nixos, home-manager, agenix, darwin, mac-app-util, ... } @ inputs:
+  outputs = { self, nixpkgs, nixos, home-manager, agenix, darwin, ... } @ inputs:
     let
       overlays = [
         inputs.neovim-nightly-overlay.overlays.default
@@ -75,7 +75,7 @@
           pkgs = darwinPkgs;
 
           modules = [
-            mac-app-util.homeManagerModules.default
+            # mac-app-util.homeManagerModules.default
             ./home/users/kron_darwin.nix
           ];
         };

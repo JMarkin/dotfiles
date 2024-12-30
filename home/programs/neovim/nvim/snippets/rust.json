@@ -1,0 +1,10 @@
+{
+  "#codespell": {
+    "prefix": "#codespell",
+    "body": [
+      "# codespell:ignore",
+      ""
+    ],
+    "description": "#codespell"
+  }
+}

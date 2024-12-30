@@ -1,0 +1,149 @@
+{
+  "neogen": {
+    "prefix": "neogen",
+    "body": [
+      "    require(\"neogen\").setup({",
+      "        enabled = true,",
+      "        input_after_comment = true,",
+      "        snippet_engine = \"luasnip\",",
+      "        languages = {",
+      "            python = {",
+      "                template = {",
+      "                    annotation_convention = \"reST\",",
+      "                },",
+      "            },",
+      "        },",
+      "    })",
+      ""
+    ],
+    "description": "neogen"
+  },
+  "jinja": {
+    "prefix": "jinja",
+    "body": [
+      "    vim.filetype.add({",
+      "        extension = {",
+      "            html = \"jinja\",",
+      "            htm = \"jinja\",",
+      "        }",
+      "    })",
+      ""
+    ],
+    "description": "jinja"
+  },
+  "tests": {
+    "prefix": "tests",
+    "body": [
+      "    require(\"neotest\").setup({})",
+      ""
+    ],
+    "description": "tests"
+  },
+  "pytest": {
+    "prefix": "pytest",
+    "body": [
+      "    require(\"neotest\").setup({",
+      "      adapters = {",
+      "        require(\"neotest-python\")({",
+      "            dap = { justMyCode = false },",
+      "            args = {\"--log-level\", \"DEBUG\"},",
+      "            runner = \"pytest\",",
+      "        })",
+      "      }",
+      "    })",
+      ""
+    ],
+    "description": "pytest"
+  },
+  "unittest": {
+    "prefix": "unittest",
+    "body": [
+      "    require(\"neotest\").setup({",
+      "      adapters = {",
+      "        require(\"neotest-python\")({",
+      "            dap = { justMyCode = false },",
+      "            args = {\"--log-level\", \"DEBUG\"},",
+      "            runner = \"pytest\",",
+      "        })",
+      "      }",
+      "    })",
+      ""
+    ],
+    "description": "unittest"
+  },
+  "db": {
+    "prefix": "db",
+    "body": [
+      "    vim.g.db = \"postgresql://postgres:postgres@localhost:5432/postgres\"",
+      ""
+    ],
+    "description": "db"
+  },
+  "py-lint": {
+    "prefix": "py-lint",
+    "body": [
+      "    require(\"lint\").linters_by_ft = {",
+      "        python = { \"mypy\", \"bandit\" },",
+      "    }",
+      ""
+    ],
+    "description": "py-lint"
+  },
+  "py-proj": {
+    "prefix": "py-proj",
+    "body": [
+      "    require(\"neogen\").setup({",
+      "        enabled = true,",
+      "        input_after_comment = true,",
+      "        snippet_engine = \"luasnip\",",
+      "        languages = {",
+      "            python = {",
+      "                template = {",
+      "                    annotation_convention = \"google\",",
+      "                },",
+      "            },",
+      "        },",
+      "    })",
+      "    require(\"neotest\").setup({",
+      "        adapters = {",
+      "            require(\"neotest-python\")({",
+      "                dap = { justMyCode = false },",
+      "                args = { \"--log-level\", \"DEBUG\" },",
+      "                runner = \"pytest\",",
+      "            }),",
+      "        },",
+      "    })",
+      "    vim.g.db = \"postgresql://postgres:postgres@localhost:5432/postgres\"",
+      "",
+      "    require(\"lint\").linters_by_ft = {",
+      "        python = { \"mypy\", \"bandit\" },",
+      "    }",
+      ""
+    ],
+    "description": "py-proj"
+  },
+  "ignore": {
+    "prefix": "ignore",
+    "body": [
+      "    -- stylua: ignore start",
+      "",
+      "    -- stylua: ignore end",
+      ""
+    ],
+    "description": "ignore"
+  },
+  "jinja_lsp": {
+    "prefix": "jinja_lsp",
+    "body": [
+      "    local utils = require(\"lsp.utils\")",
+      "    utils.setup_lsp(\"jinja_lsp\", {",
+      "        templates = \"./templates\",",
+      "        backend = { \"./src\" },",
+      "        lang = \"python\",",
+      "    })",
+      "",
+      ""
+    ],
+    "description": "jinja_lsp"
+  }
+}

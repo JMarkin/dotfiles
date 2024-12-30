@@ -12,7 +12,6 @@ local default_lsp = function(bin_name, lsp_name, opts)
     local utils = require("lsp.utils")
 
     return {
-        install = function(sync, update) end,
         setup = function()
             if vim.fn.executable(bin_name) then
                 utils.setup_lsp(lsp_name, opts)
@@ -117,6 +116,8 @@ M.lsps = {
     -- },
     biome = default_lsp("biome", "biome"),
     jinja_lsp = default_lsp("jinja-lsp", "jinja_lsp"),
+    gopls = require("lsp.gopls"),
+    golangci_lint_ls = default_lsp("golangci-lint-langserver", "golangci_lint_ls"),
 }
 
 M.setup = function()

@@ -75,3 +75,22 @@ vim.cmd([[command CDC lcd %:p:h]])
 vim.keymap.set("n", "<A-g>", ":Neogit<cr>", { desc = "Neogit" })
 
 vim.keymap.set("n", "<space>D", ":DBUIToggle<CR>", { desc = "DBUI" })
+
+vim.keymap.set(
+    "n",
+    "<space>W",
+    (function()
+        local enabled = false
+        return function()
+            if not enabled then
+                vim.cmd([[let &winwidth = &columns * 7 / 10 ]])
+                vim.cmd([[let &winheight = &lines * 7 / 10 ]])
+            else
+                vim.opt.winwidth = vim.g.default_winwidth
+                vim.opt.winheight = vim.g.default_winheight
+            end
+            enabled = not enabled
+        end
+    end)(),
+    { desc = "Toggle autoresize height width buffers of window" }
+)

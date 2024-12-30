@@ -1,7 +1,6 @@
 local utils = require("lsp.utils")
 
 local M = {
-    install = function(sync, update) end,
     setup = function()
         local opts = {
             before_init = require("neodev.lsp").before_init,

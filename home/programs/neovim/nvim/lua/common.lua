@@ -15,7 +15,10 @@ opt.cursorlineopt                     = 'both'
 opt.cursorline                        = true
 g.cursorhold_updatetime               = 100
 opt.foldlevelstart                    = 99
-opt.winwidth                          = 20
+g.default_winwidth                    = 20
+g.default_winheight                   = 1
+opt.winwidth                          = g.default_winwidth
+opt.winheight                         = g.default_winheight
 opt.winminwidth                       = 20
 opt.pumheight                         = 20
 opt.splitright                        = true
@@ -135,20 +138,21 @@ if not vim.g.modern_ui then
     opt.termguicolors = false
 end
 
----Restore 'shada' option and read from shada once
----@return true
-local function _rshada()
-    if not vim.g._shada_read then
-        vim.cmd.set("shada&")
-        vim.cmd.rshada()
-        vim.g._shada_read = true
-    end
-    return true
-end
+vim.opt.shadafile = (function()
+    local data = vim.fn.stdpath("data")
 
-opt.shada = ""
-vim.defer_fn(_rshada, 100)
-vim.api.nvim_create_autocmd(g.pre_load_events, { once = true, callback = _rshada })
+    local cwd = vim.fn.getcwd()
+    for _, value in ipairs(g.root_pattern) do
+        cwd = vim.fs.root(cwd, value) or cwd
+    end
+
+    local cwd_b64 = vim.base64.encode(cwd)
+
+    local file = vim.fs.joinpath(data, "project_shada", cwd_b64)
+    vim.fn.mkdir(vim.fs.dirname(file), "p")
+
+    return file
+end)()
 
 opt.backup = true
 opt.backupdir:remove(".")
@@ -205,6 +209,7 @@ g.formatters_by_ft = {
     jinja = { "djlint" },
     htmldjango = { "djlint" },
     nix = { "nixpkgs_fmt" },
+    go = { "gofmt" },
 }
 
 for _, lang in ipairs({

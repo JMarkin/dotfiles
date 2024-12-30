@@ -1,0 +1,56 @@
+{
+  "header": {
+    "prefix": "header",
+    "body": [
+      "    ${2:header name}: ${3:header value}",
+      ""
+    ],
+    "description": "header"
+  },
+  "get": {
+    "prefix": "get",
+    "body": [
+      "    GET ${1:url} HTTP/1.1",
+      ""
+    ],
+    "description": "get"
+  },
+  "post": {
+    "prefix": "post",
+    "body": [
+      "    POST ${1:url} HTTP/1.1",
+      "",
+      "    ${4:content}",
+      ""
+    ],
+    "description": "post"
+  },
+  "put": {
+    "prefix": "put",
+    "body": [
+      "    PUT ${1:url} HTTP/1.1",
+      "",
+      "    ${4:content}",
+      ""
+    ],
+    "description": "put"
+  },
+  "patch": {
+    "prefix": "patch",
+    "body": [
+      "    PATCH ${1:url} HTTP/1.1",
+      "",
+      "    ${4:content}",
+      ""
+    ],
+    "description": "patch"
+  },
+  "delete": {
+    "prefix": "delete",
+    "body": [
+      "    DELETE ${1:url} HTTP/1.1",
+      ""
+    ],
+    "description": "delete"
+  }
+}

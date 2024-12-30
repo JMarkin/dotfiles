@@ -61,14 +61,14 @@ local keys = {
     {
         "]d",
         function()
-            vim.diagnostic.jump({ count = vim.v.count1, float=true })
+            vim.diagnostic.jump({ count = vim.v.count1, float = true })
         end,
         { desc = "Jump to the next diagnostic in the current buffer", table.unpack(opts_l) },
     },
     {
         "[d",
         function()
-            vim.diagnostic.jump({ count = -vim.v.count1, float=true })
+            vim.diagnostic.jump({ count = -vim.v.count1, float = true })
         end,
         { desc = "Jump to the previous diagnostic in the current buffer", table.unpack(opts_l) },
     },
@@ -90,6 +90,22 @@ local function on_attach(client, bufnr)
         end
         keymap[4].buffer = bufnr
         vim.keymap.set(table.unpack(keymap))
+    end
+
+    if client.name == "gopls" then
+        -- workaround for gopls not supporting semanticTokensProvider
+        -- https://github.com/golang/go/issues/54531#issuecomment-1464982242
+        if not client.server_capabilities.semanticTokensProvider then
+            local semantic = client.config.capabilities.textDocument.semanticTokens
+            client.server_capabilities.semanticTokensProvider = {
+                full = true,
+                legend = {
+                    tokenTypes = semantic.tokenTypes,
+                    tokenModifiers = semantic.tokenModifiers,
+                },
+                range = true,
+            }
+        end
     end
 
     if not client.supports_method(methods.textDocument_hover) then
@@ -213,7 +229,7 @@ local function setup_lsp(lsp_name, opts)
         root_dir = lsp_util.root_pattern(table.unpack(vim.g.root_pattern)),
         capabilities = capabilities,
         on_attach = on_attach,
-        autostart = vim.g.lsp_autostart,
+        autostart = vim.g.lsp_autostart ~= nil,
     }
     opts = vim.tbl_extend("force", opts, _opts)
 
