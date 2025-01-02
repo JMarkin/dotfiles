@@ -89,7 +89,8 @@ in
     nginx-language-server
     lua-language-server
     rust-analyzer-unwrapped
-    python312Packages.jedi-language-server
+    # python312Packages.jedi-language-server
+    basedpyright
     bash-language-server
     vscode-langservers-extracted
     biome
@@ -99,6 +100,7 @@ in
     docker-compose-language-service
     yaml-language-server
     vim-language-server
+    gopls
 
     # lsp features
     fswatch
@@ -115,6 +117,8 @@ in
     codespell
     sqlfluff
     djlint
+    golangci-lint
+    golangci-lint-langserver
 
   ];
 

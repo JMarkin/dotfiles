@@ -34,7 +34,7 @@ M.lsps = {
         filetypes = { "html", "jinja" },
     }),
     cssls = default_lsp("vscode-css-language-server", "cssls"),
-    jedi_language_server = default_lsp("jedi-language-server", "jedi_language_server"),
+    -- jedi_language_server = default_lsp("jedi-language-server", "jedi_language_server"),
     ruff = default_lsp("ruff", "ruff"),
     -- pylsp = default_lsp("python-lsp-server", "pylsp", {
     --     filetypes = { "python", "python.django", "django" },
@@ -66,18 +66,18 @@ M.lsps = {
     --     filetypes = { "python", "python.django", "django" },
     -- }),
     -- pylyzer = default_lsp("pylyzer", "pylyzer"),
-    -- basedpyright = default_lsp("basedpyright", "basedpyright", {
-    --     filetypes = { "python", "python.django", "django" },
-    --     settings = {
-    --         basedpyright = {
-    --             disableOrganizeImports = true,
-    --             -- typeCheckingMode = "off",
-    --             analysis = {
-    --                 diagnosticMode = "openFilesOnly",
-    --             },
-    --         },
-    --     },
-    -- }),
+    basedpyright = default_lsp("basedpyright", "basedpyright", {
+        filetypes = { "python", "python.django", "django" },
+        settings = {
+            basedpyright = {
+                disableOrganizeImports = true,
+                -- typeCheckingMode = "off",
+                analysis = {
+                    diagnosticMode = "openFilesOnly",
+                },
+            },
+        },
+    }),
     taplo = default_lsp("taplo", "taplo"),
     tsserver = default_lsp("typescript-language-server", "ts_ls"),
     neocmakelsp = default_lsp("neocmakelsp", "neocmake"),

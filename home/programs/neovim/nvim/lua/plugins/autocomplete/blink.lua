@@ -134,6 +134,7 @@ return {
             },
             preset = "default",
             ["<C-a>"] = { "hide" },
+            ["<C-k>"] = { "show_documentation", "hide_documentation" },
             ["<c-b>"] = {},
             ["<CR>"] = { "accept", "fallback" },
             ["<C-e>"] = { "scroll_documentation_up", "fallback" },

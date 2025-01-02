@@ -172,8 +172,8 @@ return {
         require("fzf-lua").setup({
             -- fzf_bin = "sk",
             async_or_timeout = 3000,
-            global_resume = true,
-            global_resume_query = true,
+            global_resume = false,
+            global_resume_query = false,
             winopts = {
                 preview = { default = "bat_native" },
                 on_create = function()

@@ -105,6 +105,7 @@ return {
                 })
             end,
         },
+        "nvim-treesitter/nvim-treesitter-textobjects",
     },
     config = function()
         require("nvim-treesitter.install").prefer_git = true
@@ -141,6 +142,21 @@ return {
                 include_match_words = true,
                 disable = is_disable,
             },
+            textobjects = {
+                move = {
+                    enable = true,
+                    goto_next_start = {
+                        ["]f"] = "@function.outer",
+                        ["]a"] = "@argument.outer",
+                        ["]m"] = "@method.outer",
+                    },
+                    goto_previous_start = {
+                        ["[f"] = "@function.outer",
+                        ["[a"] = "@argument.outer",
+                        ["[m"] = "@method.outer",
+                    },
+                },
+            },
         })
 
         vim.treesitter.language.register("htmldjango", "jinja")
@@ -168,7 +184,7 @@ return {
         })
     end,
     init = function()
-    	local prev = vim.treesitter.language.get_lang
+        local prev = vim.treesitter.language.get_lang
         vim.treesitter.language.get_lang = function(...)
             require("lazy").load({ plugins = { "nvim-treesitter" } })
             return prev(...)
