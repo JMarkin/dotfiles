@@ -9,12 +9,17 @@ jobs:
   update_flake:
     runs-on: ubuntu-node
     steps:
+    - name: Set up git
+      run: |
+        git config --global user.email "github-actions[bot]"
+        git config --global user.name "actions[bot]"
+        git config --global http.sslVerify "false"
     - name: Checkout repository
       uses: actions/checkout@v4
     - name: Install Nix
-      uses: DeterminateSystems/nix-installer-action@main
+      uses: https://github.com/DeterminateSystems/nix-installer-action@main
     - name: Update flake.lock
-      uses: DeterminateSystems/update-flake-lock@main
+      uses: https://github.com/DeterminateSystems/update-flake-lock@main
       with:
         pr-title: "Update flake.lock" # Title of PR to be created
         pr-labels: |                  # Labels to be set on the PR
