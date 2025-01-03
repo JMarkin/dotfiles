@@ -30,9 +30,25 @@
     # nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
     # nixpkgs-wayland.inputs.nixpkgs.follows = "nixpkgs";
 
+    # for nix on droid
+    nixos_2405.url = "github:NixOS/nixpkgs/nixos-24.05";
+
+    home-manager_2405 = {
+      url = "github:nix-community/home-manager/release-24.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nix-on-droid = {
+      url = "github:nix-community/nix-on-droid/release-24.05";
+      inputs = {
+        nixpkgs.follows = "nixos_2405";
+        home-manager.follows = "home-manager";
+      };
+    };
+
   };
 
-  outputs = { self, nixpkgs, nixos, home-manager, agenix, darwin, ... } @ inputs:
+  outputs = { self, nixpkgs, nixos, home-manager, agenix, darwin, nixos_2405, home-manager_2405, nix-on-droid, ... } @ inputs:
     let
       overlays = [
         inputs.neovim-nightly-overlay.overlays.default
@@ -65,6 +81,12 @@
       darwinPkgs = import nixpkgs {
         system = "aarch64-darwin";
         config = { allowUnfree = true; };
+        inherit overlays;
+      };
+
+      droidPkgs = import nixos_2405 {
+        system = "aarch64-linux";
+        config = { allowUnfree = true; allowUnsupportedSystem = true; };
         inherit overlays;
       };
 
@@ -136,6 +158,21 @@
             ./darwin/macbook.nix
           ];
         };
+      };
+
+      nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
+        modules = [
+          ./nix-on-droid.nix
+        ];
+
+        # list of extra special args for Nix-on-Droid modules
+        extraSpecialArgs = {
+          # rootPath = ./.;
+        };
+        pkgs = droidPkgs;
+
+        # set path to home-manager flake
+        home-manager-path = home-manager_2405.outPath;
       };
 
       devShell = {

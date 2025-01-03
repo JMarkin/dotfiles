@@ -1,5 +1,9 @@
 { pkgs, ... }:
 {
+
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
   environment.variables = { EDITOR = "nvim"; };
   environment.systemPackages = with pkgs; [
     git
@@ -57,7 +61,7 @@
     enable = true;
     config = {
       http = {
-        "https://git.home" = {
+        "https://git.jmarkin.ru" = {
           sslVerify = false;
         };
       };
