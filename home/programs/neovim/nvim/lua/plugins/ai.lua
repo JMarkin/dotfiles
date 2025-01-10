@@ -231,5 +231,40 @@ return {
                 },
             },
         },
+        config = function(opts)
+            require("codecompanion").setup(opts)
+
+            local group = vim.api.nvim_create_augroup("CodeCompanionHooks", {})
+
+            local progress = {}
+
+            local companion_progress = function(request)
+                if request.match == "CodeCompanionRequestStarted" then
+                    progress.in_progress = true
+
+                    progress.handle = require("fidget.progress").handle.create({
+                        title = "CodeCompanionChat",
+                        message = "Start completion",
+                        lsp_client = { name = "codecompanion" },
+                    })
+                    progress.poller = require("fidget.poll").Poller({
+                        name = "codecompanion",
+                        poll = function()
+                            return not progress.in_progress
+                        end,
+                    })
+                    progress.poller:start_polling(1)
+                elseif request.match == "CodeCompanionRequestFinished" then
+                    progress.in_progress = false
+                    progress.handle:finish()
+                end
+            end
+
+            vim.api.nvim_create_autocmd({ "User" }, {
+                pattern = "CodeCompanionRequest*",
+                group = group,
+                callback = companion_progress,
+            })
+        end,
     },
 }

@@ -184,6 +184,7 @@ return {
         -- },
 
         completion = {
+            keyword = { range = "full" },
             accept = {
                 auto_brackets = {
                     enabled = false,
@@ -195,9 +196,7 @@ return {
             trigger = {
                 show_in_snippet = false,
             },
-            list = {
-                selection = "auto_insert",
-            },
+            list = { selection = { preselect = false, auto_insert = true } },
         },
 
         sources = {

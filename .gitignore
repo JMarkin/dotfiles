@@ -3,3 +3,5 @@ result
 
 profile.json
 .DS_Store
+.aider*
+.env

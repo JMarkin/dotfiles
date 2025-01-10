@@ -32,4 +32,9 @@ return {
             -- options
         },
     },
+    {
+        "m4ttm/lsp-lens-lite.nvim",
+        event = "LspAttach",
+        opts = {},
+    },
 }
