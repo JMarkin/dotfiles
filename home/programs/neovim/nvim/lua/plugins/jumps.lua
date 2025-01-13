@@ -82,7 +82,7 @@ return {
                 },
             },
         },
-        config = function(opts)
+        config = function(_, opts)
             require("demicolon").setup(opts)
 
             local function eyeliner_jump(key)

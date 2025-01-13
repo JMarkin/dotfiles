@@ -124,7 +124,7 @@ in
 
   programs.neovim = {
     enable = true;
-    package = pkgs.neovim;
+    # package = pkgs.neovim;
     vimAlias = true;
     viAlias = true;
     coc.enable = false;

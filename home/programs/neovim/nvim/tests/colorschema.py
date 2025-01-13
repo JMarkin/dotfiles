@@ -18,6 +18,7 @@ def sum_two_number(a: int, b: int) -> int:
 # FIXME: 11
 
 
+# TODO:  implement getter setter for s
 class TestClass:
     s: str = "sad"
 

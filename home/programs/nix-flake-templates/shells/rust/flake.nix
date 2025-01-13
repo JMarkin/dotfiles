@@ -1,20 +1,22 @@
 {
-  description = "A Nix-flake-based development environment";
+  inputs = {
+    naersk.url = "github:nix-community/naersk/master";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    utils.url = "github:numtide/flake-utils";
+  };
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-
-  outputs = { self, nixpkgs }:
-    let
-      supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
-      forEachSupportedSystem = f: nixpkgs.lib.genAttrs supportedSystems (system: f {
+  outputs = { self, nixpkgs, utils, naersk }:
+    utils.lib.eachDefaultSystem (system:
+      let
         pkgs = import nixpkgs { inherit system; };
-      });
-    in
-    {
-      devShells = forEachSupportedSystem ({ pkgs }: {
-        default = pkgs.mkShell {
-          packages = [ pkgs.cargo pkgs.rustc pkgs.rust-analyzer pkgs.clippy];
+        naersk-lib = pkgs.callPackage naersk { };
+      in
+      {
+        defaultPackage = naersk-lib.buildPackage ./.;
+        devShell = with pkgs; mkShell {
+          buildInputs = [ cargo rustc rustfmt rust-analyzer rustPackages.clippy ];
+          RUST_SRC_PATH = rustPlatform.rustLibSrc;
         };
-      });
-    };
+      }
+    );
 }

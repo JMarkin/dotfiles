@@ -138,22 +138,6 @@ if not vim.g.modern_ui then
     opt.termguicolors = false
 end
 
-vim.opt.shadafile = (function()
-    local data = vim.fn.stdpath("data")
-
-    local cwd = vim.fn.getcwd()
-    for _, value in ipairs(g.root_pattern) do
-        cwd = vim.fs.root(cwd, value) or cwd
-    end
-
-    local cwd_b64 = vim.base64.encode(cwd)
-
-    local file = vim.fs.joinpath(data, "project_shada", cwd_b64)
-    vim.fn.mkdir(vim.fs.dirname(file), "p")
-
-    return file
-end)()
-
 opt.backup = true
 opt.backupdir:remove(".")
 

@@ -191,18 +191,24 @@ return {
                 },
             },
             ghost_text = {
-                enabled = false,
+                enabled = true,
             },
             trigger = {
                 show_in_snippet = false,
+                show_on_keyword = true,
+                show_on_trigger_character = true,
+                show_on_insert_on_trigger_character = true,
+                show_on_accept_on_trigger_character = true,
             },
-            list = { selection = { preselect = false, auto_insert = true } },
+            list = { selection = { preselect = false } },
         },
 
         sources = {
             default = function(ctx)
                 if vim.bo.filetype == "sql" then
                     return { "dadbod", "ripgrep" }
+                elseif vim.bo.filetype == "codecompanion" then
+                    return { "codecompanion", "tags", "ripgrep" }
                 elseif context.in_treesitter_capture("comment") or context.in_syntax_group("Comment") then
                     return { "diag-codes", "buffer", "snippets", "ripgrep" }
                 else
@@ -251,6 +257,12 @@ return {
         appearance = {
             use_nvim_cmp_as_default = true,
             nerd_font_variant = "mono",
+        },
+
+        fuzzy = {
+            prebuilt_binaries = {
+                download = false,
+            },
         },
     },
 }

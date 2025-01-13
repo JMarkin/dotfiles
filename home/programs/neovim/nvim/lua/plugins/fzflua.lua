@@ -61,7 +61,7 @@ return {
         {
             "<leader>sg",
             function()
-                require("fzf-lua").grep_project({ multiprocess = true, resume = true })
+                require("fzf-lua").grep_project({ multiprocess = true })
             end,
             desc = "Search: project",
         },
@@ -175,7 +175,7 @@ return {
             global_resume = false,
             global_resume_query = false,
             winopts = {
-                preview = { default = "bat_native" },
+                preview = { default = "builtin" },
                 on_create = function()
                     vim.keymap.set("t", "<C-n>", "<Down>", { silent = true, buffer = true })
                     vim.keymap.set("t", "<C-p>", "<Up>", { silent = true, buffer = true })

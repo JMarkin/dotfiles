@@ -61,14 +61,14 @@ local keys = {
     {
         "]d",
         function()
-            vim.diagnostic.jump({ count = vim.v.count1, float = true })
+           vim.diagnostic.goto_next({ count = vim.v.count1, float = true })
         end,
         { desc = "Jump to the next diagnostic in the current buffer", table.unpack(opts_l) },
     },
     {
         "[d",
         function()
-            vim.diagnostic.jump({ count = -vim.v.count1, float = true })
+            vim.diagnostic.goto_prev({ count = -vim.v.count1, float = true })
         end,
         { desc = "Jump to the previous diagnostic in the current buffer", table.unpack(opts_l) },
     },

@@ -15,6 +15,10 @@
     postgresql_15
 
     alacritty
+
+    docker
+    docker-credential-helpers
+    lima
   ];
 
 }

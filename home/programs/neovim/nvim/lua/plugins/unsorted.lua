@@ -35,6 +35,8 @@ return {
 
     {
         "farmergreg/vim-lastplace",
+        -- trye from mini.misc
+        enabled = false,
         init = function()
             vim.g.lastplace_ignore = "largefile,gitcommit,gitrebase,svn,hgcommit"
             vim.g.lastplace_ignore_buftype = "quickfix,nofile,help"

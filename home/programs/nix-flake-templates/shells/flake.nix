@@ -11,6 +11,11 @@
       description = "A simple Python dev flake";
     };
 
+    templates.rust = {
+      path = ./rust;
+      description = "A simple rust dev flake";
+    };
+
     templates.default = self.templates.simple;
   };
 }
