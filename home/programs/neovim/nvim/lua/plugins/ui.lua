@@ -35,7 +35,6 @@ return {
         "stevearc/dressing.nvim",
         lazy = true,
         config = function()
-            print(123)
             require("dressing").setup({
                 input = {
                     win_options = {
@@ -74,6 +73,17 @@ return {
                 timeout = 100,
             },
         },
+        config = function(_, opts)
+            require("smartyank").setup(opts)
+            vim.api.nvim_create_autocmd("FocusGained", {
+                callback = function()
+                    local loaded_content = vim.fn.getreg("+")
+                    if loaded_content ~= "" then
+                        vim.fn.setreg('"', loaded_content)
+                    end
+                end,
+            })
+        end,
     },
 
     {
@@ -117,17 +127,11 @@ return {
     },
     {
         "nvimdev/hlsearch.nvim",
+        enabled = false,
         event = { "ModeChanged" },
         config = function()
             require("hlsearch").setup()
         end,
-    },
-    {
-        "grapp-dev/nui-components.nvim",
-        dependencies = {
-            "MunifTanjim/nui.nvim",
-        },
-        lazy = true,
     },
     {
         "prichrd/netrw.nvim",
@@ -144,5 +148,10 @@ return {
                 use_devicons = true,
             })
         end,
+    },
+    {
+        "lewis6991/whatthejump.nvim",
+        -- enabled = false,
+        keys = { "<C-i>", "<C-o>" },
     },
 }

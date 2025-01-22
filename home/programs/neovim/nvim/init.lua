@@ -45,7 +45,7 @@ vim.opt.runtimepath:prepend(lazypath)
 require("lazy").setup({ import = "plugins" }, {
     concurrency = 10,
     change_detection = {
-        enabled = false,
+        enabled = true,
         notify = true,
     },
     dev = {

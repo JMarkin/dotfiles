@@ -26,12 +26,28 @@ end
 vim.keymap.set("n", "<A-t>", term_open, { desc = "Open terminal" })
 vim.keymap.set("t", "<A-t>", term_open, { desc = "Open terminal" })
 
--- vim.keymap.set("n", "<A-g>", function()
---     local bufnr = term.open("lazygit", nil)
---     vim.keymap.del("t", "<esc>", { buffer = bufnr })
--- end, { desc = "Lazygit" })
---
--- vim.keymap.set("n", "<A-a>", function()
---     local bufnr = term.open("oatmeal -e neovim --model phi3:14b-medium-128k-instruct-q4_1", nil)
---     vim.keymap.del("t", "<esc>", { buffer = bufnr })
--- end, { desc = "Oatmeal" })
+vim.keymap.set("n", "<space>o", function()
+    local bufnr = term.open("oatmeal -e neovim --model phi4:latest", nil)
+    vim.keymap.del("t", "<esc>", { buffer = bufnr })
+end, { desc = "Oatmeal" })
+
+vim.keymap.set("n", "<space>k", function()
+    local out = vim.system({ "fd", "-a", "--glob", "*yaml", vim.env.HOME .. "/.kube/configs" }, { text = true }):wait()
+    local selects = {}
+    for segment in string.gmatch(out.stdout, "[^\n]+") do
+        table.insert(selects, segment)
+    end
+
+    vim.ui.select(selects, {
+        prompt = "Select kubeconfig:",
+        format_item = function(item)
+            return item
+        end,
+    }, function(choice)
+        if not choice then
+            return
+        end
+        local bufnr = term.open(string.format("k9s --kubeconfig %s", choice), nil)
+        vim.keymap.del("t", "<esc>", { buffer = bufnr })
+    end)
+end, { desc = "K9S" })

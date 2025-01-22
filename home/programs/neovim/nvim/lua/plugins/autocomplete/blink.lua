@@ -77,6 +77,15 @@ context.in_treesitter_capture = function(capture)
     return false
 end
 
+local minuet_blink_map = nil
+
+local call_minuet = function(cmp)
+    if not minuet_blink_map then
+        minuet_blink_map = require("minuet").make_blink_map()[1]
+    end
+    return minuet_blink_map(cmp)
+end
+
 return {
     "saghen/blink.cmp",
     lazy = true,
@@ -89,6 +98,40 @@ return {
         "quangnguyen30192/cmp-nvim-tags",
         "JMarkin/cmp-diag-codes",
         { "saghen/blink.compat", opts = { impersonate_nvim_cmp = true } },
+        { "xzbdmw/colorful-menu.nvim", config = true },
+        {
+            "milanglacier/minuet-ai.nvim",
+            config = function()
+                require("minuet").setup({
+                    notify = "verbose",
+                    request_timeout = 3,
+                    provider = "openai_fim_compatible",
+                    provider_options = {
+                        openai_fim_compatible = {
+                            name = "Ollama",
+                            api_key = "CODESTRAL_API_KEY",
+                            end_point = "http://localhost:11434/v1/completions",
+                            model = "qwen2.5-coder:3b-instruct-q8_0",
+                            stream = true,
+                            optional = {
+                                max_tokens = 256,
+                                top_p = 0.9,
+                            },
+                        },
+                        -- codestral = {
+                        --     model = "codestral-latest",
+                        --     end_point = "https://codestral.mistral.ai/v1/fim/completions",
+                        --     api_key = "CODESTRAL_API_KEY",
+                        --     stream = true,
+                        --     optional = {
+                        --         stop = nil, -- the identifier to stop the completion generation
+                        --         max_tokens = nil,
+                        --     },
+                        -- },
+                    },
+                })
+            end,
+        },
     },
     -- version = "*",
     build = "nix run .#build-plugin",
@@ -167,6 +210,7 @@ return {
                 "snippet_forward",
                 "fallback",
             },
+            ["<C-z>"] = { call_minuet },
         },
         -- snippets = {
         --     expand = function(snippet)
@@ -194,13 +238,19 @@ return {
                 enabled = true,
             },
             trigger = {
+                prefetch_on_insert = true,
                 show_in_snippet = false,
                 show_on_keyword = true,
                 show_on_trigger_character = true,
                 show_on_insert_on_trigger_character = true,
                 show_on_accept_on_trigger_character = true,
             },
-            list = { selection = { preselect = false } },
+            list = {
+                selection = {
+                    preselect = false,
+                    auto_insert = true,
+                },
+            },
         },
 
         sources = {
@@ -251,6 +301,11 @@ return {
                         in_comment = false,
                     },
                 },
+                minuet = {
+                    name = "minuet",
+                    module = "minuet.blink",
+                    score_offset = 8, -- Gives minuet higher priority among suggestions
+                },
             },
         },
 
@@ -265,4 +320,24 @@ return {
             },
         },
     },
+    config = function(_, opts)
+        opts.completion.menu = {
+            draw = {
+                -- We don't need label_description now because label and label_description are already
+                -- conbined together in label by colorful-menu.nvim.
+                columns = { { "kind_icon" }, { "label", gap = 1 } },
+                components = {
+                    label = {
+                        text = function(ctx)
+                            return require("colorful-menu").blink_components_text(ctx)
+                        end,
+                        highlight = function(ctx)
+                            return require("colorful-menu").blink_components_highlight(ctx)
+                        end,
+                    },
+                },
+            },
+        }
+        require("blink.cmp").setup(opts)
+    end,
 }

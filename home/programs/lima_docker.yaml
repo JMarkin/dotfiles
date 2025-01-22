@@ -7,6 +7,12 @@
 # $ docker ...
 
 vmType: "vz"
+rosetta:
+  # Enable Rosetta for Linux.
+  # Hint: try `softwareupdate --install-rosetta` if Lima gets stuck at `Installing rosetta...`
+  enabled: true
+  # Register rosetta to /proc/sys/fs/binfmt_misc
+  binfmt: true
 images:
 # Try to use release-yyyyMMdd image if available. Note that release-yyyyMMdd will be removed after several months.
 - location: "https://cloud-images.ubuntu.com/releases/24.04/release-20241119/ubuntu-24.04-server-cloudimg-amd64.img"

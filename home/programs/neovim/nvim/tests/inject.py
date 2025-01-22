@@ -14,6 +14,7 @@ def rst_test(a):
     Example:
         This is how you can use this function:
 
+
         .. code-block:: python
 
             result = test(3)
@@ -34,6 +35,7 @@ def rst_test(a):
     s.execute("select * from table")
     s.read_sql("select *" + " from table")
     sa.text("select * from table")
+
     return [testcss, testhtml, testjs]
 
 

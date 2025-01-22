@@ -7,9 +7,9 @@
     /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
   '';
 
-  environment.systemPackages = [
-    pkgs.vim
-    pkgs.home-manager
+  environment.systemPackages = with pkgs; [
+    vim
+    home-manager
   ];
 
 
@@ -28,6 +28,7 @@
   nix.package = pkgs.nixVersions.latest;
   nix.settings.trusted-users = [ "root" "kron" ];
   nix.extraOptions = ''
+    auto-optimise-store = true
     extra-platforms = aarch64-darwin x86_64-darwin
     experimental-features = nix-command flakes
   '';
@@ -45,27 +46,7 @@
     pkgs.nerd-fonts.jetbrains-mono
   ];
 
+  home-manager.backupFileExtension = "old";
 
-  # postgres for testings
-
-  system.activationScripts.preActivation = {
-    enable = true;
-    text = ''
-      if [ ! -d "/var/lib/postgresql/" ]; then
-        echo "creating PostgreSQL data directory..."
-        sudo mkdir -m 750 -p /var/lib/postgresql/
-        chown -R kron:staff /var/lib/postgresql/
-      fi
-    '';
-  };
-
-  services.postgresql.initdbArgs = [ "-U kron" "--pgdata=/var/lib/postgresql/15" "--auth=trust" "--no-locale" "--encoding=UTF8" ];
-  services.postgresql.package = pkgs.postgresql_15;
-  services.postgresql.enable = true;
-
-  launchd.user.agents.postgresql.serviceConfig = {
-    StandardErrorPath = "/tmp/postgres.error.log";
-    StandardOutPath = "/tmp/postgres.log";
-  };
 }
 

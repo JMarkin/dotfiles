@@ -1,12 +1,3 @@
-local is_not_mini = require("funcs").is_not_mini
---
--- system clipboard
-vim.keymap.set({ "n", "v" }, "<leader>y", '"+y')
-vim.keymap.set({ "n" }, "<leader>Y", '"+y$')
-
-vim.keymap.set({ "n", "v" }, "<leader>p", '"+p')
-vim.keymap.set({ "n", "v" }, "<leader>P", '"+P')
-
 vim.keymap.set({ "n" }, { "<leader>q", "<space>q" }, ":q<cr>", { desc = "Quit", silent = true })
 vim.keymap.set({ "n", "v" }, "<C-e>", "<C-u>")
 
@@ -22,7 +13,6 @@ vim.keymap.set(
     { desc = "visual mode: escape to normal and save", silent = true }
 )
 
-vim.keymap.set({ "n" }, { "<leader>W" }, ":wa<CR>", { silent = true, desc = "normal mode: save" })
 vim.keymap.set(
     { "v" },
     { "<leader>W" },
@@ -94,3 +84,17 @@ vim.keymap.set(
     end)(),
     { desc = "Toggle autoresize height width buffers of window" }
 )
+
+local function ToggleHlSearch()
+    if vim.o.hlsearch then
+        vim.o.hlsearch = false
+    else
+        vim.o.hlsearch = true
+    end
+end
+vim.keymap.set("n", "<leader>H", ToggleHlSearch, { desc = "Toggle hlsearch" })
+
+vim.keymap.set("n", "<leader>L", function()
+    vim.bo.ft = "log"
+    vim.cmd(":UfoAttach")
+end, { desc = "Attach as log" })

@@ -42,6 +42,8 @@
     createnv
     dotenv-linter
     kubectl
+    k9s
+    nur.repos.dustinblackman.oatmeal
     # cgrc
 
     # networking tools
@@ -63,6 +65,7 @@
     # for rustc
     iconv
     libiconv
+
   ];
 
   programs.fastfetch.enable = true;

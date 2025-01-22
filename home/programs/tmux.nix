@@ -46,8 +46,8 @@
       # in the same directory.  Because we use widescreens nowadays, opening a
       # vertical split that takes half of the screen is not worth. For vertical we
       # only open 100 lines width, for horizontal it's 30 columns.
-      bind-key s split-window -v -l 30 -c '#{pane_current_path}'
-      bind-key v split-window -h -l 100 -c '#{pane_current_path}'
+      bind-key s split-window -v -p 20 -c '#{pane_current_path}'
+      bind-key v split-window -h -p 50 -c '#{pane_current_path}'
 
       # Pressing Ctrl+Shift+Left (will move the current window to the left. Similarly
       # right. No need to use the modifier (C-b).

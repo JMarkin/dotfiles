@@ -10,7 +10,7 @@ self: super: {
                 owner = "JMarkin";
                 repo = "jedi-language-server";
                 rev = "main";
-                hash = "sha256-ODYn4GtkLC1GXUU4K9NhmOLzilGQ0s/2dykiHwTFvU0=";
+                hash = "sha256-7kudUIjX+jrQ06ko56gTM3GF4XPQErqJ3rCNL4xTYls=";
               };
           });
       }

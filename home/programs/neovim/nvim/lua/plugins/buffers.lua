@@ -1,16 +1,19 @@
 return {
     {
-        "Asheq/close-buffers.vim",
+        "ojroques/nvim-bufdel",
         event = { "BufAdd", "BufReadPost", "FileReadPost" },
+        opts = {
+            quit = false,
+        },
         keys = {
             {
                 "<space>bd",
-                "<cmd>Bdelete this<Cr>",
+                "<cmd>BufDel<Cr>",
                 desc = "Buffer: delete current",
             },
             {
                 "<space>bc",
-                "<cmd>Bdelete other<Cr>",
+                "<cmd>:BufDelOthers!<Cr>",
                 desc = "Buffer: delete other",
             },
         },

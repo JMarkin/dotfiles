@@ -26,6 +26,11 @@ class TestClass:
         self.a = "%123"
         self.variable = variable
 
+    def func(self, N):
+        """fast sum from 1 to N"""
+        sums = N * (N + 1) / 2
+        return sums
+
 
 asdasdsa = asd
 

@@ -16,7 +16,7 @@ return {
         "Wansmer/treesj",
         keys = {
             {
-                "gj",
+                "gS",
                 ":lua require('treesj').join()<cr>",
                 desc = "join lines",
                 silent = true,
@@ -131,10 +131,6 @@ return {
                     },
                 },
             })
-
-            vim.keymap.set("n", "<space>M", function()
-                require("treesj").toggle({ split = { recursive = true }, join = { recursive = true } })
-            end, { desc = "Toggle single/multiline block of code" })
         end,
     },
 }

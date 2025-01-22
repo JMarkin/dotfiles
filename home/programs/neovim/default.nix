@@ -89,8 +89,8 @@ in
     nginx-language-server
     lua-language-server
     rust-analyzer-unwrapped
-    # python312Packages.jedi-language-server
-    basedpyright
+    python312Packages.jedi-language-server
+    # basedpyright
     bash-language-server
     vscode-langservers-extracted
     biome

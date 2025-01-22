@@ -116,13 +116,12 @@ g.ollama_chat_endpoint                = string.format("%s/api/chat", g.ollama_ur
 
 g.lsp_autostart                       = vim.env.LSP_AUTOSTART
 
-g.dbs = {
-      { name = 'local', url = 'postgresql://kron:@/postgres' },
-  }
-
 -- stylua: ignore end
+--
+g.dbs = {
+    { name = "local", url = "postgresql://kron:@/postgres" },
+}
 
--- opt.clipboard:append("unnamedplus")
 opt.shortmess:append({ W = false, I = true, c = true, C = true, A = false })
 
 if g.modern_ui then
@@ -215,3 +214,9 @@ for _, lang in ipairs({
 }) do
     g.formatters_by_ft[lang] = { "prettierd" }
 end
+
+
+
+
+
+

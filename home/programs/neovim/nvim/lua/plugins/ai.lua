@@ -232,10 +232,10 @@ When given a task:
                         parameters = {
                             sync = true,
                         },
-                        name = "phi",
+                        name = "deepseek-r1",
                         schema = {
                             model = {
-                                default = "phi4:latest",
+                                default = "deepseek-r1:14b",
                             },
                             num_ctx = {
                                 default = 16384,
