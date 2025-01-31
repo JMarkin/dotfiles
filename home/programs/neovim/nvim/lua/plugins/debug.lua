@@ -85,21 +85,21 @@ return {
     end,
     keys = {
         {
-            "<leader>dc",
+            "<leader>Dc",
             function()
                 require("dapui").close()
             end,
             desc = "Dap: UIClose",
         },
         {
-            "<leader>do",
+            "<leader>Do",
             function()
                 require("dapui").open()
             end,
             desc = "Dap: UIOpen",
         },
         {
-            "<leader>dd",
+            "<leader>Dd",
             function()
                 require("dapui").toggle()
             end,
@@ -134,35 +134,35 @@ return {
             desc = "Dap: step out",
         },
         {
-            "<Leader>db",
+            "<leader>Db",
             function()
                 require("dap").toggle_breakpoint()
             end,
             desc = "Dap: ToggleBreakpoint",
         },
         {
-            "<Leader>dB",
+            "<leader>DB",
             function()
                 require("dap").set_breakpoint()
             end,
             desc = "Dap: SetBreakpoint",
         },
         {
-            "<Leader>dr",
+            "<leader>Dr",
             function()
                 require("dap").repl.open()
             end,
             desc = "Dap: Repl",
         },
         {
-            "<Leader>dl",
+            "<leader>Dl",
             function()
                 require("dap").run_last()
             end,
             desc = "Dap: run last",
         },
         {
-            "<Leader>dh",
+            "<leader>Dh",
             function()
                 require("dap.ui.widgets").hover()
             end,
@@ -170,7 +170,7 @@ return {
             mode = { "n", "v" },
         },
         {
-            "<Leader>dp",
+            "<leader>Dp",
             function()
                 require("dap.ui.widgets").preview()
             end,
@@ -178,7 +178,7 @@ return {
             mode = { "n", "v" },
         },
         {
-            "<Leader>df",
+            "<leader>Df",
             function()
                 local widgets = require("dap.ui.widgets")
                 widgets.centered_float(widgets.frames)
@@ -186,7 +186,7 @@ return {
             desc = "Dap: Frames",
         },
         {
-            "<Leader>ds",
+            "<leader>Ds",
             function()
                 local widgets = require("dap.ui.widgets")
                 widgets.centered_float(widgets.scopes)
@@ -194,7 +194,7 @@ return {
             desc = "Dap: Scopes",
         },
         {
-            "<Leader>de",
+            "<leader>De",
             function(...)
                 require("dapui").float_element(...)
             end,
@@ -202,7 +202,7 @@ return {
             mode = "v",
         },
         {
-            "<leader>dE",
+            "<leader>DE",
             function(...)
                 require("dapui").eval(...)
             end,

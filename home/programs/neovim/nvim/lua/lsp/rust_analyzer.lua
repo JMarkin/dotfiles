@@ -1,8 +1,7 @@
 local utils = require("lsp.utils")
 
 return {
-    install = function(sync, update)
-    end,
+    install = function(sync, update) end,
     setup = function()
         vim.g.rustaceanvim = {
             tools = {},
@@ -20,6 +19,31 @@ return {
                         },
                         procMacro = {
                             enable = true,
+                        },
+                        files = {
+                            excludeDirs = {
+                                ".direnv",
+                                "_build",
+                                ".dart_tool",
+                                ".flatpak-builder",
+                                ".git",
+                                ".gitlab",
+                                ".gitlab-ci",
+                                ".gradle",
+                                ".idea",
+                                ".next",
+                                ".project",
+                                ".scannerwork",
+                                ".settings",
+                                ".venv",
+                                "archetype-resources",
+                                "bin",
+                                "hooks",
+                                "node_modules",
+                                "po",
+                                "screenshots",
+                                "target",
+                            },
                         },
                     },
                 },

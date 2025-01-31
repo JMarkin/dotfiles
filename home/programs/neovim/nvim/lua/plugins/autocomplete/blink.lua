@@ -110,7 +110,7 @@ return {
                         openai_fim_compatible = {
                             name = "Ollama",
                             api_key = "CODESTRAL_API_KEY",
-                            end_point = "http://localhost:11434/v1/completions",
+                            end_point = vim.g.ollama_chat_endpoint,
                             model = "qwen2.5-coder:3b-instruct-q8_0",
                             stream = true,
                             optional = {
@@ -239,7 +239,7 @@ return {
             },
             trigger = {
                 prefetch_on_insert = true,
-                show_in_snippet = false,
+                show_in_snippet = true,
                 show_on_keyword = true,
                 show_on_trigger_character = true,
                 show_on_insert_on_trigger_character = true,
@@ -262,7 +262,7 @@ return {
                 elseif context.in_treesitter_capture("comment") or context.in_syntax_group("Comment") then
                     return { "diag-codes", "buffer", "snippets", "ripgrep" }
                 else
-                    return { "lsp", "path", "tags", "snippets", "buffer", "ripgrep" }
+                    return { "lsp", "path", "tags", "snippets", "buffer" }
                 end
             end,
             providers = {

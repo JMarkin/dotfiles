@@ -9,32 +9,77 @@ return {
         "antoinemadec/FixCursorHold.nvim",
         "nvim-neotest/neotest-python",
         "nvim-dap-ui",
+        "fredrikaverpil/neotest-golang",
     },
     keys = {
         {
-            "<leader>ltt",
+            "<leader>lt",
             function()
                 require("neotest").summary.toggle()
             end,
             desc = "Tests",
         },
         {
-            "<leader>lto",
+            "<leader>lr",
             function()
-                require("neotest").output_panel.toggle()
+                require("neotest").summary.run()
             end,
-            desc = "Tests: output",
+            desc = "Tests run nearest",
         },
     },
-    config = function()
-        require("neotest").setup({
-            adapters = {
-                require("neotest-python")({
-                    args = { "-vvv" },
-                }),
-                require("rustaceanvim.neotest"),
+    opts = {
+        output_panel = {
+            enabled = true,
+            open = "botright split | resize 15",
+        },
+        summary = {
+            animated = true,
+            count = true,
+            enabled = true,
+            expand_errors = true,
+            follow = true,
+            mappings = {
+                attach = "a",
+                clear_marked = "M",
+                clear_target = "T",
+                debug = "d",
+                debug_marked = "D",
+                expand = { "<CR>", "<2-LeftMouse>", "za" },
+                expand_all = { "zA" },
+                help = "?",
+                jumpto = "i",
+                mark = "m",
+                next_failed = "]f",
+                output = "o",
+                prev_failed = "[f",
+                run = "r",
+                run_marked = "R",
+                short = "O",
+                stop = "u",
+                target = "t",
+                watch = "w",
             },
-        })
+            open = "botright vsplit | vertical resize 50",
+        },
+        consumers = {
+            always_open_output = function(client)
+                local async = require("neotest.async")
+
+                client.listeners.results = function(adapter_id, results)
+                    require("neotest").output_panel.open()
+                end
+            end,
+        },
+    },
+    config = function(_, opts)
+        opts.adapters = {
+            require("neotest-python")({
+                args = { "-vv" },
+            }),
+            require("rustaceanvim.neotest"),
+            require("neotest-golang"),
+        }
+        require("neotest").setup(opts)
     end,
     cmd = { "Neotest" },
 }

@@ -74,7 +74,8 @@ When given a task:
             },
             strategies = {
                 chat = {
-                    adapter = "ollama",
+                    adapter = "ollama_deepseek",
+                    -- adapter = "openui",
                     keymaps = {
                         options = {
                             modes = {
@@ -217,14 +218,42 @@ When given a task:
                     },
                 },
                 inline = { adapter = "ollama" },
+                -- inline = { adapter = "openui" },
                 agent = { adapter = "ollama" },
+                -- agent = { adapter = "openui" },
                 cmd = { adapter = "ollama" },
+                -- cmd = { adapter = "openui" },
             },
             adapters = {
-                ollama = function()
+                openui = function()
+                    return require("codecompanion.adapters").extend("openai_compatible", {
+                        env = {
+                            url = "https://ollama.jmarkin.ru",
+                            api_key = "OPENUI_KEY",
+                            chat_url = "/api/chat/completions",
+                            model_url = "/api/models",
+                        },
+                        schema = {
+                            model = {
+                                default = "deepseek-r1:7b-qwen-distill-q8_0",
+                                -- default = "qwen2.5-coder:3b-instruct-q8_0",
+                                -- default = "phi4:latest",
+                            },
+                            num_ctx = {
+                                default = 16384,
+                            },
+                            num_predict = {
+                                default = -1,
+                            },
+                        },
+                    })
+                end,
+                ollama_deepseek = function()
                     return require("codecompanion.adapters").extend("ollama", {
                         env = {
                             url = vim.g.ollama_url,
+                            -- url = "https://opxy.jmarkin.ru",
+                            -- api_key = "OPENUI_KEY",
                         },
                         headers = {
                             ["Content-Type"] = "application/json",
@@ -235,7 +264,36 @@ When given a task:
                         name = "deepseek-r1",
                         schema = {
                             model = {
-                                default = "deepseek-r1:14b",
+                                default = "deepseek-r1:14b-qwen-distill-q4_K_M",
+                            },
+                            num_ctx = {
+                                default = 16384,
+                            },
+                            num_predict = {
+                                default = -1,
+                            },
+                        },
+                    })
+                end,
+                ollama = function()
+                    return require("codecompanion.adapters").extend("ollama", {
+                        env = {
+                            url = vim.g.ollama_url,
+                            -- url = "https://opxy.jmarkin.ru",
+                            -- api_key = "OPENUI_KEY",
+                        },
+                        headers = {
+                            ["Content-Type"] = "application/json",
+                        },
+                        parameters = {
+                            sync = true,
+                        },
+                        name = "qwen2",
+                        schema = {
+                            model = {
+                                -- default = "deepseek-r1:7b-qwen-distill-q8_0",
+                                default = "qwen2.5-coder:14b-instruct-q4_K_M",
+                                -- default = "phi4:latest",
                             },
                             num_ctx = {
                                 default = 16384,

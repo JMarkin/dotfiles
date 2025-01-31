@@ -45,7 +45,7 @@ vim.opt.runtimepath:prepend(lazypath)
 require("lazy").setup({ import = "plugins" }, {
     concurrency = 10,
     change_detection = {
-        enabled = true,
+        enabled = false,
         notify = true,
     },
     dev = {
@@ -94,6 +94,7 @@ require("lazy").setup({ import = "plugins" }, {
     },
 })
 
+-- from nix
 vim.opt.runtimepath:prepend(vim.fn.stdpath("data") .. "/nix")
 require("runtimes")
 

@@ -144,6 +144,10 @@ local function optimize_buffer(bufnr, path)
         require("gitsigns.attach").detach(bufnr)
     end)
 
+    pcall_notify(function()
+        require('smear_cursor').enabled = false
+    end)
+
     if _type == FILE_TYPE.READ_ONLY then
         vim.opt_local.buftype = "nowrite"
     end

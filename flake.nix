@@ -8,8 +8,8 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/master";
 
-    # neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
-    # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     agenix.url = "github:ryantm/agenix";
@@ -40,7 +40,7 @@
   outputs = { self, nixpkgs, nixos, home-manager, agenix, darwin, nur, ... } @ inputs:
     let
       overlays = [
-        # inputs.neovim-nightly-overlay.overlays.default
+        inputs.neovim-nightly-overlay.overlays.default
         (import ./overlays/cgrc.nix)
         (import ./overlays/createnv.nix)
         (import ./overlays/jedi_language_server.nix)

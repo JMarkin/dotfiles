@@ -3,7 +3,21 @@
 {
   home.file = {
     ".config/fish/conf.d/ssh_agent_start.fish".source = ./ssh_agent_start.fish;
+    ".local/bin/shh" = {
+      executable = true;
+      source = pkgs.fetchFromGitHub
+        {
+          owner = "JMarkin";
+          repo = "shell-ollama-helper";
+          rev = "89fdfbccf156c43f6b18754b096b9e4f68417c1e";
+          hash = "sha256-lE0viohX7GIegOqdwxCxQN2hpY52y1RVcq1b/IRq6fk=";
+        } + "/shell-helper.sh";
+    };
   };
+
+  home.sessionPath = [
+    "$HOME/.local/bin"
+  ];
 
   home.sessionVariables = {
     fish_color_autosuggestion = "d7ffaf";

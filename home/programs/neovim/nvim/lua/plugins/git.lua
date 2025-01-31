@@ -1,6 +1,7 @@
 return {
     {
         "NeogitOrg/neogit",
+        enabled = false,
         cmd = {
             "Neogit",
         },
@@ -26,6 +27,7 @@ return {
     },
     {
         "FabijanZulj/blame.nvim",
+        enabled = false,
         config = function()
             require("blame").setup({
                 date_format = "%d.%m.%Y",
@@ -33,9 +35,9 @@ return {
                 commit_detail_view = "vsplit",
                 merge_consecutive = true,
                 mappings = {
-                    commit_info = "i",
-                    stack_push = "<TAB>",
-                    stack_pop = "<BS>",
+                    commit_info = "o",
+                    stack_push = "<tab>",
+                    stack_pop = "<s-tab>",
                     show_commit = "s",
                     close = { "<esc>", "q" },
                 },
@@ -52,7 +54,8 @@ return {
             opener = function(dir)
                 vim.cmd("tabnew")
                 -- require("yazi").yazi({}, vim.fn.fnameescape(dir))
-                vim.cmd("NvimTreeOpen " .. vim.fn.fnameescape(dir))
+                -- vim.cmd("NvimTreeOpen " .. vim.fn.fnameescape(dir))
+                vim.cmd("Explore" .. vim.fn.fnameescape(dir))
             end,
             git = {
                 base_uri_format = "%s",
@@ -104,25 +107,19 @@ return {
                         end)
                         return "<Ignore>"
                     end, { expr = true, desc = "Git: prev hunk" })
-
-                    -- Actions
-                    map("n", "<leader>gb", function()
-                        gs.blame_line({ full = true })
-                    end, { desc = "Git: blame line full" })
                 end,
             })
         end,
         -- event = vim.g.pre_load_events,
         event = "VeryLazy",
         keys = {
-            "<leader>gS",
-            "<leader>gu",
-            "<leader>gb",
             "[c",
             "]c",
-            { "<space>s", ":Gitsign stage_hunk<cr>", desc = "Git: stage hunk", mode = { "n", "v" } },
-            { "<space>S", ":Gitsign stage_buffer<cr>", desc = "Git: stage buffer" },
-            { "<space>u", ":Gitsign undo_stage_hunk<cr>", desc = "Git: undo stage hunk", mode = { "n", "v" } },
+            { "<leader>gb", ":Gitsign blame_line<cr>", desc = "Git: blake line" },
+            { "<leader>gB", ":Gitsign blame<cr>", desc = "Git: blame" },
+            { "<leader>gs", ":Gitsign stage_hunk<cr>", desc = "Git: stage hunk", mode = { "n", "v" } },
+            { "<leader>gS", ":Gitsign stage_buffer<cr>", desc = "Git: stage buffer" },
+            { "<leader>gu", ":Gitsign undo_stage_hunk<cr>", desc = "Git: undo stage hunk", mode = { "n", "v" } },
             { "<leader>gr", ":Gitsign reset_hunk<cr>", desc = "Git: reset hunk", mode = { "n", "v" } },
             { "<leader>gR", ":Gitsign reset_buffer<cr>", desc = "Git: reset buffer" },
             { "<leader>gp", ":Gitsign preview_hunk_inline<cr>", desc = "Git: preview hunk" },

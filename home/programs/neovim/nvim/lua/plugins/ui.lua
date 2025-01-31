@@ -101,6 +101,7 @@ return {
 
     {
         "DanilaMihailov/beacon.nvim",
+        -- enabled = false,
         cond = function()
             return not vim.g.neovide
         end,
@@ -116,6 +117,20 @@ return {
             highlight = { bg = "white", ctermbg = 15 }, -- vim.api.keyset.highlight table passed to vim.api.nvim_set_hl
         },
         event = { "BufAdd" },
+    },
+    {
+        "sphamba/smear-cursor.nvim",
+        enabled = false,
+        cond = function()
+            return not vim.g.neovide
+        end,
+        event = { "BufAdd", "ModeChanged" },
+        opts = { -- Default  Range
+            stiffness = 0.8, -- 0.6      [0, 1]
+            trailing_stiffness = 0.5, -- 0.3      [0, 1]
+            distance_stop_animating = 0.5, -- 0.1      > 0
+            hide_target_hack = false, -- true     boolean
+        },
     },
     {
         "tzachar/local-highlight.nvim",
@@ -153,5 +168,24 @@ return {
         "lewis6991/whatthejump.nvim",
         -- enabled = false,
         keys = { "<C-i>", "<C-o>" },
+    },
+    {
+        "mluders/comfy-line-numbers.nvim",
+        enabled = false,
+        opts = {},
+        config = function(_, opts)
+            local cln = require("comfy-line-numbers")
+            cln.setup(opts)
+
+            _G.get_label = function(n)
+                if n == 0 then
+                    return vim.fn.line(".") -- Return current line number when n is 0
+                elseif n > 0 and n <= #cln.config.labels then
+                    return cln.config.labels[n]
+                else
+                    return ""
+                end
+            end
+        end,
     },
 }

@@ -92,7 +92,7 @@ local function ToggleHlSearch()
         vim.o.hlsearch = true
     end
 end
-vim.keymap.set("n", "<leader>H", ToggleHlSearch, { desc = "Toggle hlsearch" })
+vim.keymap.set("n", "<space>H", ToggleHlSearch, { desc = "Toggle hlsearch" })
 
 vim.keymap.set("n", "<leader>L", function()
     vim.bo.ft = "log"
