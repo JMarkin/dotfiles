@@ -56,6 +56,7 @@
     enable = true;
     shellAliases = {
       cat = "bat";
+      y = "yazi";
       # grc = "cgrc";
       grep = "rg";
       jq = "jaq";
@@ -73,15 +74,6 @@
     };
     plugins = [
       # { name = "grc"; src = pkgs.fishPlugins.grc.src; }
-      {
-        name = "fish-history-merge";
-        src = pkgs.fetchFromGitHub {
-          owner = "2m";
-          repo = "fish-history-merge";
-          rev = "7e415b8ab843a64313708273cf659efbf471ad39";
-          hash = "sha256-oy32I92sYgEbeVX41Oic8653eJY5bCE/b7EjZuETjMI=";
-        };
-      }
       {
         name = "cd-ls.fish";
         src = pkgs.fetchFromGitHub {
@@ -129,7 +121,7 @@
       }
     ];
 
-    loginShellInit = ''
+    loginShellInit = /* bash */''
       if test -z "$SSH_AUTH_SOCK"
           if command -v ssh-agent >/dev/null
               eval (ssh-agent -c) >/dev/null
@@ -148,14 +140,6 @@
     '';
 
     functions = {
-      yy.body = /*fish*/''
-        set tmp (mktemp -t "yazi-cwd.XXXXXX")
-        yazi $argv --cwd-file="$tmp"
-        if set cwd (cat -- "$tmp"); and [ -n "$cwd" ]; and [ "$cwd" != "$PWD" ]
-            cd "$cwd"
-        end
-        rm -f -- "$tmp"
-      '';
       set_docker.body = /*fish*/''
         if count $argv >/dev/null
             set -gx DOCKER_HOST $argv[1]

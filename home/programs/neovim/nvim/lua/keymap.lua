@@ -62,7 +62,7 @@ end, { noremap = true, desc = "Copy as: line" })
 
 vim.cmd([[command CDC lcd %:p:h]])
 
-vim.keymap.set("n", "<A-g>", ":Neogit<cr>", { desc = "Neogit" })
+vim.keymap.set("n", "<A-g>", ":DiffviewOpen<cr>", { desc = "Neogit" })
 
 vim.keymap.set("n", "<space>D", ":DBUIToggle<CR>", { desc = "DBUI" })
 

@@ -105,7 +105,7 @@ function FloatPreview:_close(reason)
         -- if reason then
         --     vim.notify(string.format("fp close %s", reason))
         -- end
-        vim.api.nvim_win_close(self.win, true)
+        pcall(vim.api.nvim_win_close, self.win, true)
         self.win = nil
         st[self.buf] = nil
         st[self.path] = nil

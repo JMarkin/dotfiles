@@ -43,7 +43,8 @@
     dotenv-linter
     kubectl
     k9s
-    nur.repos.dustinblackman.oatmeal
+    yazi
+    # nur.repos.dustinblackman.oatmeal
     # cgrc
 
     # networking tools
@@ -88,6 +89,7 @@
     ../programs/gpg.nix
     ../programs/starship.nix
     ../programs/nix-flake-templates
+    ../programs/yazi.nix
   ];
 
   home.file = {

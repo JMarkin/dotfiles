@@ -213,3 +213,19 @@ augroup("local-highlight-attach", {
         end,
     },
 })
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+    pattern = "*",
+    once = true,
+    callback = function()
+        vim.api.nvim_set_hl(0, "LocalHighlight", { link = "Debug" })
+        vim.api.nvim_set_hl(0, "DiffAdd", { link = "Added" })
+        vim.api.nvim_set_hl(0, "DiffDelete", { link = "Removed" })
+        vim.api.nvim_set_hl(0, "DiffChange", { link = "Changed" })
+
+        vim.api.nvim_set_hl(0, "CursorLine", { bg = "#202020" })
+        vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#b0b0b0", bg = "#202020" })
+
+        vim.api.nvim_set_hl(0, "ColorColumn", { fg = "#b0b0b0", bg = "#202020" })
+    end,
+})

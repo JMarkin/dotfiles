@@ -32,13 +32,12 @@
     extra-platforms = aarch64-darwin x86_64-darwin
     experimental-features = nix-command flakes
   '';
+  nix.optimise.automatic = true;
 
   nix.gc = {
     automatic = lib.mkDefault true;
+    interval.Weekday = 0;
     options = lib.mkDefault "--delete-older-than 7d";
-  };
-  nix.settings = {
-    auto-optimise-store = false;
   };
 
   # fonts.fontDir.enable = true;

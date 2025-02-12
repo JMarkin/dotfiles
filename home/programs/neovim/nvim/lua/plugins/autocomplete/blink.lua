@@ -1,3 +1,6 @@
+local is_not_mini = require("funcs").is_not_mini
+local lf = require("largefiles")
+
 local context = {}
 
 -- https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/utils/api.lua
@@ -86,7 +89,7 @@ local call_minuet = function(cmp)
     return minuet_blink_map(cmp)
 end
 
-return {
+local blink = {
     "saghen/blink.cmp",
     lazy = true,
     event = { "InsertEnter", "CmdlineEnter" },
@@ -99,63 +102,18 @@ return {
         "JMarkin/cmp-diag-codes",
         { "saghen/blink.compat", opts = { impersonate_nvim_cmp = true } },
         { "xzbdmw/colorful-menu.nvim", config = true },
-        {
-            "milanglacier/minuet-ai.nvim",
-            config = function()
-                require("minuet").setup({
-                    notify = "verbose",
-                    request_timeout = 3,
-                    provider = "openai_fim_compatible",
-                    provider_options = {
-                        openai_fim_compatible = {
-                            name = "Ollama",
-                            api_key = "CODESTRAL_API_KEY",
-                            end_point = vim.g.ollama_chat_endpoint,
-                            model = "qwen2.5-coder:3b-instruct-q8_0",
-                            stream = true,
-                            optional = {
-                                max_tokens = 256,
-                                top_p = 0.9,
-                            },
-                        },
-                        -- codestral = {
-                        --     model = "codestral-latest",
-                        --     end_point = "https://codestral.mistral.ai/v1/fim/completions",
-                        --     api_key = "CODESTRAL_API_KEY",
-                        --     stream = true,
-                        --     optional = {
-                        --         stop = nil, -- the identifier to stop the completion generation
-                        --         max_tokens = nil,
-                        --     },
-                        -- },
-                    },
-                })
-            end,
-        },
+        -- "milanglacier/minuet-ai.nvim",
     },
     -- version = "*",
     build = "nix run .#build-plugin",
     -- On musl libc based systems you need to add this flag
     -- build = 'RUSTFLAGS="-C target-feature=-crt-static" cargo build --release',
-    -- init = function()
-    --     local orig_list_selection
-    --     vim.api.nvim_create_autocmd("CmdlineEnter", {
-    --         callback = function()
-    --             local list = require("blink.cmp.completion.list")
-    --             orig_list_selection = list.config.selection
-    --             list.config.selection = "manual"
-    --         end,
-    --     })
-    --     vim.api.nvim_create_autocmd("CmdlineLeave", {
-    --         callback = function()
-    --             if orig_list_selection then
-    --                 local list = require("blink.cmp.completion.list")
-    --                 list.config.selection = orig_list_selection
-    --             end
-    --         end,
-    --     })
-    -- end,
     opts = {
+        enabled = function()
+            return vim.b.completion ~= false
+                and not vim.tbl_contains({ "log" }, vim.bo.filetype)
+                and not lf.is_large_file(vim.api.nvim_get_current_buf(), true)
+        end,
         keymap = {
             cmdline = {
                 ["<CR>"] = {
@@ -210,7 +168,7 @@ return {
                 "snippet_forward",
                 "fallback",
             },
-            ["<C-z>"] = { call_minuet },
+            -- ["<C-z>"] = { call_minuet },
         },
         -- snippets = {
         --     expand = function(snippet)
@@ -254,6 +212,7 @@ return {
         },
 
         sources = {
+            -- cmdline = {},
             default = function(ctx)
                 if vim.bo.filetype == "sql" then
                     return { "dadbod", "ripgrep" }
@@ -301,11 +260,6 @@ return {
                         in_comment = false,
                     },
                 },
-                minuet = {
-                    name = "minuet",
-                    module = "minuet.blink",
-                    score_offset = 8, -- Gives minuet higher priority among suggestions
-                },
             },
         },
 
@@ -338,6 +292,21 @@ return {
                 },
             },
         }
+        -- if is_not_mini() then
+        --     opts.sources.providers.minuet = {
+        --         name = "minuet",
+        --         module = "minuet.blink",
+        --         score_offset = 8, -- Gives minuet higher priority among suggestions
+        --     }
+        -- end
         require("blink.cmp").setup(opts)
     end,
 }
+
+if is_not_mini() then
+    blink.build = "nix run .#build-plugin"
+else
+    blink.version = "*"
+end
+
+return blink

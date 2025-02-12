@@ -1,8 +1,5 @@
 return {
     "ThePrimeagen/refactoring.nvim",
-    opts = {
-        show_success_message = true,
-    },
     keys = {
         {
             "<leader>cr",
@@ -13,4 +10,9 @@ return {
             desc = "Select for Refactor",
         },
     },
+    config = function()
+        require("refactoring").setup({
+            show_success_message = true,
+        })
+    end,
 }

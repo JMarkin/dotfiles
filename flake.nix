@@ -17,12 +17,12 @@
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin/master";
 
-    nur = {
-      url = "github:nix-community/NUR";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # nur = {
+    #   url = "github:nix-community/NUR";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
-    # mac-app-util.url = "github:hraban/mac-app-util";
+    mac-app-util.url = "github:hraban/mac-app-util";
 
     #impermanence.url = "github:nix-community/impermanence/63f4d0443e32b0dd7189001ee1894066765d18a5";
 
@@ -37,7 +37,7 @@
 
   };
 
-  outputs = { self, nixpkgs, nixos, home-manager, agenix, darwin, nur, ... } @ inputs:
+  outputs = { self, nixpkgs, nixos, home-manager, agenix, darwin, mac-app-util, ... } @ inputs:
     let
       overlays = [
         inputs.neovim-nightly-overlay.overlays.default
@@ -45,9 +45,10 @@
         (import ./overlays/createnv.nix)
         (import ./overlays/jedi_language_server.nix)
         (import ./overlays/vpn_slice.nix)
-        (import ./overlays/ruff.nix)
-        nur.overlays.default
-        (import ./overlays/oatmeal.nix)
+        # (import ./overlays/neovide.nix)
+        # (import ./overlays/ruff.nix)
+        # nur.overlays.default
+        # (import ./overlays/oatmeal.nix)
       ];
 
       config = {
@@ -83,7 +84,7 @@
           pkgs = darwinPkgs;
 
           modules = [
-            # mac-app-util.homeManagerModules.default
+            mac-app-util.homeManagerModules.default
             ./home/users/kron_darwin.nix
           ];
         };

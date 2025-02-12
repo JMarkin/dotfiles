@@ -134,9 +134,9 @@ local function optimize_buffer(bufnr, path)
         vim.opt_local.undofile = false
     end
 
-    pcall_notify(function()
-        require("rainbow-delimiters").disable(bufnr)
-    end)
+    -- pcall_notify(function()
+    --     require("rainbow-delimiters").disable(bufnr)
+    -- end)
     pcall_notify(function()
         require("ufo").detach(bufnr)
     end)
@@ -145,8 +145,12 @@ local function optimize_buffer(bufnr, path)
     end)
 
     pcall_notify(function()
-        require('smear_cursor').enabled = false
+        require("local-highlight").detach(bufnr)
     end)
+
+    -- pcall_notify(function()
+    --     require('smear_cursor').enabled = false
+    -- end)
 
     if _type == FILE_TYPE.READ_ONLY then
         vim.opt_local.buftype = "nowrite"

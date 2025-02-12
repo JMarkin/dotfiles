@@ -65,12 +65,59 @@ return {
             dependencies = "nvim-treesitter",
         },
         "mfussenegger/nvim-dap-python",
+        "leoluz/nvim-dap-go",
     },
     config = function()
         local dap, dapui = require("dap"), require("dapui")
         require("dap-python").setup(require("utils.python_venv").getPythonEnv())
+        require("dap-go").setup()
 
-        dapui.setup()
+        dapui.setup({
+            mappings = {
+                -- Use a table to apply multiple mappings
+                expand = { "<CR>", "<2-LeftMouse>", "za" },
+            },
+            controls = {
+                enabled = vim.fn.exists("+winbar") == 1,
+                element = "repl",
+                icons = {
+                    pause = "",
+                    play = "(F5)",
+                    step_into = "(F11)",
+                    step_over = "(F10)",
+                    step_out = "(F12)",
+                    step_back = "(F9)",
+                    run_last = "(<leader>dl)",
+                    terminate = "",
+                    disconnect = "",
+                },
+            },
+            layouts = {
+                {
+                    -- You can change the order of elements in the sidebar
+                    elements = {
+                        -- Provide IDs as strings or tables with "id" and "size" keys
+                        { id = "breakpoints", size = 0.1 },
+                        { id = "watches", size = 0.1 },
+                        {
+                            id = "scopes",
+                            size = 0.45, -- Can be float or integer > 1
+                        },
+                        { id = "stacks", size = 0.25 },
+                    },
+                    size = 40,
+                    position = "left", -- Can be "left" or "right"
+                },
+                {
+                    elements = {
+                        "repl",
+                        "console",
+                    },
+                    size = 10,
+                    position = "bottom", -- Can be "bottom" or "top"
+                },
+            },
+        })
         dap.listeners.after.event_initialized["dapui_config"] = function()
             dapui.open()
         end
@@ -85,21 +132,21 @@ return {
     end,
     keys = {
         {
-            "<leader>Dc",
+            "<leader>dc",
             function()
                 require("dapui").close()
             end,
             desc = "Dap: UIClose",
         },
         {
-            "<leader>Do",
+            "<leader>do",
             function()
                 require("dapui").open()
             end,
             desc = "Dap: UIOpen",
         },
         {
-            "<leader>Dd",
+            "<leader>dd",
             function()
                 require("dapui").toggle()
             end,
@@ -134,35 +181,42 @@ return {
             desc = "Dap: step out",
         },
         {
-            "<leader>Db",
+            "<F9>",
+            function()
+                require("dap").step_back()
+            end,
+            desc = "Dap: step back",
+        },
+        {
+            "<leader>db",
             function()
                 require("dap").toggle_breakpoint()
             end,
             desc = "Dap: ToggleBreakpoint",
         },
         {
-            "<leader>DB",
+            "<leader>dB",
             function()
                 require("dap").set_breakpoint()
             end,
             desc = "Dap: SetBreakpoint",
         },
         {
-            "<leader>Dr",
+            "<leader>dr",
             function()
                 require("dap").repl.open()
             end,
             desc = "Dap: Repl",
         },
         {
-            "<leader>Dl",
+            "<leader>dl",
             function()
                 require("dap").run_last()
             end,
             desc = "Dap: run last",
         },
         {
-            "<leader>Dh",
+            "<leader>dh",
             function()
                 require("dap.ui.widgets").hover()
             end,
@@ -170,7 +224,7 @@ return {
             mode = { "n", "v" },
         },
         {
-            "<leader>Dp",
+            "<leader>dp",
             function()
                 require("dap.ui.widgets").preview()
             end,
@@ -178,7 +232,7 @@ return {
             mode = { "n", "v" },
         },
         {
-            "<leader>Df",
+            "<leader>df",
             function()
                 local widgets = require("dap.ui.widgets")
                 widgets.centered_float(widgets.frames)
@@ -186,7 +240,7 @@ return {
             desc = "Dap: Frames",
         },
         {
-            "<leader>Ds",
+            "<leader>ds",
             function()
                 local widgets = require("dap.ui.widgets")
                 widgets.centered_float(widgets.scopes)
@@ -194,7 +248,7 @@ return {
             desc = "Dap: Scopes",
         },
         {
-            "<leader>De",
+            "<leader>de",
             function(...)
                 require("dapui").float_element(...)
             end,
@@ -202,7 +256,7 @@ return {
             mode = "v",
         },
         {
-            "<leader>DE",
+            "<leader>dE",
             function(...)
                 require("dapui").eval(...)
             end,

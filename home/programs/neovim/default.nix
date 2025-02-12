@@ -99,7 +99,7 @@ in
     nodePackages.typescript-language-server
     docker-compose-language-service
     yaml-language-server
-    vim-language-server
+    # vim-language-server
     gopls
 
     # lsp features
@@ -124,7 +124,7 @@ in
 
   programs.neovim = {
     enable = true;
-    # package = pkgs.neovim;
+    package = pkgs.neovim;
     vimAlias = true;
     viAlias = true;
     coc.enable = false;

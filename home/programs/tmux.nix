@@ -2,7 +2,7 @@
 {
   programs.tmux = {
     enable = true;
-    escapeTime = 10;
+    escapeTime = 5;
     baseIndex = 1;
     clock24 = true;
 
@@ -19,8 +19,6 @@
       # bigger one
       set-window-option -g aggressive-resize
 
-      # Start windows and pane numbering with index 1 instead of 0
-      set -g base-index 1
       setw -g pane-base-index 1
 
       # re-number windows when one is closed
@@ -58,9 +56,6 @@
       unbind r
       bind r source-file ~/.tmux.conf \; display "Reloaded!"
 
-      # Use vim keybindings in copy mode
-      setw -g mode-keys vi
-
       # Update default binding of `Enter` and `Space to also use copy-pipe
       unbind -T copy-mode-vi Enter
       unbind -T copy-mode-vi Space
@@ -93,9 +88,6 @@
                          'setw synchronize-panes on; \
                           setw pane-active-border-style fg=red; \
                           setw pane-border-format       " #P - Pane Synchronization ON "'
-
-      # Faster command sequence
-      set -s escape-time 0
 
       # Have a very large history
       set -g history-limit 100000

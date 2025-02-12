@@ -216,6 +216,8 @@ return {
                 },
             },
             files = {
+                fd_opts = [[--color=never --hidden --type f --type l --exclude .git --strip-cwd-prefix ]],
+                -- fd_opts = [[--color=never --hidden --type f --type l --exclude .git ]],
                 actions = {
                     ["ctrl-g"] = { actions.toggle_ignore },
                     ["tab"] = false,

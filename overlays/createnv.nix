@@ -2,15 +2,17 @@ self: super: {
 
   createnv = super.rustPlatform.buildRustPackage {
     pname = "createnv";
-    version = "0.0.3";
+    version = "0.0.4";
 
     src = super.fetchFromGitHub {
       owner = "cuducos";
       repo = "createnv";
-      rev = "v0.0.3";
-      hash = "sha256-acB9ZkD4wzK1lhxI9RcpkVqEUn05z33O8MoSQU5myQ8=";
+      # v0,0.4
+      rev = "cf9b5dea8ed120462c50794322a53fd2d29ab9be";
+      hash = "sha256-vyKfNzV0v3fnthB2hl3glADcfo04IfqR4qzAa+VwBV8=";
     };
-    cargoHash = "sha256-RrW9cncSbuo7AXJTG+yJ3UfA2h9MUQ1mXc/vnTWoz/4=";
+    useFetchCargoVendor = true;
+    cargoHash = "sha256-9JIQxu5kqMl4WEisvE/wFJV16KKQqJPQKcSuATUbh7c=";
 
     doCheck = false;
 

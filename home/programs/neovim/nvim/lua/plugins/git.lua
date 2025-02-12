@@ -1,53 +1,5 @@
 return {
     {
-        "NeogitOrg/neogit",
-        enabled = false,
-        cmd = {
-            "Neogit",
-        },
-        dependencies = {
-            "nvim-lua/plenary.nvim", -- required
-            "sindrets/diffview.nvim", -- optional - Diff integration
-
-            -- Only one of these is needed.
-            -- "nvim-telescope/telescope.nvim", -- optional
-            "ibhagwan/fzf-lua", -- optional
-            -- "echasnovski/mini.pick", -- optional
-        },
-        opts = {
-            graph_style = "unicode",
-            git_services = {
-                ["github.com"] = "https://github.com/${owner}/${repository}/compare/${branch_name}?expand=1",
-                ["bitbucket.org"] = "https://bitbucket.org/${owner}/${repository}/pull-requests/new?source=${branch_name}&t=1",
-                ["gitlab.com"] = "https://gitlab.com/${owner}/${repository}/merge_requests/new?merge_request[source_branch]=${branch_name}",
-                ["scm.com"] = "https://scm.com/${owner}/${repository}/merge_requests/new?merge_request[source_branch]=${branch_name}",
-                ["azure.com"] = "https://dev.azure.com/${owner}/_git/${repository}/pullrequestcreate?sourceRef=${branch_name}&targetRef=${target}",
-            },
-        },
-    },
-    {
-        "FabijanZulj/blame.nvim",
-        enabled = false,
-        config = function()
-            require("blame").setup({
-                date_format = "%d.%m.%Y",
-                virtual_style = "right_align",
-                commit_detail_view = "vsplit",
-                merge_consecutive = true,
-                mappings = {
-                    commit_info = "o",
-                    stack_push = "<tab>",
-                    stack_pop = "<s-tab>",
-                    show_commit = "s",
-                    close = { "<esc>", "q" },
-                },
-            })
-        end,
-        keys = {
-            { "<leader>gB", ":BlameToggle window<cr>", desc = "Git blame" },
-        },
-    },
-    {
         "moyiz/git-dev.nvim",
         opts = {
             cd_type = "tab",
@@ -124,6 +76,12 @@ return {
             { "<leader>gR", ":Gitsign reset_buffer<cr>", desc = "Git: reset buffer" },
             { "<leader>gp", ":Gitsign preview_hunk_inline<cr>", desc = "Git: preview hunk" },
             { "ih", ":<C-U>Gitsigns select_hunk<CR>", desc = "Git: select hunk", mode = { "o", "x" } },
+        },
+    },
+    {
+        "tpope/vim-fugitive",
+        cmd = {
+            "Git",
         },
     },
 }

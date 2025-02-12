@@ -65,7 +65,7 @@ return {
 
     {
         "ibhagwan/smartyank.nvim",
-        enabled = true,
+        -- enabled = false,
         event = "ModeChanged",
         opts = {
             highlight = {
@@ -88,14 +88,16 @@ return {
 
     {
         "brenoprata10/nvim-highlight-colors",
-        enabled = true,
-        event = vim.g.post_load_events,
+        -- enabled = false,
+        -- event = vim.g.post_load_events,
         -- event = "VeryLazy",
         opts = {
-            render = "virtual",
+            render = "foreground",
+            exclude_filetypes = { "log" },
         },
-        config = function()
-            require("nvim-highlight-colors").turnOn()
+        cmd = { "HighlightColors" },
+        config = function(_, opts)
+            require("nvim-highlight-colors").setup(opts)
         end,
     },
 
@@ -119,37 +121,17 @@ return {
         event = { "BufAdd" },
     },
     {
-        "sphamba/smear-cursor.nvim",
-        enabled = false,
-        cond = function()
-            return not vim.g.neovide
-        end,
-        event = { "BufAdd", "ModeChanged" },
-        opts = { -- Default  Range
-            stiffness = 0.8, -- 0.6      [0, 1]
-            trailing_stiffness = 0.5, -- 0.3      [0, 1]
-            distance_stop_animating = 0.5, -- 0.1      > 0
-            hide_target_hack = false, -- true     boolean
-        },
-    },
-    {
         "tzachar/local-highlight.nvim",
         lazy = true,
+        -- enabled = false,
         opts = {
             insert_mode = false,
             file_types = {},
         },
     },
     {
-        "nvimdev/hlsearch.nvim",
-        enabled = false,
-        event = { "ModeChanged" },
-        config = function()
-            require("hlsearch").setup()
-        end,
-    },
-    {
         "prichrd/netrw.nvim",
+        -- enabled = false,
         config = function()
             require("netrw").setup({
                 -- File icons to use when `use_devicons` is false or if
@@ -168,24 +150,5 @@ return {
         "lewis6991/whatthejump.nvim",
         -- enabled = false,
         keys = { "<C-i>", "<C-o>" },
-    },
-    {
-        "mluders/comfy-line-numbers.nvim",
-        enabled = false,
-        opts = {},
-        config = function(_, opts)
-            local cln = require("comfy-line-numbers")
-            cln.setup(opts)
-
-            _G.get_label = function(n)
-                if n == 0 then
-                    return vim.fn.line(".") -- Return current line number when n is 0
-                elseif n > 0 and n <= #cln.config.labels then
-                    return cln.config.labels[n]
-                else
-                    return ""
-                end
-            end
-        end,
     },
 }

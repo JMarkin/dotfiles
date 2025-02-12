@@ -97,7 +97,7 @@ return {
                 "󰄉 " .. " Recent files",
                 ":lua require('fzf-lua').oldfiles({ multiprocess = true, cwd_only=true })<cr>"
             ),
-            dashboard.button("g", "󰄉 " .. " Git", ":Neogit <cr>"),
+            dashboard.button("g", "󰄉 " .. " Diff", ":DiffviewOpen <cr>"),
             dashboard.button("c", " " .. " Config", ":e .nvim.lua <CR>"),
             dashboard.button("u", "󰊳 " .. " Update Plugins", ":Lazy update<CR>"),
             dashboard.button("q", " " .. " Quit", ":qa<CR>"),

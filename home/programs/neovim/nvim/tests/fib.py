@@ -13,3 +13,8 @@ for index, fibonacci_number in zip(range(100), fib()):
     ti = time()
     print("{i:3}: {f: >21} {t:.3e}".format(i=index, f=fibonacci_number, t=ti - t))
     t = ti
+
+
+
+# Generate function where print first N of fibonachi numbers using fib function
+def print_fi

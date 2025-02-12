@@ -7,114 +7,124 @@ g.post_load_events = { "BufReadPost", "FileReadPost", "TermOpen" }
 g.pre_load_events = { "BufReadPre", "FileReadPre", "BufNewFile", "TermOpen" }
 
 -- stylua: ignore start
-g.snips_author                        = vim.env.AUTHOR or "Jury Markin"
-g.snips_email                         = vim.env.EMAIL or "me@jmarkin.ru"
-g.snips_github                        = vim.env.GITHUB or "https://github.com/JMarkin"
-opt.colorcolumn                       = '+1'
-opt.cursorlineopt                     = 'both'
-opt.cursorline                        = true
-g.cursorhold_updatetime               = 100
-opt.foldlevelstart                    = 99
-g.default_winwidth                    = 20
-g.default_winheight                   = 1
-opt.winwidth                          = g.default_winwidth
-opt.winheight                         = g.default_winheight
-opt.winminwidth                       = 20
-opt.pumheight                         = 20
-opt.splitright                        = true
-opt.splitbelow                        = true
-opt.equalalways                       = false
-opt.updatetime                        = 100
-opt.mousemoveevent                    = true
-opt.number                            = true
-g.numbertoggle                        = true
-opt.ruler                             = true
-opt.scrolloff                         = 4
-opt.sidescrolloff                     = 8
-opt.sidescroll                        = 0
-opt.signcolumn                        = 'yes:1'
-opt.swapfile                          = true
-opt.undofile                          = true
-opt.wrap                              = false
-opt.linebreak                         = true
-opt.breakindent                       = true
-opt.scrollback                        = 2000
-opt.conceallevel                      = 0
-opt.autowriteall                      = true
-opt.virtualedit                       = 'block'
-opt.mouse                             = "a"
-g.mapleader                           = "\\"
-opt.fileencoding                      = "utf-8"
-opt.encoding                          = "utf-8"
-opt.hidden                            = true
-opt.showmatch                         = false
-opt.hlsearch                          = true
-opt.autochdir                         = false
-opt.bs                                = "indent,eol,start"
-g.editorconfig                        = true
-opt.synmaxcol                         = 2000
-opt.exrc                              = true
-
-opt.guifont                           = "JetBrainsMonoNL Nerd Font Mono:h13"
-opt.guicursor                         = "a:block"
-opt.background                        = "dark"
-
-opt.completeopt                       = "menu,menuone,noselect"
-opt.tags                              = { "tags", ".git/tags" }
-
-opt.spell                             = false
-opt.spelllang                         = { "en", "ru" }
-g.spellfile_URL                       = "https://ftp.nluug.nl/vim/runtime/spell/"
-
-g.root_pattern                        = {
-                                            "pyproject.toml",
-                                            "package.json",
-                                            "Cargo.toml",
-                                            ".nvim.lua",
-                                            "Makefile",
-                                            ".git",
-                                            ".venv",
-                                        }
-opt.list                              = true
-opt.listchars                         = {
-                                          tab     = '→ ',
-                                          trail   = '·',
-                                          eol     = '↲',
-                                        }
-opt.fillchars                         = {
-                                          fold    = '·',
-                                          foldsep = ' ',
-                                          eob     = ' ',
-                                        }
-
-opt.tabstop                           = 4
-opt.softtabstop                       = 4
-opt.shiftwidth                        = 4
-opt.expandtab                         = true
-opt.smartindent                       = true
-opt.autoindent                        = true
-
-opt.ignorecase                        = true
-opt.smartcase                         = true
-
-opt.termguicolors                     = true
-
-opt.textwidth                         = 80
-
-opt.relativenumber                    = true
-opt.sessionoptions                    = 'curdir,folds,globals,help,tabpages,terminal,winsize'
-
-g.omni_sql_ignorecase                 = 1
+g.snips_author                                    = vim.env.AUTHOR or "Jury Markin"
+g.snips_email                                     = vim.env.EMAIL or "me@jmarkin.ru"
+g.snips_github                                    = vim.env.GITHUB or "https://github.com/JMarkin"
 
 
-g.ollama_host                         = vim.env.OLLAMA_HOST or "localhost"
-g.ollama_port                         = vim.env.OLLAMA_PORT or "11434"
-g.ollama_url                          = string.format("http://%s:%s", g.ollama_host, g.ollama_port)
-g.ollama_generate_endpoint            = string.format("%s/api/generate", g.ollama_url)
-g.ollama_chat_endpoint                = string.format("%s/api/chat", g.ollama_url)
+opt.foldlevelstart                                = 99
+-- opt.foldenable                                    = true
+-- opt.foldlevel                                     = 99
+-- opt.foldmethod                                    = "expr"
+-- opt.foldexpr                                      = "v:lua.vim.treesitter.foldexpr()"
 
 
-g.lsp_autostart                       = vim.env.LSP_AUTOSTART
+opt.colorcolumn                                   = '+1'
+opt.cursorlineopt                                 = 'both'
+opt.cursorline                                    = true
+g.cursorhold_updatetime                           = 200
+g.default_winwidth                                = 20
+g.default_winheight                               = 1
+opt.winwidth                                      = g.default_winwidth
+opt.winheight                                     = g.default_winheight
+opt.winminwidth                                   = 20
+opt.pumheight                                     = 20
+opt.splitright                                    = true
+opt.splitbelow                                    = true
+opt.equalalways                                   = false
+opt.updatetime                                    = 200
+opt.mousemoveevent                                = true
+opt.number                                        = true
+g.numbertoggle                                    = true
+opt.ruler                                         = true
+opt.scrolloff                                     = 4
+opt.sidescrolloff                                 = 8
+opt.sidescroll                                    = 0
+opt.signcolumn                                    = 'yes:1'
+opt.swapfile                                      = true
+opt.undofile                                      = true
+opt.wrap                                          = false
+opt.linebreak                                     = true
+opt.breakindent                                   = true
+opt.scrollback                                    = 2000
+opt.conceallevel                                  = 0
+opt.autowriteall                                  = true
+opt.virtualedit                                   = 'block'
+opt.mouse                                         = "a"
+g.mapleader                                       = "\\"
+opt.fileencoding                                  = "utf-8"
+opt.encoding                                      = "utf-8"
+opt.hidden                                        = true
+opt.showmatch                                     = false
+opt.hlsearch                                      = true
+opt.autochdir                                     = false
+opt.bs                                            = "indent,eol,start"
+g.editorconfig                                    = true
+opt.synmaxcol                                     = 2000
+opt.exrc                                          = true
+
+opt.guifont                                       = "JetBrainsMonoNL Nerd Font Mono:h13"
+opt.guicursor                                     = "a:block"
+opt.background                                    = "dark"
+
+opt.completeopt                                   = "menu,menuone,noselect,popup,noinsert,fuzzy"
+-- opt.completeopt                                   = "menu,menuone,popup,noselect"
+opt.tags                                          = { "tags", ".git/tags" }
+
+opt.spell                                         = false
+opt.spelllang                                     = { "en", "ru" }
+g.spellfile_URL                                   = "https://ftp.nluug.nl/vim/runtime/spell/"
+
+g.root_pattern                                    = {
+                                                        "pyproject.toml",
+                                                        "package.json",
+                                                        "Cargo.toml",
+                                                        ".nvim.lua",
+                                                        "Makefile",
+                                                        ".git",
+                                                        ".venv",
+                                                    }
+opt.list                                          = true
+opt.listchars                                     = {
+                                                      tab     = '→ ',
+                                                      trail   = '·',
+                                                      eol     = '↲',
+                                                    }
+opt.fillchars                                     = {
+                                                      fold    = '·',
+                                                      foldsep = ' ',
+                                                      eob     = ' ',
+                                                    }
+
+opt.tabstop                                       = 4
+opt.softtabstop                                   = 4
+opt.shiftwidth                                    = 4
+opt.expandtab                                     = true
+opt.smartindent                                   = true
+opt.autoindent                                    = true
+
+opt.ignorecase                                    = true
+opt.smartcase                                     = true
+
+opt.termguicolors                                 = true
+
+opt.textwidth                                     = 80
+
+opt.relativenumber                                = true
+opt.sessionoptions                                = 'curdir,folds,globals,help,tabpages,terminal,winsize'
+
+g.omni_sql_ignorecase                             = 1
+
+
+g.ollama_host                                     = vim.env.OLLAMA_HOST or "localhost"
+g.ollama_port                                     = vim.env.OLLAMA_PORT or "11434"
+g.ollama_url                                      = string.format("http://%s:%s", g.ollama_host, g.ollama_port)
+g.ollama_generate_endpoint                        = string.format("%s/api/generate", g.ollama_url)
+g.ollama_chat_endpoint                            = string.format("%s/api/chat", g.ollama_url)
+g.ollama_completions_endpoint                     = string.format("%s/v1/completions", g.ollama_url)
+
+
+g.lsp_autostart                                   = vim.env.LSP_AUTOSTART
 
 -- stylua: ignore end
 --
@@ -131,9 +141,7 @@ if g.modern_ui then
         foldclose = "",
         diff = "╱",
     })
-end
-
-if not vim.g.modern_ui then
+else
     opt.termguicolors = false
 end
 
@@ -215,8 +223,12 @@ for _, lang in ipairs({
     g.formatters_by_ft[lang] = { "prettierd" }
 end
 
-
-
-
-
-
+vim.g.rainbow_delimiters_highlight = {
+    "RainbowDelimiterRed",
+    "RainbowDelimiterYellow",
+    "RainbowDelimiterBlue",
+    "RainbowDelimiterOrange",
+    "RainbowDelimiterGreen",
+    "RainbowDelimiterViolet",
+    "RainbowDelimiterCyan",
+}

@@ -9,6 +9,7 @@ Terminal.set_keymaps = function(winnr, bufnr, command)
         vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)
     end
 
+    vim.keymap.set("t", "<c-\\><c-\\>", [[<C-\><C-n>]], opts)
     vim.keymap.set("t", "<C-h>", [[<C-\><C-N><C-w>h]], opts)
     vim.keymap.set("t", "<C-j>", [[<C-\><C-N><C-w>j]], opts)
     vim.keymap.set("t", "<C-k>", [[<C-\><C-N><C-w>k]], opts)
@@ -16,16 +17,15 @@ Terminal.set_keymaps = function(winnr, bufnr, command)
 
     vim.keymap.set("t", "<C-w>", [[<C-\><C-n><C-w>]], opts)
 
-    local close = function()
-        require("bufdel").delete_buffer_expr(nil, true)
+    vim.keymap.set({ "n" }, { "<A-q>", "<leader>q", "<space>q" }, function()
         vim.api.nvim_win_close(winnr, true)
-    end
-
-    vim.keymap.set({ "n" }, { "<A-q>", "<leader>q", "<space>q" }, close, opts)
-    vim.keymap.set({ "t" }, { "<A-q>" }, close, opts)
+    end, opts)
+    vim.keymap.set({ "t" }, { "<A-q>" }, function()
+        vim.api.nvim_win_close(winnr, true)
+    end, opts)
 end
 
-Terminal.configure = function(winnr, bufnr)
+Terminal.configure = function()
     -- vim.bo[bufnr].buflisted = false
     -- vim.opt_local.bufhidden = "wipe"
     vim.opt_local.swapfile = false
@@ -34,19 +34,39 @@ Terminal.configure = function(winnr, bufnr)
     vim.opt_local.winfixbuf = false
     vim.opt_local.winfixheight = true
     vim.opt_local.winfixwidth = true
-    vim.cmd("startinsert!")
-
-    -- vim.api.nvim_create_autocmd({ "TermLeave" }, {
-    --     callback = function(event)
-    --         vim.schedule(function()
-    --             vim.api.nvim_win_set_cursor(winnr, { 1, 0 })
-    --         end)
-    --     end,
-    --     buffer = bufnr,
-    -- })
 end
 
-Terminal.open = function(command, split_dir)
+local au_id = vim.api.nvim_create_augroup("terminal_nvim", { clear = true })
+
+vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter", "TermOpen" }, {
+    group = au_id,
+    callback = function(args)
+        if vim.startswith(vim.api.nvim_buf_get_name(args.buf), "term://") then
+            vim.cmd("startinsert!")
+        end
+    end,
+})
+
+vim.api.nvim_create_autocmd({ "TermClose" }, {
+    callback = function(params)
+        vim.schedule(function()
+            vim.api.nvim_buf_delete(params.buf, { force = true })
+        end)
+        vim.cmd("let &stl = &stl") -- redrawstatus | redrawtabline
+    end,
+    group = au_id,
+    desc = "on_term_close",
+})
+
+vim.api.nvim_create_autocmd({ "TermOpen" }, {
+    callback = function(params)
+        Terminal.configure()
+    end,
+    group = au_id,
+    desc = "on_term_open",
+})
+
+Terminal.open = function(command, split_dir, set_keymaps)
     if command == "" or command == nil then
         local shell = vim.o.shell
 
@@ -62,8 +82,13 @@ Terminal.open = function(command, split_dir)
     local bufnr = vim.api.nvim_get_current_buf()
     local winnr = vim.api.nvim_get_current_win()
 
-    Terminal.set_keymaps(winnr, bufnr, command)
-    Terminal.configure(winnr, bufnr)
+    if set_keymaps == nil then
+        set_keymaps = function()
+            Terminal.set_keymaps(winnr, bufnr, command)
+        end
+    end
+
+    set_keymaps()
 
     return bufnr
 end

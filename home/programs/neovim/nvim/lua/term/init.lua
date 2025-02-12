@@ -26,10 +26,10 @@ end
 vim.keymap.set("n", "<A-t>", term_open, { desc = "Open terminal" })
 vim.keymap.set("t", "<A-t>", term_open, { desc = "Open terminal" })
 
-vim.keymap.set("n", "<space>o", function()
-    local bufnr = term.open("oatmeal -e neovim --model phi4:latest", nil)
-    vim.keymap.del("t", "<esc>", { buffer = bufnr })
-end, { desc = "Oatmeal" })
+-- vim.keymap.set("n", "<space>o", function()
+--     local bufnr = term.open("oatmeal -e neovim --model phi4:latest", nil)
+--     vim.keymap.del("t", "<esc>", { buffer = bufnr })
+-- end, { desc = "Oatmeal" })
 
 vim.keymap.set("n", "<space>k", function()
     local out = vim.system({ "fd", "-a", "--glob", "*yaml", vim.env.HOME .. "/.kube/configs" }, { text = true }):wait()
@@ -47,7 +47,6 @@ vim.keymap.set("n", "<space>k", function()
         if not choice then
             return
         end
-        local bufnr = term.open(string.format("k9s --kubeconfig %s", choice), nil)
-        vim.keymap.del("t", "<esc>", { buffer = bufnr })
+        term.open(string.format("k9s --kubeconfig %s", choice), nil, function() end)
     end)
 end, { desc = "K9S" })

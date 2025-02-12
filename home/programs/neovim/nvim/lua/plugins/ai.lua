@@ -1,6 +1,92 @@
+local PROMPTS = {
+    ["Code Expert"] = {
+        strategy = "chat",
+        description = "Get some special advice from an LLM",
+        opts = {
+            modes = { "v" },
+            mapping = "<leader>cE",
+            short_name = "expert",
+            auto_submit = true,
+            stop_context_insertion = true,
+            user_prompt = true,
+        },
+        prompts = {
+            {
+                role = "system",
+                content = function(context)
+                    return "I want you to act as a senior "
+                        .. context.filetype
+                        .. " developer. I will ask you specific questions and I want you to return concise explanations and codeblock examples."
+                end,
+            },
+            {
+                role = "user",
+                content = function(context)
+                    local text = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
+
+                    return "I have the following code:\n\n```" .. context.filetype .. "\n" .. text .. "\n```\n\n"
+                end,
+                opts = {
+                    contains_code = true,
+                },
+            },
+        },
+    },
+
+    ["Comments"] = {
+        strategy = "inline",
+        description = "Add comments to not simplify ",
+        opts = {
+            modes = { "v" },
+            short_name = "comments",
+            auto_submit = true,
+            stop_context_insertion = true,
+            user_prompt = false,
+        },
+        prompts = {
+            {
+                role = "system",
+                content = function(context)
+                    return "I want you to act as a expert of "
+                        .. context.filetype
+                        .. "\n"
+                        .. [[
+You must:
+- Answer without ```
+- Avoid wrapping the whole response in triple backticks.
+]]
+                end,
+            },
+            {
+                role = "user",
+                content = function(context)
+                    local text = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
+
+                    return "I have the following code:\n\n```"
+                        .. context.filetype
+                        .. "\n"
+                        .. text
+                        .. "\n```\n Please add short comments on not simply cases.\n"
+                end,
+                opts = {
+                    contains_code = true,
+                },
+            },
+        },
+    },
+}
+
+PROMPTS["Comments Ru"] = vim.deepcopy(PROMPTS["Comments"])
+PROMPTS["Comments Ru"].opts.short_name = "comments_ru"
+PROMPTS["Comments Ru"].prompts[2].content = function(context)
+    return PROMPTS["Comments"].prompts[2].content(context) .. "\n Ответь кратко на русском."
+end
+
 return {
     {
         "olimorris/codecompanion.nvim",
+        dev = true,
+        enabled = true,
         dependencies = {
             "nvim-lua/plenary.nvim",
             "nvim-treesitter/nvim-treesitter",
@@ -75,7 +161,6 @@ When given a task:
             strategies = {
                 chat = {
                     adapter = "ollama_deepseek",
-                    -- adapter = "openui",
                     keymaps = {
                         options = {
                             modes = {
@@ -218,36 +303,10 @@ When given a task:
                     },
                 },
                 inline = { adapter = "ollama" },
-                -- inline = { adapter = "openui" },
                 agent = { adapter = "ollama" },
-                -- agent = { adapter = "openui" },
                 cmd = { adapter = "ollama" },
-                -- cmd = { adapter = "openui" },
             },
             adapters = {
-                openui = function()
-                    return require("codecompanion.adapters").extend("openai_compatible", {
-                        env = {
-                            url = "https://ollama.jmarkin.ru",
-                            api_key = "OPENUI_KEY",
-                            chat_url = "/api/chat/completions",
-                            model_url = "/api/models",
-                        },
-                        schema = {
-                            model = {
-                                default = "deepseek-r1:7b-qwen-distill-q8_0",
-                                -- default = "qwen2.5-coder:3b-instruct-q8_0",
-                                -- default = "phi4:latest",
-                            },
-                            num_ctx = {
-                                default = 16384,
-                            },
-                            num_predict = {
-                                default = -1,
-                            },
-                        },
-                    })
-                end,
                 ollama_deepseek = function()
                     return require("codecompanion.adapters").extend("ollama", {
                         env = {
@@ -305,47 +364,7 @@ When given a task:
                     })
                 end,
             },
-            prompt_library = {
-                ["Code Expert"] = {
-                    strategy = "chat",
-                    description = "Get some special advice from an LLM",
-                    opts = {
-                        modes = { "v" },
-                        short_name = "expert",
-                        auto_submit = true,
-                        stop_context_insertion = true,
-                        user_prompt = true,
-                    },
-                    prompts = {
-                        {
-                            role = "system",
-                            content = function(context)
-                                return "I want you to act as a senior "
-                                    .. context.filetype
-                                    .. " developer. I will ask you specific questions and I want you to return concise explanations and codeblock examples."
-                            end,
-                        },
-                        {
-                            role = "user",
-                            content = function(context)
-                                local text = require("codecompanion.helpers.actions").get_code(
-                                    context.start_line,
-                                    context.end_line
-                                )
-
-                                return "I have the following code:\n\n```"
-                                    .. context.filetype
-                                    .. "\n"
-                                    .. text
-                                    .. "\n```\n\n"
-                            end,
-                            opts = {
-                                contains_code = true,
-                            },
-                        },
-                    },
-                },
-            },
+            prompt_library = PROMPTS,
         },
         config = function(_, opts)
             require("codecompanion").setup(opts)

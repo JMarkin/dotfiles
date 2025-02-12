@@ -22,7 +22,8 @@ GET ya.ru
 
 ###
 # ollama
-POST http://localhost:11434/api/chat
+@ollama = http://192.168.88.15:11434
+POST {{ollama}}/api/generate
 Content-Type: application/json
 
 {
@@ -44,5 +45,7 @@ Content-Type: application/json
       "content": "rust mongodb find many documents by vector of ids"
     }
   ],
-  "options":{"temperature":0.8,"num_predict":-1,"seed":0,"repeat_penalty":1.1,"mirostat":0,"repeat_last_n":64,"num_ctx":16384,"mirostat_tau":5,"top_p":0.9,"mirostat_eta":0.1,"tfs_z":1,"top_k":40},"model":"qwen2.5-coder:latest","sync":true}
+  "model":"qwen2.5-coder:7b-base-q4_1",
+  "stream": false
+}
 
