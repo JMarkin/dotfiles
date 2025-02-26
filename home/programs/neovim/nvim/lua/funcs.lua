@@ -1,4 +1,18 @@
+local autocmd = vim.api.nvim_create_autocmd
+local groupid = vim.api.nvim_create_augroup
+
 local M = {}
+-- copy from https://github.com/Bekaboo/nvim/blob/master/lua/core/autocmds.lua
+---@param group string
+---@vararg { [1]: string|string[], [2]: vim.api.keyset.create_autocmd }
+---@return nil
+M.augroup = function(group, ...)
+    local id = groupid(group, { clear = true })
+    for _, a in ipairs({ ... }) do
+        a[2].group = id
+        autocmd(unpack(a))
+    end
+end
 
 M.pcall_notify = function(func)
     local ok, out = pcall(func)

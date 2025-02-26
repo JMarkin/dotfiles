@@ -3,6 +3,7 @@ return {
         "moyiz/git-dev.nvim",
         opts = {
             cd_type = "tab",
+            repositories_dir = vim.fn.expand("~/projects"),
             opener = function(dir)
                 vim.cmd("tabnew")
                 -- require("yazi").yazi({}, vim.fn.fnameescape(dir))
@@ -15,7 +16,7 @@ return {
         },
         keys = {
             {
-                "<leader>o",
+                "<leader>go",
                 function()
                     local repo = vim.fn.input("Repository name / URI: ")
                     if repo ~= "" then

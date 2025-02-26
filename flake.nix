@@ -45,7 +45,8 @@
         (import ./overlays/createnv.nix)
         (import ./overlays/jedi_language_server.nix)
         (import ./overlays/vpn_slice.nix)
-        # (import ./overlays/neovide.nix)
+        (import ./overlays/neovide.nix)
+        (import ./overlays/st)
         # (import ./overlays/ruff.nix)
         # nur.overlays.default
         # (import ./overlays/oatmeal.nix)

@@ -3,7 +3,6 @@ local utils = require("lsp.utils")
 local M = {
     setup = function()
         local opts = {
-            before_init = require("neodev.lsp").before_init,
             settings = {
                 Lua = {
                     telemetry = {

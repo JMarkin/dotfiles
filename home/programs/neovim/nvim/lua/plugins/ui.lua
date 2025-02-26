@@ -2,6 +2,7 @@ return {
     -- Better `vim.notify()`
     {
         "rcarriga/nvim-notify",
+        enabled = false,
         keys = {
             {
                 "<leader>un",
@@ -31,32 +32,6 @@ return {
     },
 
     -- better vim.ui
-    {
-        "stevearc/dressing.nvim",
-        lazy = true,
-        config = function()
-            require("dressing").setup({
-                input = {
-                    win_options = {
-                        winhighlight = vim.g.dressing_winhighlight,
-                    },
-                    override = function(conf)
-                        conf.col = -1
-                        conf.row = 0
-                        return conf
-                    end,
-                },
-            })
-        end,
-        init = function()
-            ---@diagnostic disable-next-line: duplicate-set-field
-            vim.ui.input = function(...)
-                require("lazy").load({ plugins = { "dressing.nvim" } })
-                return vim.ui.input(...)
-            end
-        end,
-    },
-
     -- icons
     { "nvim-tree/nvim-web-devicons", lazy = true },
 

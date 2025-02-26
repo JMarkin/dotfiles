@@ -124,7 +124,7 @@ M.pick_venv = function()
         if not choice then
             return
         end
-        print(choice.path)
+        vim.notify(string.format("select python %s", choice.path))
     end)
 end
 

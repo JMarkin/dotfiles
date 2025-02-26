@@ -85,14 +85,6 @@ vim.keymap.set(
     { desc = "Toggle autoresize height width buffers of window" }
 )
 
-local function ToggleHlSearch()
-    if vim.o.hlsearch then
-        vim.o.hlsearch = false
-    else
-        vim.o.hlsearch = true
-    end
-end
-vim.keymap.set("n", "<space>H", ToggleHlSearch, { desc = "Toggle hlsearch" })
 
 vim.keymap.set("n", "<leader>L", function()
     vim.bo.ft = "log"

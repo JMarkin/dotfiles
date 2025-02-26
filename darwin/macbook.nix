@@ -24,7 +24,7 @@
   documentation.man.enable = true;
 
   # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
+  nix.enable = true;
   nix.package = pkgs.nixVersions.latest;
   nix.settings.trusted-users = [ "root" "kron" ];
   nix.extraOptions = ''

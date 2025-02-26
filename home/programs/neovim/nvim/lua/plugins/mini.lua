@@ -93,7 +93,7 @@ return {
 
                 return file
             end)()
-
+            -- last position
             misc.setup_restore_cursor({
                 ignore_filetype = { "largefile", "gitcommit", "gitrebase", "svn", "hgcommit" },
             })

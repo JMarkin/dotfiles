@@ -61,7 +61,7 @@ local keys = {
     {
         "]d",
         function()
-           vim.diagnostic.goto_next({ count = vim.v.count1, float = true })
+            vim.diagnostic.goto_next({ count = vim.v.count1, float = true })
         end,
         { desc = "Jump to the next diagnostic in the current buffer", table.unpack(opts_l) },
     },
@@ -71,6 +71,11 @@ local keys = {
             vim.diagnostic.goto_prev({ count = -vim.v.count1, float = true })
         end,
         { desc = "Jump to the previous diagnostic in the current buffer", table.unpack(opts_l) },
+    },
+    {
+        "<space>T",
+        ":Namu symbols<cr>",
+        { desc = "Tagbar", table.unpack(opts_l) },
     },
 }
 
@@ -84,13 +89,50 @@ local function on_attach(client, bufnr)
         return 0
     end
 
+    local prev_keymaps = {}
+
     for _, keymap in ipairs(keys) do
         if #keymap == 3 then
             table.insert(keymap, 1, "n")
         end
+
+        if type(keymap[2]) == "table" then
+            for _, mode in ipairs(keymap[2]) do
+                table.insert(prev_keymaps, vim.fn.maparg(name, mode, false, true))
+            end
+        else
+            table.insert(prev_keymaps, vim.fn.maparg(name, keymap[2], false, true))
+        end
+
         keymap[4].buffer = bufnr
+
         vim.keymap.set(table.unpack(keymap))
     end
+
+    if client.supports_method(methods.textDocument_codeAction) then
+        table.insert(prev_keymaps, vim.fn.maparg("gra", "n", false, true))
+        table.insert(prev_keymaps, vim.fn.maparg("gra", "v", false, true))
+        vim.keymap.set({ "n", "v" }, "gra", function()
+            require("fzf-lua").lsp_code_actions({
+                winopts = {
+                    relative = "cursor",
+                    width = 0.6,
+                    height = 0.6,
+                    row = 1,
+                    preview = { vertical = "up:70%" },
+                },
+            })
+        end, { desc = "Code actions" })
+    end
+
+    vim.api.nvim_create_autocmd("LspDetach", {
+        buffer = bufnr,
+        callback = function()
+            for _, keymap in ipairs(prev_keymaps) do
+                pcall(vim.fn.mapset, keymap)
+            end
+        end,
+    })
 
     if client.name == "gopls" then
         -- workaround for gopls not supporting semanticTokensProvider
@@ -110,20 +152,6 @@ local function on_attach(client, bufnr)
 
     if not client.supports_method(methods.textDocument_hover) then
         client.server_capabilities.hoverProvider = false
-    end
-
-    if client.supports_method(methods.textDocument_codeAction) then
-        vim.keymap.set({ "n", "v" }, "gra", function()
-            require("fzf-lua").lsp_code_actions({
-                winopts = {
-                    relative = "cursor",
-                    width = 0.6,
-                    height = 0.6,
-                    row = 1,
-                    preview = { vertical = "up:70%" },
-                },
-            })
-        end, { desc = "Code actions" })
     end
 
     if client.supports_method(methods.textDocument_inlayHint) then
@@ -167,42 +195,34 @@ M.on_attach = on_attach
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 
+-- copy from blink.cmp
 capabilities.textDocument = {
     foldingRange = {
-        dynamicRegistration = true,
+        dynamicRegistration = false,
         lineFoldingOnly = true,
     },
     completion = {
-        dynamicRegistration = true,
+        dynamicRegistration = false,
         completionItem = {
             snippetSupport = true,
-            commitCharactersSupport = true,
+            commitCharactersSupport = false, -- todo:
+            documentationFormat = { "markdown", "plaintext" },
             deprecatedSupport = true,
-            preselectSupport = true,
-            tagSupport = {
-                valueSet = {
-                    1, -- Deprecated
-                },
-            },
-            insertReplaceSupport = true,
+            preselectSupport = false, -- todo:
+            tagSupport = { valueSet = { 1 } }, -- deprecated
+            insertReplaceSupport = true, -- todo:
             resolveSupport = {
                 properties = {
                     "documentation",
                     "detail",
                     "additionalTextEdits",
-                    "sortText",
-                    "filterText",
-                    "insertText",
-                    "textEdit",
-                    "insertTextFormat",
-                    "insertTextMode",
+                    "command",
+                    "data",
                 },
             },
             insertTextModeSupport = {
-                valueSet = {
-                    1, -- asIs
-                    2, -- adjustIndentation
-                },
+                -- todo: support adjustIndentation
+                valueSet = { 1 }, -- asIs
             },
             labelDetailsSupport = true,
         },

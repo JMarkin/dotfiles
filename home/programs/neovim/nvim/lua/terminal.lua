@@ -2,12 +2,8 @@ local Terminal = {}
 
 Terminal.close_augroup = "close_augroup"
 
-Terminal.set_keymaps = function(winnr, bufnr, command)
+Terminal.set_keymaps = function(winnr, bufnr)
     local opts = { buffer = bufnr }
-
-    if not string.find(command, "fish") then
-        vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)
-    end
 
     vim.keymap.set("t", "<c-\\><c-\\>", [[<C-\><C-n>]], opts)
     vim.keymap.set("t", "<C-h>", [[<C-\><C-N><C-w>h]], opts)
@@ -61,12 +57,14 @@ vim.api.nvim_create_autocmd({ "TermClose" }, {
 vim.api.nvim_create_autocmd({ "TermOpen" }, {
     callback = function(params)
         Terminal.configure()
+        local winnr = vim.api.nvim_get_current_win()
+        Terminal.set_keymaps(winnr, params.buf)
     end,
     group = au_id,
     desc = "on_term_open",
 })
 
-Terminal.open = function(command, split_dir, set_keymaps)
+Terminal.open = function(command, split_dir)
     if command == "" or command == nil then
         local shell = vim.o.shell
 
@@ -80,15 +78,6 @@ Terminal.open = function(command, split_dir, set_keymaps)
     vim.cmd(split_dir .. " | redraw! | terminal " .. command)
 
     local bufnr = vim.api.nvim_get_current_buf()
-    local winnr = vim.api.nvim_get_current_win()
-
-    if set_keymaps == nil then
-        set_keymaps = function()
-            Terminal.set_keymaps(winnr, bufnr, command)
-        end
-    end
-
-    set_keymaps()
 
     return bufnr
 end

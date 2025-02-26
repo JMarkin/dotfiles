@@ -1,4 +1,4 @@
-local term = require("term.terminal")
+local term = require("terminal")
 
 vim.api.nvim_create_user_command("Tterm", function(input)
     term.open(input.args)
@@ -47,6 +47,6 @@ vim.keymap.set("n", "<space>k", function()
         if not choice then
             return
         end
-        term.open(string.format("k9s --kubeconfig %s", choice), nil, function() end)
+        term.open(string.format("k9s --insecure-skip-tls-verify --all-namespaces --kubeconfig %s", choice), nil)
     end)
 end, { desc = "K9S" })

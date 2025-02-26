@@ -10,8 +10,8 @@
       src = pkgs.fetchFromGitHub {
         owner = "ribru17";
         repo = "bamboo.nvim";
-        rev = "57e1bff1c0df29d7ec0071baf49210c48fc4a98b";
-        hash = "sha256-HhRrap1JBiFMcwHkR77JGqvay777bp281G6+xE+IoW8=";
+        rev = "d100fc78184ba9365fc6a4988518652e792cf6ec";
+        hash = "sha256-3lsc55BkG11UZoCbGSkB6RQ2H329LDvY+UHE6YXxCzs=";
       };
       file = "extras/bat/bamboo.tmTheme";
     };

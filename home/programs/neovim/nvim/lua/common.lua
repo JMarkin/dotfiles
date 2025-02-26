@@ -125,6 +125,12 @@ g.ollama_completions_endpoint                     = string.format("%s/v1/complet
 
 
 g.lsp_autostart                                   = vim.env.LSP_AUTOSTART
+opt.laststatus                                    = 3
+
+opt.wildignore:append({ -- Ignore on file name completion.
+	".DS_store",
+	"**/node_modules/**",
+})
 
 -- stylua: ignore end
 --
@@ -137,10 +143,14 @@ opt.shortmess:append({ W = false, I = true, c = true, C = true, A = false })
 if g.modern_ui then
     opt.listchars:append({ nbsp = "␣" })
     opt.fillchars:append({
+        eob = " ",
+        foldsep = " ",
         foldopen = "",
         foldclose = "",
         diff = "╱",
     })
+
+    vim.api.nvim_command("colorscheme ex-bamboo")
 else
     opt.termguicolors = false
 end

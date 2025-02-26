@@ -45,6 +45,8 @@ vim2ext(ext, "*.gotmpl,helmfile*.yaml", "helm")
 vim.filetype.add({
     extension = ext,
     pattern = {
+        ["openapi.*%.ya?ml"] = "yaml.openapi",
+        ["openapi.*%.json"] = "json.openapi",
         ["*%.snip"] = "vim",
         ["*%.nginx"] = "nginx",
         [".*nginx.*%.conf"] = "nginx",

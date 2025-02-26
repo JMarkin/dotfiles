@@ -118,6 +118,7 @@ M.lsps = {
     jinja_lsp = default_lsp("jinja-lsp", "jinja_lsp"),
     gopls = require("lsp.gopls"),
     golangci_lint_ls = default_lsp("golangci-lint-langserver", "golangci_lint_ls"),
+    vacuum = default_lsp("vacuum", "vacuum"),
 }
 
 M.setup = function()

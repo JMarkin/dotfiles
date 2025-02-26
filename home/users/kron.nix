@@ -53,6 +53,7 @@
     dnsutils
     socat
     nmap
+    termshark
 
     # lang
     llvm

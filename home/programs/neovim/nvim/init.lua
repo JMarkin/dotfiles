@@ -8,7 +8,6 @@ if not vim.uv then
 end
 
 require("common")
-require("indent")
 local default_vim_keymap_set = vim.keymap.set
 
 vim.keymap.set = function(mode, lhs, rhs, opts)
@@ -20,14 +19,7 @@ vim.keymap.set = function(mode, lhs, rhs, opts)
         default_vim_keymap_set(mode, lhs, rhs, opts)
     end
 end
-require("keymap")
 require("funcs")
-require("au")
-require("term")
-
-if vim.g.neovide then
-    require("neovide")
-end
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
@@ -62,7 +54,7 @@ require("lazy").setup({ import = "plugins" }, {
         },
         reset_packpath = true, -- reset the package path to improve startup time
         rtp = {
-            reset = false, -- reset the runtime path to $VIMRUNTIME and your config directory
+            reset = true, -- reset the runtime path to $VIMRUNTIME and your config directory
             ---@type string[]
             paths = {}, -- add any custom paths here that you want to includes in the rtp
             ---@type string[] list any plugins you want to disable here
@@ -81,9 +73,9 @@ require("lazy").setup({ import = "plugins" }, {
     profiling = {
         -- Enables extra stats on the debug tab related to the loader cache.
         -- Additionally gathers stats about all package.loaders
-        loader = true,
+        loader = false,
         -- Track each new require in the Lazy profiling tab
-        require = true,
+        require = false,
     },
     pkg = {
         enabled = true,

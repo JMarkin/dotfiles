@@ -109,13 +109,8 @@ local blink = {
     -- On musl libc based systems you need to add this flag
     -- build = 'RUSTFLAGS="-C target-feature=-crt-static" cargo build --release',
     opts = {
-        enabled = function()
-            return vim.b.completion ~= false
-                and not vim.tbl_contains({ "log" }, vim.bo.filetype)
-                and not lf.is_large_file(vim.api.nvim_get_current_buf(), true)
-        end,
-        keymap = {
-            cmdline = {
+        cmdline = {
+            keymap = {
                 ["<CR>"] = {
                     function(cmp)
                         return cmp.accept({
@@ -133,11 +128,13 @@ local blink = {
                 ["<Tab>"] = { "select_next" },
                 ["<S-Tab>"] = { "select_prev" },
             },
+        },
+        keymap = {
             preset = "default",
             ["<C-a>"] = { "hide" },
             ["<C-k>"] = { "show_documentation", "hide_documentation" },
             ["<c-b>"] = {},
-            ["<CR>"] = { "accept", "fallback" },
+            -- ["<CR>"] = { "accept", "fallback" },
             ["<C-e>"] = { "scroll_documentation_up", "fallback" },
             ["<C-d>"] = { "scroll_documentation_down", "fallback" },
             ["<C-p>"] = { "select_prev" },
@@ -145,9 +142,7 @@ local blink = {
             ["<S-Tab>"] = {
                 function(cmp)
                     local neogen = require("neogen")
-                    if require("blink.cmp.completion.windows.menu").win:is_open() then
-                        return cmp.select_prev()
-                    elseif neogen.jumpable(true) then
+                    if neogen.jumpable(true) then
                         vim.schedule(neogen.jump_prev)
                         return true
                     end
@@ -158,15 +153,33 @@ local blink = {
             ["<Tab>"] = {
                 function(cmp)
                     local neogen = require("neogen")
-                    if require("blink.cmp.completion.windows.menu").win:is_open() then
-                        return cmp.select_next()
-                    elseif neogen.jumpable() then
+                    if neogen.jumpable() then
                         vim.schedule(neogen.jump_next)
                         return true
                     end
                 end,
                 "snippet_forward",
                 "fallback",
+            },
+            ["<c-x><c-g>"] = {
+                function()
+                    require("blink-cmp").show({ providers = { "ripgrep" } })
+                end,
+            },
+            ["<c-x><c-f>"] = {
+                function()
+                    require("blink-cmp").show({ providers = { "path" } })
+                end,
+            },
+            ["<c-x><c-]>"] = {
+                function()
+                    require("blink-cmp").show({ providers = { "tags" } })
+                end,
+            },
+            ["<c-x><c-o>"] = {
+                function()
+                    require("blink-cmp").show({ providers = { "lsp" } })
+                end,
             },
             -- ["<C-z>"] = { call_minuet },
         },
@@ -212,19 +225,25 @@ local blink = {
         },
 
         sources = {
-            -- cmdline = {},
             default = function(ctx)
                 if vim.bo.filetype == "sql" then
-                    return { "dadbod", "ripgrep" }
+                    return { "dadbod" }
+                elseif lf.is_large_file(vim.api.nvim_get_current_buf(), true) then
+                    return { "tags", "omni" }
                 elseif vim.bo.filetype == "codecompanion" then
-                    return { "codecompanion", "tags", "ripgrep" }
+                    return { "codecompanion", "tags", "buffer" }
                 elseif context.in_treesitter_capture("comment") or context.in_syntax_group("Comment") then
-                    return { "diag-codes", "buffer", "snippets", "ripgrep" }
-                else
-                    return { "lsp", "path", "tags", "snippets", "buffer" }
+                    return { "diag-codes", "snippets", "ripgrep" }
                 end
+                return { "lazydev", "lsp", "tags", "snippets", "buffer" }
             end,
             providers = {
+                lazydev = {
+                    name = "LazyDev",
+                    module = "lazydev.integrations.blink",
+                    -- make lazydev completions top priority (see `:h blink.cmp`)
+                    score_offset = 100,
+                },
                 ripgrep = {
                     module = "blink-ripgrep",
                     name = "Ripgrep",
@@ -264,7 +283,7 @@ local blink = {
         },
 
         appearance = {
-            use_nvim_cmp_as_default = true,
+            use_nvim_cmp_as_default = false,
             nerd_font_variant = "mono",
         },
 

@@ -1,6 +1,26 @@
 if vim.g.modern_ui then
     return {
         {
+            "aileot/ex-colors.nvim",
+            lazy = true,
+            cmd = "ExColors",
+            ---@type ExColors.Config
+            config = function()
+                require("ex-colors").setup({
+                    required_syntaxes = {
+                        "diff", -- "diffAdded", "diffRemoved", "diffChanged"
+                        "html",
+                        "markdown",
+                    },
+                    included_patterns = require("ex-colors.presets").recommended.included_patterns + {
+                        "BlinkCmp",
+                        "GitSigns",
+                        "RainbowDelimiter",
+                    },
+                })
+            end,
+        },
+        {
             "sekke276/dark_flat.nvim",
             enabled = false,
             lazy = false,
