@@ -34,7 +34,7 @@
           --pid-file=/tmp/openconnect_"$name".pid -u "$VPN_USER" "$VPN_URL" -s "$cmd"
     }
     vpn-ocn-down() {
-      sudo kill -INT (cat /tmp/openconnect_$name.pid)
+      sudo kill -INT $(cat /tmp/openconnect_$name.pid)
     }
     '';
 
