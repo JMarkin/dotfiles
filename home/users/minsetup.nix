@@ -31,8 +31,6 @@
     iperf3
     dnsutils
     termshark
-
-    neovim
   ];
 
   programs.ripgrep.enable = true;
