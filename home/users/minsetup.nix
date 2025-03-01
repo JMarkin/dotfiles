@@ -1,6 +1,7 @@
 { config, pkgs, lib, ... }:
 
 {
+
   programs.home-manager.enable = true;
   home.activation.report-changes = config.lib.dag.entryAnywhere ''
     ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff $oldGenPath $newGenPath
@@ -9,6 +10,9 @@
   home.username = "kron";
 
   home.stateVersion = "25.05";
+
+
+  home.homeDirectory = "/home/kron";
 
   home.packages = with pkgs; [
     zip
@@ -24,51 +28,13 @@
     curl
     man
     ps
-
-    # utils
-    jaq
-    rsync
-    delta
-    universal-ctags
-    docker-compose
-    dust
-    tree-sitter
-    rustic-rs
-    ptags
-    gnumake
-    hyperfine
-    createnv
-    dotenv-linter
-    kubectl
-    k9s
-    yazi
-    # nur.repos.dustinblackman.oatmeal
-    # cgrc
-
-    # networking tools
-    mtr
     iperf3
     dnsutils
-    socat
-    nmap
     termshark
 
-    # lang
-    llvm
-    clang
-    mold
-    rustc
-    cargo
-    go
-    nodejs_22
-
-    # for rustc
-    iconv
-    libiconv
-
+    neovim
   ];
 
-  programs.fastfetch.enable = true;
   programs.ripgrep.enable = true;
   programs.fd.enable = true;
   programs.fzf.enable = true;
@@ -76,24 +42,36 @@
   programs.eza.enable = true;
   programs.btop.enable = true;
 
+  programs.neovim = {
+    enable = true;
+    vimAlias = true;
+    viAlias = true;
+    coc.enable = false;
+    defaultEditor = true;
+    vimdiffAlias = true;
+
+    configure = {
+      extraLuaConfig = (builtins.readFile ../programs/neovim/nvim/lua/common.lua);
+    };
+  };
+
+  home.file = {
+    ".config/nvim/colors" = {
+      source = ../programs/neovim/nvim/colors;
+      recursive = true;
+    };
+    ".config/openssl.cnf".source = ../legacyconfig/openssl.cnf;
+  };
+
+
   imports = [
     ../programs/git
     ../programs/bash.nix
     ../programs/tmux.nix
-    ../programs/fish
     ../programs/bat.nix
-    # ../programs/htop.nix
-    ../programs/neovim
-    ../programs/direnv.nix
     ../programs/gpg.nix
     ../programs/starship.nix
-    ../programs/nix-flake-templates
-    ../programs/yazi.nix
   ];
-
-  home.file = {
-    ".config/openssl.cnf".source = ../legacyconfig/openssl.cnf;
-  };
 
   home.sessionVariables = {
     NIX_PATH = "${config.home.homeDirectory}/.shells:nixpkgs=flake:nixpkgs$\{NIX_PATH:+:$NIX_PATH}";
@@ -112,6 +90,4 @@
     FZF_DEFAULT_OPTS = "--bind=shift-tab:up,tab:down";
     LIBRARY_PATH = ''${lib.makeLibraryPath [pkgs.libiconv]}''${LIBRARY_PATH:+:$LIBRARY_PATH}'';
   };
-
-
 }

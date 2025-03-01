@@ -7,7 +7,6 @@
     clock24 = true;
 
     keyMode = "vi";
-    # shell = "${config.home.homeDirectory}/.nix-profile/bin/fish";
     terminal = "tmux-256color";
     plugins = with pkgs; [
       tmuxPlugins.yank

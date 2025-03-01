@@ -72,11 +72,11 @@ local keys = {
         end,
         { desc = "Jump to the previous diagnostic in the current buffer", table.unpack(opts_l) },
     },
-    {
-        "<space>T",
-        ":Namu symbols<cr>",
-        { desc = "Tagbar", table.unpack(opts_l) },
-    },
+    -- {
+    --     "<space>T",
+    --     ":Namu symbols<cr>",
+    --     { desc = "Tagbar", table.unpack(opts_l) },
+    -- },
 }
 
 --- https://github.com/neovim/nvim-lspconfig/blob/f4619ab31fc4676001ea05ae8200846e6e7700c7/plugin/lspconfig.lua#L123

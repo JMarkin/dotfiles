@@ -1,7 +1,7 @@
 return {
     {
         "bassamsdata/namu.nvim",
-        dev = true,
+        -- dev = true,
         keys = { { "<space>T", ":Namu ctags<cr>", desc = "Tagbar" } },
         cmd = { "Namu" },
         config = function()

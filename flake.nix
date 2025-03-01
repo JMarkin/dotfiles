@@ -164,7 +164,12 @@
             nativeBuildInputs = [ darwinPkgs.bashInteractive ];
             buildInputs = with darwinPkgs; [
               nil
+              vim-language-server
               nixpkgs-fmt
+              ruff
+              python312Packages.mypy
+              lua-language-server
+              basedpyright
             ];
           };
       };

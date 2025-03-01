@@ -105,28 +105,14 @@ local blink = {
         -- "milanglacier/minuet-ai.nvim",
     },
     -- version = "*",
-    build = "nix run .#build-plugin",
     -- On musl libc based systems you need to add this flag
     -- build = 'RUSTFLAGS="-C target-feature=-crt-static" cargo build --release',
     opts = {
         cmdline = {
+            enabled = true,
+            completion = { menu = { auto_show = false } },
             keymap = {
-                ["<CR>"] = {
-                    function(cmp)
-                        return cmp.accept({
-                            callback = function()
-                                vim.api.nvim_feedkeys(
-                                    vim.api.nvim_replace_termcodes("<CR>", true, true, true),
-                                    "n",
-                                    true
-                                )
-                            end,
-                        })
-                    end,
-                    "fallback",
-                },
-                ["<Tab>"] = { "select_next" },
-                ["<S-Tab>"] = { "select_prev" },
+                ["<CR>"] = { "accept_and_enter", "fallback" },
             },
         },
         keymap = {
@@ -324,6 +310,7 @@ local blink = {
 
 if is_not_mini() then
     blink.build = "nix run .#build-plugin"
+    blink.version = "*"
 else
     blink.version = "*"
 end

@@ -62,13 +62,17 @@ opt.bs                                            = "indent,eol,start"
 g.editorconfig                                    = true
 opt.synmaxcol                                     = 2000
 opt.exrc                                          = true
+opt.laststatus                                    = 3
 
 opt.guifont                                       = "JetBrainsMonoNL Nerd Font Mono:h13"
 opt.guicursor                                     = "a:block"
 opt.background                                    = "dark"
 
+if vim.fn.has('nvim-0.11') == 1 then
 opt.completeopt                                   = "menu,menuone,noselect,popup,noinsert,fuzzy"
--- opt.completeopt                                   = "menu,menuone,popup,noselect"
+else
+opt.completeopt                                   = "menu,menuone,noselect,popup,noinsert"
+end
 opt.tags                                          = { "tags", ".git/tags" }
 
 opt.spell                                         = false
@@ -125,7 +129,6 @@ g.ollama_completions_endpoint                     = string.format("%s/v1/complet
 
 
 g.lsp_autostart                                   = vim.env.LSP_AUTOSTART
-opt.laststatus                                    = 3
 
 opt.wildignore:append({ -- Ignore on file name completion.
 	".DS_store",
