@@ -49,10 +49,7 @@
     coc.enable = false;
     defaultEditor = true;
     vimdiffAlias = true;
-
-    configure = {
-      extraLuaConfig = (builtins.readFile ../programs/neovim/nvim/lua/common.lua);
-    };
+    extraLuaConfig = (builtins.readFile ../programs/neovim/nvim/lua/common.lua);
   };
 
   home.file = {
