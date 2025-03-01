@@ -40,17 +40,16 @@
   outputs = { self, nixpkgs, nixos, home-manager, agenix, darwin, mac-app-util, ... } @ inputs:
     let
       overlays = [
-        inputs.neovim-nightly-overlay.overlays.default
         (import ./overlays/cgrc.nix)
         (import ./overlays/createnv.nix)
         (import ./overlays/jedi_language_server.nix)
         (import ./overlays/vpn_slice.nix)
-        (import ./overlays/neovide.nix)
-        (import ./overlays/st)
-        # (import ./overlays/ruff.nix)
-        # nur.overlays.default
-        # (import ./overlays/oatmeal.nix)
       ];
+
+      overlaysFull = [
+        inputs.neovim-nightly-overlay.overlays.default
+        (import ./overlays/neovide.nix)
+      ] ++ overlays;
 
       config = {
         allowUnfree = true;
@@ -66,16 +65,10 @@
         inherit config overlays;
       };
 
-      armPkgs = import nixpkgs {
-        system = "aarch64-linux";
-        config = { allowUnfree = true; allowUnsupportedSystem = true; };
-        inherit overlays;
-      };
-
       darwinPkgs = import nixpkgs {
         system = "aarch64-darwin";
         config = { allowUnfree = true; };
-        inherit overlays;
+        inherit overlaysFull;
       };
 
     in
@@ -87,13 +80,6 @@
           modules = [
             mac-app-util.homeManagerModules.default
             ./home/users/kron_darwin.nix
-          ];
-        };
-        "kron@base-alpine-nix" = home-manager.lib.homeManagerConfiguration {
-          pkgs = x86Pkgs;
-
-          modules = [
-            ./home/users/vm.nix
           ];
         };
         "kron@alpine-gw" = home-manager.lib.homeManagerConfiguration {
