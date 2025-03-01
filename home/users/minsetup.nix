@@ -12,7 +12,6 @@
   home.stateVersion = "25.05";
 
 
-  home.homeDirectory = "/home/kron";
 
   home.packages = with pkgs; [
     zip
@@ -40,21 +39,7 @@
   programs.eza.enable = true;
   programs.btop.enable = true;
 
-  programs.neovim = {
-    enable = true;
-    vimAlias = true;
-    viAlias = true;
-    coc.enable = false;
-    defaultEditor = true;
-    vimdiffAlias = true;
-    extraLuaConfig = (builtins.readFile ../programs/neovim/nvim/lua/common.lua);
-  };
-
   home.file = {
-    ".config/nvim/colors" = {
-      source = ../programs/neovim/nvim/colors;
-      recursive = true;
-    };
     ".config/openssl.cnf".source = ../legacyconfig/openssl.cnf;
   };
 

@@ -136,7 +136,6 @@ opt.wildignore:append({ -- Ignore on file name completion.
 })
 
 -- stylua: ignore end
---
 g.dbs = {
     { name = "local", url = "postgresql://kron:@/postgres" },
 }

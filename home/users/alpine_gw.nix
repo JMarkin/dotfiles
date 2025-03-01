@@ -4,6 +4,7 @@
 
   imports = [
     ./minsetup.nix
+    ../programs/neovim/minimal.nix
   ];
 
   home.packages = with pkgs; [

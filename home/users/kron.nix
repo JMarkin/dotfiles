@@ -1,30 +1,17 @@
 { config, pkgs, lib, ... }:
 
 {
-  programs.home-manager.enable = true;
-  home.activation.report-changes = config.lib.dag.entryAnywhere ''
-    ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff $oldGenPath $newGenPath
-  '';
 
-  home.username = "kron";
+  imports = [
+    ./minsetup.nix
+    ../programs/fish
+    ../programs/neovim
+    ../programs/direnv.nix
+    ../programs/nix-flake-templates
+  ];
 
-  home.stateVersion = "25.05";
 
   home.packages = with pkgs; [
-    zip
-    xz
-    unzip
-    p7zip
-    gnused
-    gnutar
-    gawk
-    zstd
-    gnupg
-    pigz
-    curl
-    man
-    ps
-
     # utils
     jaq
     rsync
@@ -41,17 +28,13 @@
     dotenv-linter
     kubectl
     k9s
-    yazi
     # nur.repos.dustinblackman.oatmeal
     # cgrc
 
     # networking tools
     mtr
-    iperf3
-    dnsutils
     socat
     nmap
-    termshark
 
     # lang
     llvm
@@ -69,49 +52,6 @@
   ];
 
   programs.fastfetch.enable = true;
-  programs.ripgrep.enable = true;
-  programs.fd.enable = true;
-  programs.fzf.enable = true;
-  programs.zoxide.enable = true;
-  programs.eza.enable = true;
-  programs.btop.enable = true;
-
-  imports = [
-    ../programs/git
-    ../programs/bash.nix
-    ../programs/tmux.nix
-    ../programs/fish
-    ../programs/bat.nix
-    # ../programs/htop.nix
-    ../programs/neovim
-    ../programs/direnv.nix
-    ../programs/gpg.nix
-    ../programs/starship.nix
-    ../programs/nix-flake-templates
-    ../programs/yazi.nix
-  ];
-
-  home.file = {
-    ".config/openssl.cnf".source = ../legacyconfig/openssl.cnf;
-  };
-
-  home.sessionVariables = {
-    NIX_PATH = "${config.home.homeDirectory}/.shells:nixpkgs=flake:nixpkgs$\{NIX_PATH:+:$NIX_PATH}";
-    EDITOR = "nvim";
-    VISUAL = "nvim";
-    PAGER = "bat";
-    MANPAGER = "nvim +Man!";
-    LS_COLORS = (builtins.readFile ../legacyconfig/ls_colors);
-    CLICOLOR = 1;
-    PYTHONPYCACHEPREFIX = "/tmp/cpython";
-    OPENSSL_CONF = "${config.home.homeDirectory}/.config/openssl.cnf";
-
-    SCARF_ANALYTICS = "false";
-    DOTNET_CLI_TELEMETRY_OPTOUT = "1";
-
-    FZF_DEFAULT_OPTS = "--bind=shift-tab:up,tab:down";
-    LIBRARY_PATH = ''${lib.makeLibraryPath [pkgs.libiconv]}''${LIBRARY_PATH:+:$LIBRARY_PATH}'';
-  };
 
 
 }

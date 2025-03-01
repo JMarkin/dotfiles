@@ -4,11 +4,10 @@
 
   imports = [
     ./kron.nix
-    # ../programs/alacritty
+
     ../programs/ghostty
     ../programs/neovide.nix
   ];
-  home.homeDirectory = "/Users/kron";
 
 
 

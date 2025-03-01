@@ -46,10 +46,10 @@
         (import ./overlays/vpn_slice.nix)
       ];
 
-      overlaysFull = [
+      neovimNightly = [
         inputs.neovim-nightly-overlay.overlays.default
         (import ./overlays/neovide.nix)
-      ] ++ overlays;
+      ];
 
       config = {
         allowUnfree = true;
@@ -68,17 +68,28 @@
       darwinPkgs = import nixpkgs {
         system = "aarch64-darwin";
         config = { allowUnfree = true; };
-        inherit overlaysFull;
+        inherit overlays;
       };
+
+      darwinPkgsNeovimNightly = import nixpkgs {
+        system = "aarch64-darwin";
+        config = { allowUnfree = true; };
+        overlays = overlays ++ neovimNightly;
+      };
+
+
 
     in
     {
       homeConfigurations = {
         "kron@kron-work.local" = home-manager.lib.homeManagerConfiguration {
-          pkgs = darwinPkgs;
+          pkgs = darwinPkgsNeovimNightly;
 
           modules = [
             mac-app-util.homeManagerModules.default
+            {
+              home.homeDirectory = "/Users/kron";
+            }
             ./home/users/kron_darwin.nix
           ];
         };
@@ -86,6 +97,9 @@
           pkgs = x86Pkgs;
 
           modules = [
+            {
+              home.homeDirectory = "/home/kron";
+            }
             ./home/users/alpine_gw.nix
           ];
         };
@@ -93,6 +107,9 @@
           pkgs = x86Pkgs;
 
           modules = [
+            {
+              home.homeDirectory = "/home/kron";
+            }
             ./home/users/vm.nix
           ];
         };
