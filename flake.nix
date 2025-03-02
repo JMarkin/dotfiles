@@ -65,7 +65,7 @@
         inherit config overlays;
       };
 
-      x86PkgssNeovimNightly = import nixpkgs {
+      x86PkgsNeovimNightly = import nixpkgs {
         system = "x86_64-linux";
         overlays = overlays ++ neovimNightly;
         inherit config;
@@ -110,7 +110,7 @@
           ];
         };
         "kron@nixos" = home-manager.lib.homeManagerConfiguration {
-          pkgs = x86PkgssNeovimNightly;
+          pkgs = x86PkgsNeovimNightly;
 
           modules = [
             {
@@ -133,12 +133,6 @@
             ./nixos/vm.nix
             # secrets.nixosModules.tln or { }
             home-manager.nixosModules.home-manager
-            {
-              home-manager.extraSpecialArgs = {
-                pkgs = x86Pkgs;
-              };
-              home-manager.users.kron = import ./home/users/vm.nix;
-            }
           ];
         };
       };
