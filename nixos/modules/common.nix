@@ -12,6 +12,7 @@
     tmux
     neovim
     home-manager
+    wireguard-tools
   ];
   programs.neovim = {
     defaultEditor = true;

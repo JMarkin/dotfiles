@@ -10,6 +10,7 @@
       # Include the results of the hardware scan.
       ./hardware/vm.nix
       ./modules/common.nix
+      # ./modules/wg.nix
     ];
 
   virtualisation.docker.enable = true;
