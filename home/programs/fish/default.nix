@@ -1,6 +1,8 @@
 { config, lib, pkgs, ... }:
 
 {
+  programs.tmux.shell = "${pkgs.fish}/bin/fish";
+
   home.file = {
     ".config/fish/conf.d/ssh_agent_start.fish".source = ./ssh_agent_start.fish;
     ".local/bin/shh" = {

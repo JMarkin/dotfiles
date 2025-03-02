@@ -141,15 +141,17 @@ in
     ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.dotfiles/home/programs/neovim/nvim";
 
     ".local/share/nvim/site/spell/ru.utf-8.spl".source = nvim-spell-ru-utf8-dictionary;
-    ".local/share/nvim/nix/lua/runtimes.lua".text = /*lua*/''
-      vim.opt.runtimepath:append("${treesitter-parsers}")
-    '';
 
     # Treesitter is configured as a locally developed module in lazy.nvim
     # we hardcode a symlink here so that we can refer to it in our lazy config
     ".local/share/nvim/nix/nvim-treesitter/" = {
       recursive = true;
       source = treesitterWithGrammars;
+    };
+
+    ".local/share/nvim/nix/nvim-treesitter/parser" = {
+      recursive = true;
+      source = "${treesitter-parsers}/parser";
     };
   };
 

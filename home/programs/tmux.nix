@@ -5,7 +5,6 @@
     escapeTime = 5;
     baseIndex = 1;
     clock24 = true;
-
     keyMode = "vi";
     terminal = "tmux-256color";
     plugins = with pkgs; [
