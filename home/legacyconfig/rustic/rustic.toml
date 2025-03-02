@@ -1,6 +1,6 @@
 [repository]
 repository = "rclone:yandex:rustic"
-password-file = "/home/kron/.config/secrets/rustic_passwd"
+password-file = "~/.config/secrets/rustic_passwd"
 
 # backup options: These options are used for all sources when calling the backup command.
 # They can be overwritten by source-specific options (see below) or command line options.
@@ -17,11 +17,11 @@ glob = [
   "!**/venv/**",
 ]
 
-[[backup.sources]]
-source = "/projects"
+[[backup.snapshots]]
+sources = ["/projects"]
 
-[[backup.sources]]
-source = "/srv"
+[[backup.snapshots]]
+sources = ["/srv"]
 
 
 # forget options

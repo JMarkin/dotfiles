@@ -71,6 +71,7 @@
       la = "ls -a $argv";
       ll = "ls --header -l --time-style=long-iso -M -m";
       lla = "ll -a";
+      rustic = "rustic -P ~/.config/rustic.toml";
     };
     plugins = [
       # { name = "grc"; src = pkgs.fishPlugins.grc.src; }

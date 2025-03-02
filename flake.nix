@@ -65,6 +65,12 @@
         inherit config overlays;
       };
 
+      x86PkgssNeovimNightly = import nixpkgs {
+        system = "x86_64-linux";
+        overlays = overlays ++ neovimNightly;
+        inherit config;
+      };
+
       darwinPkgs = import nixpkgs {
         system = "aarch64-darwin";
         config = { allowUnfree = true; };
@@ -104,7 +110,7 @@
           ];
         };
         "kron@nixos" = home-manager.lib.homeManagerConfiguration {
-          pkgs = x86Pkgs;
+          pkgs = x86PkgssNeovimNightly;
 
           modules = [
             {
