@@ -9,11 +9,15 @@ return {
                 -- Enable the modules you want
                 namu_symbols = {
                     enable = true,
-                    row_position = "top10_right",
+                    options = {
+                        row_position = "bottom10_right",
+                    },
                 },
                 namu_ctags = {
                     enable = true,
-                    row_position = "top10_right",
+                    options = {
+                        row_position = "bottom10_right",
+                    },
                 },
                 -- Optional: Enable other modules if needed
                 colorscheme = {
