@@ -20,7 +20,8 @@
     docker-compose
     dust
     tree-sitter
-    rustic-rs
+    rustic
+    rclone
     ptags
     gnumake
     hyperfine
