@@ -29,7 +29,15 @@
     };
   };
 
-
+  fileSystems."/projects" = {
+    device = "projects";
+    fsType = "virtiofs";
+    options = [
+      "rw"
+      "noatime"
+      "_netdev"
+    ];
+  };
 
 
   system.stateVersion = "25.05";
