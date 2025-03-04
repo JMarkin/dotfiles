@@ -119,6 +119,16 @@
             ./home/users/vm.nix
           ];
         };
+        "kron@nixos-gw" = home-manager.lib.homeManagerConfiguration {
+          pkgs = x86Pkgs;
+
+          modules = [
+            {
+              home.homeDirectory = "/home/kron";
+            }
+            ./home/users/alpine_gw.nix
+          ];
+        };
       };
 
       nixosConfigurations = {
@@ -131,6 +141,19 @@
               environment.etc."nix/inputs/nixpkgs".source = inputs.nixos.outPath;
             }
             ./nixos/vm.nix
+            # secrets.nixosModules.tln or { }
+            home-manager.nixosModules.home-manager
+          ];
+        };
+        gw = nixos.lib.nixosSystem {
+          system = "x86_64-linux";
+          pkgs = nixosPackages;
+          modules = [
+            agenix.nixosModules.default
+            {
+              environment.etc."nix/inputs/nixpkgs".source = inputs.nixos.outPath;
+            }
+            ./nixos/gw.nix
             # secrets.nixosModules.tln or { }
             home-manager.nixosModules.home-manager
           ];

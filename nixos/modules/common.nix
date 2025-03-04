@@ -73,8 +73,6 @@
   imports = [
     ./ssh.nix
     ./user.nix
-    ./fonts.nix
-    ./locale.nix
     ./nix-options.nix
   ];
 }
