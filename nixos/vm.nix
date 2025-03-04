@@ -10,7 +10,7 @@
       # Include the results of the hardware scan.
       ./hardware/vm.nix
       ./modules/common.nix
-      # ./modules/wg.nix
+      ./modules/wg.nix
     ];
 
   virtualisation.docker.enable = true;
@@ -37,6 +37,15 @@
       "rw"
       "noatime"
       "_netdev"
+    ];
+  };
+
+  fileSystems."/var/lib/docker" = {
+    device = "/dev/vdb1";
+    fsType = "ext4";
+    options = [
+      "noatime"
+      "defaults"
     ];
   };
 

@@ -16,7 +16,7 @@ local default_lsp = function(bin_name, lsp_name, opts)
             if vim.fn.executable(bin_name) then
                 utils.setup_lsp(lsp_name, opts)
             else
-                vim.notify(string.format("Not Executable %s, try install", bin_name), vim.log.levels.DEBUG)
+                vim.notify(string.format("Not Executable %s skip", bin_name), vim.log.levels.DEBUG)
             end
         end,
     }
@@ -34,7 +34,7 @@ M.lsps = {
         filetypes = { "html", "jinja" },
     }),
     cssls = default_lsp("vscode-css-language-server", "cssls"),
-    -- jedi_language_server = default_lsp("jedi-language-server", "jedi_language_server"),
+    jedi_language_server = default_lsp("jedi-language-server", "jedi_language_server"),
     ruff = default_lsp("ruff", "ruff"),
     -- pylyzer = default_lsp("pylyzer", "pylyzer"),
     basedpyright = default_lsp("basedpyright", "basedpyright", {

@@ -6,12 +6,12 @@
       dns = [ "10.8.0.1"];
       privateKeyFile = "/root/wireguard-keys/privatekey";
 
-      # postUp = ''
-      #   ip rule add from 192.168.88.0/24 table main
-      # '';
-      # preDown = ''
-      #   ip rule del from 192.168.88.0/24 table main
-      # '';
+      postUp = ''
+        ip rule add from 192.168.88.0/24 table main
+      '';
+      preDown = ''
+        ip rule del from 192.168.88.0/24 table main
+      '';
 
       peers = [
         {
