@@ -13,7 +13,7 @@ local default_lsp = function(bin_name, lsp_name, opts)
 
     return {
         setup = function()
-            if vim.fn.executable(bin_name) then
+            if vim.fn.executable(bin_name) == 1 then
                 utils.setup_lsp(lsp_name, opts)
             else
                 vim.notify(string.format("Not Executable %s skip", bin_name), vim.log.levels.DEBUG)

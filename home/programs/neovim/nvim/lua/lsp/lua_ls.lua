@@ -2,6 +2,9 @@ local utils = require("lsp.utils")
 
 local M = {
     setup = function()
+        if vim.fn.executable("lua-language-server") == 0 then
+            return
+        end
         local opts = {
             settings = {
                 Lua = {

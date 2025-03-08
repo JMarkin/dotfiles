@@ -12,6 +12,7 @@ return {
         notifier = {
             enabled = true,
             timeout = 1000,
+            level = vim.log.levels.WARN,
         },
         picker = { enabled = false },
         quickfile = { enabled = true },

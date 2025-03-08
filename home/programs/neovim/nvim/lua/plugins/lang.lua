@@ -8,6 +8,21 @@ return {
         config = function()
             require("lint").linters_by_ft = vim.g.linter_by_ft
         end,
+        init = function()
+            local fn = require("funcs")
+
+            fn.augroup("linting", {
+                { "BufWritePost", table.unpack(vim.g.post_load_events) },
+                {
+                    pattern = { "*" },
+                    callback = function(data)
+                        if not require("largefiles").is_large_file(data.buf, true) then
+                            require("lint").try_lint(nil, { ignore_errors = true })
+                        end
+                    end,
+                },
+            })
+        end,
     },
     {
         "stevearc/conform.nvim",
@@ -45,9 +60,6 @@ return {
                 },
             },
         },
-        init = function()
-            vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
-        end,
     },
     {
         "mrcjkb/rustaceanvim",
