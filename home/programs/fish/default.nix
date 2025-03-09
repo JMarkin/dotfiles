@@ -5,16 +5,6 @@
 
   home.file = {
     ".config/fish/conf.d/ssh_agent_start.fish".source = ./ssh_agent_start.fish;
-    ".local/bin/shh" = {
-      executable = true;
-      source = pkgs.fetchFromGitHub
-        {
-          owner = "JMarkin";
-          repo = "shell-ollama-helper";
-          rev = "89fdfbccf156c43f6b18754b096b9e4f68417c1e";
-          hash = "sha256-lE0viohX7GIegOqdwxCxQN2hpY52y1RVcq1b/IRq6fk=";
-        } + "/shell-helper.sh";
-    };
   };
 
   home.sessionPath = [
@@ -157,6 +147,31 @@
         else
             vim $argv
         end
+      '';
+      shh = /*fish*/ ''
+        if [ -t 0 ]
+            set CONTEXT ""
+        else
+            while read i; set CONTEXT "$CONTEXT""$i"\n; end
+        end
+
+        set -l QUERY $argv
+        set -l PROMPT "$QUERY\n$CONTEXT"
+        set -l OLLAMA_URL $OLLAMA_URL "http://localhost:11434"
+        set -l SHELL_HELPER_MODEL $SHELL_HELPER_MODEL "shell-helper:latest"
+
+        set -l PROMPT (echo "$PROMPT" | jaq -Rs)
+
+        set -l CURL_DATA '{
+            "model": "'$SHELL_HELPER_MODEL'",
+            "stream": false,
+            "prompt": '$PROMPT'
+        }'
+
+        curl -H "Content-Type: application/json" -H "Accept: application/json" \
+            -s $OLLAMA_URL"/api/generate" \
+            --data $CURL_DATA \
+            | jaq -r '.response' | xargs -0 printf "%b"
       '';
     };
   };
