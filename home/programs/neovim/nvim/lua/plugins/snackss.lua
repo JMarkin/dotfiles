@@ -28,6 +28,20 @@ return {
     },
     keys = {
         {
+            "<space>bd",
+            desc = "Buffers: delete current",
+            function()
+                Snacks.bufdelete.delete()
+            end,
+        },
+        {
+            "<space>bc",
+            desc = "Buffers: delete other",
+            function()
+                Snacks.bufdelete.other()
+            end,
+        },
+        {
             "<leader>M",
             desc = "Notifications",
             function()

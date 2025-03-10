@@ -323,7 +323,7 @@ When given a task:
                         name = "deepseek-r1",
                         schema = {
                             model = {
-                                default = "deepseek-r1:14b-qwen-distill-q4_K_M",
+                                default = "fredrezones55/unsloth-deepseek-r1:14b",
                             },
                             num_ctx = {
                                 default = 16384,

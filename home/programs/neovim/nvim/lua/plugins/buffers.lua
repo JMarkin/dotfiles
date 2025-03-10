@@ -1,24 +1,5 @@
 return {
     {
-        "ojroques/nvim-bufdel",
-        event = { "BufAdd", "BufReadPost", "FileReadPost" },
-        opts = {
-            quit = false,
-        },
-        keys = {
-            {
-                "<space>bd",
-                "<cmd>BufDel<Cr>",
-                desc = "Buffer: delete current",
-            },
-            {
-                "<space>bc",
-                "<cmd>:BufDelOthers!<Cr>",
-                desc = "Buffer: delete other",
-            },
-        },
-    },
-    {
         "mrjones2014/smart-splits.nvim",
         event = "BufAdd",
         -- enabled = false,
