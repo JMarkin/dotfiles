@@ -102,7 +102,7 @@ local blink = {
         "JMarkin/cmp-diag-codes",
         { "saghen/blink.compat", opts = { impersonate_nvim_cmp = true } },
         { "xzbdmw/colorful-menu.nvim", config = true },
-        -- "milanglacier/minuet-ai.nvim",
+        "milanglacier/minuet-ai.nvim",
     },
     -- version = "*",
     -- On musl libc based systems you need to add this flag
@@ -167,7 +167,7 @@ local blink = {
                     require("blink-cmp").show({ providers = { "lsp" } })
                 end,
             },
-            -- ["<C-z>"] = { call_minuet },
+            ["<c-x><c-z>"] = { call_minuet },
         },
         -- snippets = {
         --     expand = function(snippet)
@@ -297,13 +297,13 @@ local blink = {
                 },
             },
         }
-        -- if is_not_mini() then
-        --     opts.sources.providers.minuet = {
-        --         name = "minuet",
-        --         module = "minuet.blink",
-        --         score_offset = 8, -- Gives minuet higher priority among suggestions
-        --     }
-        -- end
+        if is_not_mini() then
+            opts.sources.providers.minuet = {
+                name = "minuet",
+                module = "minuet.blink",
+                score_offset = 8, -- Gives minuet higher priority among suggestions
+            }
+        end
         require("blink.cmp").setup(opts)
     end,
 }

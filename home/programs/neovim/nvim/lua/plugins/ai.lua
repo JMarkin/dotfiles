@@ -307,6 +307,27 @@ When given a task:
                 cmd = { adapter = "ollama" },
             },
             adapters = {
+                opts = {
+                    show_defaults = false,
+                },
+                x5qwen = function()
+                    return require("codecompanion.adapters").extend("openai_compatible", {
+                        env = {
+                            url = "http://proxy-kafka.k8s.airun-dev-1.salt.x5.ru",
+                            api_key = "X5_QWEN_API", -- optional: if your endpoint is authenticated
+                            chat_url = "/v1/chat/completions", -- optional: default value, override if different
+                            models_endpoint = "/v1/models", -- optional: attaches to the end of the URL to form the endpoint to retrieve models
+                        },
+                        schema = {
+                            model = {
+                                default = "x5-airun-medium-coder-prod",
+                            },
+                            num_ctx = {
+                                default = 32768,
+                            },
+                        },
+                    })
+                end,
                 ollama_deepseek = function()
                     return require("codecompanion.adapters").extend("ollama", {
                         env = {

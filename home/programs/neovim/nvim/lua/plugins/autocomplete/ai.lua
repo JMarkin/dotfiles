@@ -2,24 +2,25 @@ return {
     {
         "Davidyz/VectorCode",
         lazy = true,
+        version = "0.4.5",
         dependencies = { "nvim-lua/plenary.nvim" },
+        opts = {
+            n_query = 1,
+        },
         config = function(_, opts)
             require("vectorcode").setup(opts)
-            vim.api.nvim_create_autocmd("LspAttach", {
-                callback = function()
-                    local cacher = require("vectorcode.cacher")
-                    local bufnr = vim.api.nvim_get_current_buf()
-                    cacher.async_check("config", function()
-                        cacher.register_buffer(
-                            bufnr,
-                            { notify = true, n_query = 10 },
-                            require("vectorcode.utils").lsp_document_symbol_cb(),
-                            { "BufWritePost" }
-                        )
-                    end, nil)
-                end,
-                desc = "Register buffer for VectorCode",
-            })
+            -- local cacher = require("vectorcode.config").get_cacher_backend()
+            -- vim.api.nvim_create_autocmd("LspAttach", {
+            --     callback = function()
+            --         local bufnr = vim.api.nvim_get_current_buf()
+            --         cacher.async_check("config", function()
+            --             cacher.register_buffer(bufnr, {
+            --                 n_query = 10,
+            --             })
+            --         end, nil)
+            --     end,
+            --     desc = "Register buffer for VectorCode",
+            -- })
         end,
     },
     {
@@ -29,7 +30,11 @@ return {
             -- This uses the async cache to accelerate the prompt construction.
             -- There's also the require('vectorcode').query API, which provides
             -- more up-to-date information, but at the cost of blocking the main UI.
-            local vectorcode_cacher = require("vectorcode.cacher")
+            local has_vc, vectorcode_config = pcall(require, "vectorcode.config")
+            local vectorcode_cacher = nil
+            if has_vc then
+                vectorcode_cacher = vectorcode_config.get_cacher_backend()
+            end
             require("minuet").setup({
                 add_single_line_entry = true,
                 n_completions = 1,
@@ -41,11 +46,11 @@ return {
                 provider = "openai_fim_compatible",
                 provider_options = {
                     openai_fim_compatible = {
-                        api_key = "TERM",
-                        name = "Ollama",
-                        stream = false,
-                        end_point = vim.g.ollama_completions_endpoint,
-                        model = "qwen2.5-coder:7b-base-q4_1",
+                        api_key = "X5_QWEN_API",
+                        name = "X5Qwen",
+                        stream = true,
+                        end_point = "http://proxy-kafka.k8s.airun-dev-1.salt.x5.ru/v1/completions",
+                        model = "x5-airun-small-coder-prod",
                         template = {
                             prompt = function(pref, suff)
                                 local prompt_message = ""
@@ -60,6 +65,23 @@ return {
                                     .. "<|fim_middle|>"
                             end,
                             suffix = false,
+                        },
+                        optional = {
+                            stop = {
+                                "<|endoftext|>",
+                                "<|fim_prefix|>",
+                                "<|fim_middle|>",
+                                "<|fim_suffix|>",
+                                "<|fim_pad|>",
+                                "<|repo_name|>",
+                                "<|file_sep|>",
+                                "<|im_start|>",
+                                "<|im_end|>",
+                                "/src/",
+                                "#- coding: utf-8",
+                                "# Path:",
+                            },
+                            max_tokens = 300,
                         },
                     },
                 },

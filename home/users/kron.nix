@@ -50,6 +50,9 @@
     iconv
     libiconv
 
+    # llm
+    vectorcode
+
   ];
 
   programs.fastfetch.enable = true;

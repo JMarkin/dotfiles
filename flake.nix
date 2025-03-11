@@ -44,6 +44,7 @@
         (import ./overlays/createnv.nix)
         (import ./overlays/jedi_language_server.nix)
         (import ./overlays/vpn_slice.nix)
+        (import ./overlays/vectorcode.nix)
       ];
 
       neovimNightly = [
@@ -182,7 +183,13 @@
             nativeBuildInputs = [ x86Pkgs.bashInteractive ];
             buildInputs = with x86Pkgs; [
               nil
+              nil
               nixpkgs-fmt
+              vim-language-server
+              ruff
+              python312Packages.mypy
+              lua-language-server
+              basedpyright
             ];
           };
         aarch64-darwin = darwinPkgs.mkShell
