@@ -43,8 +43,27 @@
     ];
   };
 
+  fileSystems."/opt" = {
+    device = "opt";
+    fsType = "virtiofs";
+    options = [
+      "rw"
+      "noatime"
+      "_netdev"
+    ];
+  };
+
   fileSystems."/var/lib/docker" = {
     device = "/dev/vdb1";
+    fsType = "ext4";
+    options = [
+      "noatime"
+      "defaults"
+    ];
+  };
+
+  fileSystems."/var/tmp/nix-daemon" = {
+    device = "/dev/vdc1";
     fsType = "ext4";
     options = [
       "noatime"

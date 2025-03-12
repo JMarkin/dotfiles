@@ -68,19 +68,4 @@ return {
             },
         },
     },
-    {
-      "mistricky/codesnap.nvim",
-      build = "make build_generator",
-      cmd = {"CodeSnap", "CodeSnapSave"},
-      opts = {
-            mac_window_bar = false,
-        save_path = "~/Downloads",
-        has_breadcrumbs = true,
-        code_font_family = "JetBrainsMonoNL Nerd Font Mono",
-        bg_x_padding = 0,
-        bg_y_padding = 0,
-        bg_padding = nil,
-        watermark = ""
-      },
-    },
 }
