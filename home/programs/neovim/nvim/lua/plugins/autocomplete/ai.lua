@@ -9,18 +9,18 @@ return {
         },
         config = function(_, opts)
             require("vectorcode").setup(opts)
-            -- local cacher = require("vectorcode.config").get_cacher_backend()
-            -- vim.api.nvim_create_autocmd("LspAttach", {
-            --     callback = function()
-            --         local bufnr = vim.api.nvim_get_current_buf()
-            --         cacher.async_check("config", function()
-            --             cacher.register_buffer(bufnr, {
-            --                 n_query = 10,
-            --             })
-            --         end, nil)
-            --     end,
-            --     desc = "Register buffer for VectorCode",
-            -- })
+            local cacher = require("vectorcode.config").get_cacher_backend()
+            vim.api.nvim_create_autocmd("LspAttach", {
+                callback = function()
+                    local bufnr = vim.api.nvim_get_current_buf()
+                    cacher.async_check("config", function()
+                        cacher.register_buffer(bufnr, {
+                            n_query = 10,
+                        })
+                    end, nil)
+                end,
+                desc = "Register buffer for VectorCode",
+            })
         end,
     },
     {
@@ -50,12 +50,14 @@ return {
                         name = "X5Qwen",
                         stream = true,
                         end_point = "http://proxy-kafka.k8s.airun-dev-1.salt.x5.ru/v1/completions",
-                        model = "x5-airun-small-coder-prod",
+                        model = "x5-airun-medium-coder-prod",
                         template = {
                             prompt = function(pref, suff)
                                 local prompt_message = ""
-                                for _, file in ipairs(vectorcode_cacher.query_from_cache(0)) do
-                                    prompt_message = "<|file_sep|>" .. file.path .. "\n" .. file.document
+                                if has_vc then
+                                    for _, file in ipairs(vectorcode_cacher.query_from_cache(0)) do
+                                        prompt_message = "<|file_sep|>" .. file.path .. "\n" .. file.document
+                                    end
                                 end
                                 return prompt_message
                                     .. "<|fim_prefix|>"

@@ -316,7 +316,7 @@ When given a task:
                             url = "http://proxy-kafka.k8s.airun-dev-1.salt.x5.ru",
                             api_key = "X5_QWEN_API", -- optional: if your endpoint is authenticated
                             chat_url = "/v1/chat/completions", -- optional: default value, override if different
-                            models_endpoint = "/v1/models", -- optional: attaches to the end of the URL to form the endpoint to retrieve models
+                            -- models_endpoint = "/v1/models", -- optional: attaches to the end of the URL to form the endpoint to retrieve models
                         },
                         schema = {
                             model = {
@@ -388,6 +388,9 @@ When given a task:
             prompt_library = PROMPTS,
         },
         config = function(_, opts)
+            opts.strategies.chat.slash_commands = {
+                codebase = require("vectorcode.integrations").codecompanion.chat.make_slash_command(),
+            }
             require("codecompanion").setup(opts)
 
             local group = vim.api.nvim_create_augroup("CodeCompanionHooks", {})

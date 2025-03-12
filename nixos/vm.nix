@@ -21,6 +21,9 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  systemd.services.nix-daemon.environment.TMPDIR = "/var/tmp/nix-daemon";
+
+  boot.tmpOnTmpfs = true;
 
   networking = {
     dhcpcd.enable = true;
