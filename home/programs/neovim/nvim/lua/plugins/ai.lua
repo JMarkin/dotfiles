@@ -85,12 +85,10 @@ end
 return {
     {
         "olimorris/codecompanion.nvim",
-        dev = true,
         enabled = true,
         dependencies = {
             "nvim-lua/plenary.nvim",
             "nvim-treesitter/nvim-treesitter",
-            "stevearc/dressing.nvim", -- Optional: Improves `vim.ui.select`
         },
         cmd = {
             "CodeCompanion",
@@ -321,6 +319,9 @@ When given a task:
                         schema = {
                             model = {
                                 default = "x5-airun-medium-coder-prod",
+                                choices = function(self)
+                                    return {}
+                                end,
                             },
                             num_ctx = {
                                 default = 32768,

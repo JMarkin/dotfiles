@@ -40,7 +40,7 @@ local ext = {
 vim2ext(ext, "*.vert,*.tesc,*.tese,*.glsl,*.geom,*.frag,*.comp,*.rgen,*.rmiss,*.rchit,*.rahit,*.rint,*.rcall", "glsl")
 vim2ext(ext, "*.vs,*.fs", "glsl")
 vim2ext(ext, "*.graphql,*.graphqls,*.gql,*.prisma", "graphql")
-vim2ext(ext, "*.gotmpl,helmfile*.yaml", "helm")
+vim2ext(ext, "*.gotmpl,helmfile*.yaml", "helm.yaml")
 
 vim.filetype.add({
     extension = ext,
@@ -57,9 +57,9 @@ vim.filetype.add({
         [".*compose.*.y*"] = "yaml.docker-compose",
         ["Caddyfile.*"] = "caddyfile",
         ["haproxy.*.c.*"] = "haproxy",
-        [".*/templates/.*.yaml"] = "helm",
-        [".*/templates/.*.tpl"] = "helm",
-        [".*/helm/.*.yaml"] = "helm",
+        [".*/templates/.*.yaml"] = "helm.yaml",
+        [".*/templates/.*.tpl"] = "helm.yaml",
+        [".*/helm/.*.yaml"] = "helm.yaml",
         [".*"] = {
             function(path, buf)
                 lf.optimize_buffer(buf, path)
