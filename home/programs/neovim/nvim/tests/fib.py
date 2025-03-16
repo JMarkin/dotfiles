@@ -17,12 +17,5 @@ for index, fibonacci_number in zip(range(100), fib()):
 
 
 # Generate function where print first N of fibonachi numbers using fib function
-def print_first_n_fibonacci(n):
-    for fibonacci_number in fib():
-        if n <= 0:
-            break
-        print(fibonacci_number)
-        n -= 1
+def print_n_fibonacchi_numbers(n):
 
-
-print(print_first_n_fibonacci(100))

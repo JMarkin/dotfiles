@@ -5,7 +5,8 @@
   imports = [
     ./kron.nix
 
-    ../programs/ghostty
+    # ../programs/ghostty
+    ../programs/alacritty
     ../programs/neovide.nix
   ];
 
@@ -16,8 +17,6 @@
     docker-credential-helpers
     colima
     dbeaver-bin
-
-    # st
   ];
 
 }

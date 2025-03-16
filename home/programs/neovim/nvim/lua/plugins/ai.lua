@@ -158,7 +158,7 @@ When given a task:
             },
             strategies = {
                 chat = {
-                    adapter = "ollama_deepseek",
+                    adapter = "x5qwen",
                     keymaps = {
                         options = {
                             modes = {
@@ -300,9 +300,9 @@ When given a task:
                         },
                     },
                 },
-                inline = { adapter = "ollama" },
-                agent = { adapter = "ollama" },
-                cmd = { adapter = "ollama" },
+                inline = { adapter = "x5qwen" },
+                agent = { adapter = "x5qwen" },
+                cmd = { adapter = "x5qwen" },
             },
             adapters = {
                 opts = {

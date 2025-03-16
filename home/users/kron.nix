@@ -51,7 +51,7 @@
     libiconv
 
     # llm
-    vectorcode
+    # vectorcode
 
   ];
 

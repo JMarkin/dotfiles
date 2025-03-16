@@ -2,25 +2,27 @@ return {
     {
         "Davidyz/VectorCode",
         lazy = true,
-        version = "0.4.5",
+        version = "0.4.11",
+        enabled = false,
         dependencies = { "nvim-lua/plenary.nvim" },
         opts = {
+            async_backend = "lsp",
             n_query = 1,
         },
         config = function(_, opts)
             require("vectorcode").setup(opts)
-            -- local cacher = require("vectorcode.config").get_cacher_backend()
-            -- vim.api.nvim_create_autocmd("LspAttach", {
-            --     callback = function()
-            --         local bufnr = vim.api.nvim_get_current_buf()
-            --         cacher.async_check("config", function()
-            --             cacher.register_buffer(bufnr, {
-            --                 n_query = 10,
-            --             })
-            --         end, nil)
-            --     end,
-            --     desc = "Register buffer for VectorCode",
-            -- })
+            local cacher = require("vectorcode.config").get_cacher_backend()
+            vim.api.nvim_create_autocmd("LspAttach", {
+                callback = function()
+                    local bufnr = vim.api.nvim_get_current_buf()
+                    cacher.async_check("config", function()
+                        cacher.register_buffer(bufnr, {
+                            n_query = 10,
+                        })
+                    end, nil)
+                end,
+                desc = "Register buffer for VectorCode",
+            })
         end,
     },
     {
