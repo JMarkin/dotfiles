@@ -2,6 +2,7 @@ return {
     {
         "mrjones2014/smart-splits.nvim",
         event = "BufAdd",
+        commit = "096d23df87d5c430e6e96f3e99d67e360fb2097f",
         -- enabled = false,
         opts = {
             multiplexer_integration = "tmux",

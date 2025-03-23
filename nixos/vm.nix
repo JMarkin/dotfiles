@@ -23,7 +23,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
   systemd.services.nix-daemon.environment.TMPDIR = "/var/tmp/nix-daemon";
 
-  boot.tmpOnTmpfs = true;
+  boot.tmp.useTmpfs = true;
 
   networking = {
     dhcpcd.enable = true;
@@ -69,6 +69,13 @@
       "noatime"
       "defaults"
     ];
+  };
+
+  fileSystems."/nix" = {
+    device = "/dev/vdc2";
+    fsType = "ext4";
+    neededForBoot = true;
+    options = [ "noatime" ];
   };
 
 

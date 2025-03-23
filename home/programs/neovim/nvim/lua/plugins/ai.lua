@@ -158,7 +158,7 @@ When given a task:
             },
             strategies = {
                 chat = {
-                    adapter = "x5qwen",
+                    adapter = "ollama_gemma3",
                     keymaps = {
                         options = {
                             modes = {
@@ -300,9 +300,9 @@ When given a task:
                         },
                     },
                 },
-                inline = { adapter = "x5qwen" },
-                agent = { adapter = "x5qwen" },
-                cmd = { adapter = "x5qwen" },
+                inline = { adapter = "ollama_gemma3" },
+                agent = { adapter = "ollama_gemma3" },
+                cmd = { adapter = "ollama_gemma3" },
             },
             adapters = {
                 opts = {
@@ -333,8 +333,6 @@ When given a task:
                     return require("codecompanion.adapters").extend("ollama", {
                         env = {
                             url = vim.g.ollama_url,
-                            -- url = "https://opxy.jmarkin.ru",
-                            -- api_key = "OPENUI_KEY",
                         },
                         headers = {
                             ["Content-Type"] = "application/json",
@@ -356,12 +354,10 @@ When given a task:
                         },
                     })
                 end,
-                ollama = function()
+                ollama_qwencoder = function()
                     return require("codecompanion.adapters").extend("ollama", {
                         env = {
                             url = vim.g.ollama_url,
-                            -- url = "https://opxy.jmarkin.ru",
-                            -- api_key = "OPENUI_KEY",
                         },
                         headers = {
                             ["Content-Type"] = "application/json",
@@ -369,12 +365,10 @@ When given a task:
                         parameters = {
                             sync = true,
                         },
-                        name = "qwen2",
+                        name = "qwen2.5",
                         schema = {
                             model = {
-                                -- default = "deepseek-r1:7b-qwen-distill-q8_0",
                                 default = "qwen2.5-coder:14b-instruct-q4_K_M",
-                                -- default = "phi4:latest",
                             },
                             num_ctx = {
                                 default = 16384,
@@ -385,13 +379,35 @@ When given a task:
                         },
                     })
                 end,
+                ollama_gemma3 = function()
+                    return require("codecompanion.adapters").extend("ollama", {
+                        env = {
+                            url = vim.g.ollama_url,
+                        },
+                        headers = {
+                            ["Content-Type"] = "application/json",
+                        },
+                        parameters = {
+                            sync = true,
+                        },
+                        name = "gamma3",
+                        schema = {
+                            model = {
+                                default = "hf.co/unsloth/gemma-3-12b-it-GGUF:Q4_K_M",
+                            },
+                            num_ctx = {
+                                default = 16384,
+                            },
+                        },
+                    })
+                end,
             },
             prompt_library = PROMPTS,
         },
         config = function(_, opts)
-            opts.strategies.chat.slash_commands = {
-                codebase = require("vectorcode.integrations").codecompanion.chat.make_slash_command(),
-            }
+            -- opts.strategies.chat.slash_commands = {
+            --     codebase = require("vectorcode.integrations").codecompanion.chat.make_slash_command(),
+            -- }
             require("codecompanion").setup(opts)
 
             local group = vim.api.nvim_create_augroup("CodeCompanionHooks", {})

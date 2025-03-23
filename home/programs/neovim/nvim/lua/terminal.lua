@@ -56,6 +56,9 @@ vim.api.nvim_create_autocmd({ "TermClose" }, {
 
 vim.api.nvim_create_autocmd({ "TermOpen" }, {
     callback = function(params)
+        if vim.b[params.buf]["term_ignore"] == true then
+            return
+        end
         Terminal.configure()
         local winnr = vim.api.nvim_get_current_win()
         Terminal.set_keymaps(winnr, params.buf)

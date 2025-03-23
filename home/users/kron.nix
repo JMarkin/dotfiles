@@ -52,6 +52,7 @@
 
     # llm
     # vectorcode
+    ollama
 
   ];
 

@@ -177,6 +177,7 @@ return {
             winopts = {
                 preview = { default = "builtin" },
                 on_create = function()
+                    vim.b.term_ignore = true
                     vim.keymap.set("t", "<C-n>", "<Down>", { silent = true, buffer = true })
                     vim.keymap.set("t", "<C-p>", "<Up>", { silent = true, buffer = true })
                 end,
@@ -221,6 +222,15 @@ return {
                 actions = {
                     ["ctrl-g"] = { actions.toggle_ignore },
                     ["tab"] = false,
+                    ["enter"] = actions.file_edit_or_qf,
+                    ["ctrl-s"] = actions.file_split,
+                    ["ctrl-v"] = actions.file_vsplit,
+                    ["ctrl-t"] = actions.file_tabedit,
+                    ["alt-q"] = actions.file_sel_to_qf,
+                    ["alt-Q"] = actions.file_sel_to_ll,
+                    ["alt-i"] = actions.toggle_ignore,
+                    ["alt-h"] = actions.toggle_hidden,
+                    ["alt-f"] = actions.toggle_follow,
                 },
             },
             fzf_opts = {

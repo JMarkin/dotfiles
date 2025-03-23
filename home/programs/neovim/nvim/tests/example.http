@@ -49,3 +49,7 @@ Content-Type: application/json
   "stream": false
 }
 
+
+###
+
+GET http://example.com

@@ -1,4 +1,18 @@
 { config, pkgs, ... }:
+let
+  tmux-smart-splits = pkgs.tmuxPlugins.mkTmuxPlugin
+    {
+      pluginName = "smart-splits.nvim";
+      version = "unstable-2025-03-21";
+      rtpFilePath = "smart-splits.tmux";
+      src = pkgs.fetchFromGitHub {
+        owner = "mrjones2014";
+        repo = "smart-splits.nvim";
+        rev = "096d23df87d5c430e6e96f3e99d67e360fb2097f";
+        sha256 = "sha256-UhdBbCAkfM30iJA3YyflPFfdpqTs6hXDJ97ZGPq2eIk=";
+      };
+    };
+in
 {
   programs.tmux = {
     enable = true;
@@ -11,6 +25,8 @@
       tmuxPlugins.yank
       tmuxPlugins.better-mouse-mode
       tmuxPlugins.prefix-highlight
+
+      tmux-smart-splits
     ];
     extraConfig = /*tmux*/''
       # if multiple clients are attached to the same window, maximize it to the
@@ -52,7 +68,7 @@
 
       # Source file
       unbind r
-      bind r source-file ~/.tmux.conf \; display "Reloaded!"
+      bind r source-file ~/.config/tmux/tmux.conf \; display "Reloaded!"
 
       # Update default binding of `Enter` and `Space to also use copy-pipe
       unbind -T copy-mode-vi Enter
@@ -104,35 +120,6 @@
       bind-key | select-layout even-vertical
 
 
-      # '@pane-is-vim' is a pane-local option that is set by the plugin on load,
-      # and unset when Neovim exits or suspends; note that this means you'll probably
-      # not want to lazy-load smart-splits.nvim, as the variable won't be set until
-      # the plugin is loaded
-
-      # Smart pane switching with awareness of Neovim splits.
-      bind-key -n C-h if -F "#{@pane-is-vim}" 'send-keys C-h'  'select-pane -L'
-      bind-key -n C-j if -F "#{@pane-is-vim}" 'send-keys C-j'  'select-pane -D'
-      bind-key -n C-k if -F "#{@pane-is-vim}" 'send-keys C-k'  'select-pane -U'
-      bind-key -n C-l if -F "#{@pane-is-vim}" 'send-keys C-l'  'select-pane -R'
-
-      # Smart pane resizing with awareness of Neovim splits.
-      bind-key -n M-h if -F "#{@pane-is-vim}" 'send-keys M-h' 'resize-pane -L 3'
-      bind-key -n M-j if -F "#{@pane-is-vim}" 'send-keys M-j' 'resize-pane -D 3'
-      bind-key -n M-k if -F "#{@pane-is-vim}" 'send-keys M-k' 'resize-pane -U 3'
-      bind-key -n M-l if -F "#{@pane-is-vim}" 'send-keys M-l' 'resize-pane -R 3'
-
-      tmux_version='$(tmux -V | sed -En "s/^tmux ([0-9]+(.[0-9]+)?).*/\1/p")'
-      if-shell -b '[ "$(echo "$tmux_version < 3.0" | bc)" = 1 ]' \
-          "bind-key -n 'C-\\' if -F \"#{@pane-is-vim}\" 'send-keys C-\\'  'select-pane -l'"
-      if-shell -b '[ "$(echo "$tmux_version >= 3.0" | bc)" = 1 ]' \
-          "bind-key -n 'C-\\' if -F \"#{@pane-is-vim}\" 'send-keys C-\\\\'  'select-pane -l'"
-
-      bind-key -T copy-mode-vi 'C-h' select-pane -L
-      bind-key -T copy-mode-vi 'C-j' select-pane -D
-      bind-key -T copy-mode-vi 'C-k' select-pane -U
-      bind-key -T copy-mode-vi 'C-l' select-pane -R
-      bind-key -T copy-mode-vi 'C-\' select-pane -l
-
       bind-key x kill-pane
 
 
@@ -150,13 +137,26 @@
           # wg_lang="#(defaults read ~/Library/Preferences/com.apple.HIToolbox.plist AppleCurrentKeyboardLayoutInputSourceID | awk -F. '{print $4}')"
       set-option -g status-right "#[fg=red,dim,bg=default] #(uptime | cut -f 4-5 -d ' ' | cut -f 1 -d ',') "
       set-option -ag status-right " #[fg=white,bg=default]%H:%M:%S"
-      # set-option -ag status-right "  #[fg=green,bg=default,bright]#(~/.tmux/plugins/tmux-mem-cpu-load/tmux-mem-cpu-load  --interval 3)#[default]"
       set-window-option -g window-status-style fg=colour244
       set-window-option -g window-status-style bg=default
       set-window-option -g window-status-format "#I #[underscore]#{?#{==:#{window_panes},1},,+}#[bold]#W#[nobold]:#{=|-24|…;s|$HOME|~|:pane_current_path}"
       set-window-option -g window-status-current-style fg=red
       set-window-option -g window-status-current-style bg=default
       set-window-option -g window-status-current-format "#[bold,fg=red]#W#[nobold]:#{=|-24|…;s|$HOME|~|:pane_current_path}"
+
+      # smart-splits
+      set -g @smart-splits_no_wrap "" # to disable wrapping. (any value disables wrapping)
+
+      set -g @smart-splits_move_left_key  'C-h' # key-mapping for navigation.
+      set -g @smart-splits_move_down_key  'C-j' #  --"--
+      set -g @smart-splits_move_up_key    'C-k' #  --"--
+      set -g @smart-splits_move_right_key 'C-l' #  --"--
+
+      set -g @smart-splits_resize_left_key  'M-h' # key-mapping for resizing.
+      set -g @smart-splits_resize_down_key  'M-j' #  --"--
+      set -g @smart-splits_resize_up_key    'M-k' #  --"--
+      set -g @smart-splits_resize_right_key 'M-l' #  --"--
+
     '';
   };
 
