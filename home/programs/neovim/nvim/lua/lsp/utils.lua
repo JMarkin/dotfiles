@@ -109,7 +109,7 @@ local function on_attach(client, bufnr)
         vim.keymap.set(table.unpack(keymap))
     end
 
-    if client.supports_method(methods.textDocument_codeAction) then
+    if client:supports_method(methods.textDocument_codeAction, bufnr) then
         table.insert(prev_keymaps, vim.fn.maparg("gra", "n", false, true))
         table.insert(prev_keymaps, vim.fn.maparg("gra", "v", false, true))
         vim.keymap.set({ "n", "v" }, "gra", function()
@@ -139,6 +139,9 @@ local function on_attach(client, bufnr)
         -- https://github.com/golang/go/issues/54531#issuecomment-1464982242
         if not client.server_capabilities.semanticTokensProvider then
             local semantic = client.config.capabilities.textDocument.semanticTokens
+            if semantic == nil then
+                return
+            end
             client.server_capabilities.semanticTokensProvider = {
                 full = true,
                 legend = {
@@ -150,11 +153,11 @@ local function on_attach(client, bufnr)
         end
     end
 
-    if not client.supports_method(methods.textDocument_hover) then
+    if not client:supports_method(methods.textDocument_hover, bufnr) then
         client.server_capabilities.hoverProvider = false
     end
 
-    if client.supports_method(methods.textDocument_inlayHint) then
+    if client:supports_method(methods.textDocument_inlayHint, bufnr) then
         local inlay_hints_group = vim.api.nvim_create_augroup("toggle_inlay_hints", { clear = false })
         vim.keymap.set({ "n" }, "<leader>li", function()
             local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr })

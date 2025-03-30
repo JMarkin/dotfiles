@@ -81,6 +81,17 @@ M.ifind = function(tbl, func)
     return nil
 end
 
+-- Function to merge two tables in Lua using Neovim.
+function M.merge_tables(table1, table2)
+    local merged_table = table1 or {} -- Ensure a valid table, even if nil
+    for k, _ in pairs(table2) do
+        merged_table[k] = table2[k]
+    end
+
+    -- Return the merged table.
+    return merged_table
+end
+
 vim.api.nvim_create_user_command("Jaq", function(opts)
     local bufnr = vim.api.nvim_get_current_buf()
     local path = vim.api.nvim_buf_get_name(bufnr)

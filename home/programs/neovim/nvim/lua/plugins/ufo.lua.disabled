@@ -36,7 +36,7 @@ end
 
 return {
     "kevinhwang91/nvim-ufo",
-    -- enabled = false,
+    enabled = false,
     cond = is_not_mini,
     dependencies = { "kevinhwang91/promise-async", "nvim-treesitter" },
     event = { table.unpack(vim.g.post_load_events) },

@@ -11,8 +11,8 @@
     neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
-    agenix.inputs.nixpkgs.follows = "nixpkgs";
-    agenix.url = "github:ryantm/agenix";
+    # agenix.inputs.nixpkgs.follows = "nixpkgs";
+    # agenix.url = "github:ryantm/agenix";
 
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin/master";
@@ -37,7 +37,7 @@
 
   };
 
-  outputs = { self, nixpkgs, nixos, home-manager, agenix, darwin, mac-app-util, ... } @ inputs:
+  outputs = { self, nixpkgs, nixos, home-manager, darwin, mac-app-util, ... } @ inputs:
     let
       overlays = [
         (import ./overlays/cgrc.nix)
@@ -137,7 +137,7 @@
           system = "x86_64-linux";
           pkgs = nixosPackages;
           modules = [
-            agenix.nixosModules.default
+            # agenix.nixosModules.default
             {
               environment.etc."nix/inputs/nixpkgs".source = inputs.nixos.outPath;
             }
@@ -150,7 +150,7 @@
           system = "x86_64-linux";
           pkgs = nixosPackages;
           modules = [
-            agenix.nixosModules.default
+            # agenix.nixosModules.default
             {
               environment.etc."nix/inputs/nixpkgs".source = inputs.nixos.outPath;
             }

@@ -16,6 +16,7 @@ if vim.g.modern_ui then
                         "BlinkCmp",
                         "GitSigns",
                         "RainbowDelimiter",
+                        "MiniStatusline",
                     },
                 })
             end,

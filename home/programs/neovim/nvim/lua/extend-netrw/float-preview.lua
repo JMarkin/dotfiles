@@ -1,6 +1,148 @@
-local CFG = require("extend-netrw.float-preview.config")
-local get_node = require("extend-netrw.funcs").get_node
 local maxline = require("funcs").maxline
+
+local get_size = function(path)
+    local ok, stats = pcall(function()
+        return vim.loop.fs_stat(path)
+    end)
+    if not (ok and stats) then
+        return
+    end
+    return math.floor(0.5 + (stats.size / (1024 * 1024)))
+end
+
+local is_text = function(path)
+    -- Determine if file is text. This is not 100% proof, but good enough.
+    -- Source: https://github.com/sharkdp/content_inspector
+    local ok, fd = pcall(function()
+        return vim.loop.fs_open(path, "r", 1)
+    end)
+    if not (ok and fd) then
+        return false
+    end
+    ---@diagnostic disable-next-line: redefined-local
+    local ok, bytes = pcall(function()
+        return vim.loop.fs_read(fd, 1024)
+    end)
+    if not (ok and bytes) then
+        return false
+    end
+    local is_text = bytes:find("\0") == nil
+    vim.loop.fs_close(fd)
+    return is_text
+end
+
+local detach_lsp_clients = function(bufnr)
+    -- currently not working
+    bufnr = bufnr or vim.api.nvim_get_current_buf()
+    local clients = vim.lsp.buf_get_clients(bufnr)
+    -- disable notified from buf_detach_client
+    local prev = vim.notify
+    vim.notify = function() end
+    for client_id, _ in pairs(clients) do
+        vim.lsp.buf_detach_client(bufnr, client_id)
+    end
+    vim.notify = prev
+end
+
+local is_showed = function(path)
+    for _, winnr in ipairs(vim.api.nvim_tabpage_list_wins(vim.api.nvim_get_current_tabpage())) do
+        local buf = vim.api.nvim_win_get_buf(winnr)
+        local _path = vim.api.nvim_buf_get_name(buf)
+        if _path == path then
+            return true
+        end
+    end
+    return false
+end
+
+local get_payload = function()
+    local parse = require("netrw.parse")
+
+    local bufnr = vim.api.nvim_get_current_buf()
+    local winid = vim.api.nvim_get_current_win()
+
+    local row, _ = unpack(vim.api.nvim_win_get_cursor(winid))
+    local line = vim.api.nvim_buf_get_lines(bufnr, row - 1, row, false)
+    return parse.get_node(line[1])
+end
+
+local get_node = function()
+    local payload = get_payload()
+
+    if string.sub(payload.dir, -1) ~= "/" then
+        payload.absolute_path = payload.dir .. "/" .. payload.node
+    else
+        payload.absolute_path = payload.dir .. payload.node
+    end
+
+    if payload.extension ~= nil then
+        payload.type = "file"
+    else
+        payload.type = "dir"
+    end
+    return payload
+end
+
+local CFG = {
+    -- Whether the float preview is enabled by default. When set to false, it has to be "toggled" on.
+    toggled_on = true,
+    -- lines for scroll
+    scroll_lines = 20,
+    -- window config
+    window = {
+        style = "minimal",
+        relative = "cursor",
+        border = "rounded",
+        wrap = false,
+        trim_height = true,
+    },
+    mapping = {
+        -- scroll down float buffer
+        down = { "<C-d>" },
+        -- scroll up float buffer
+        up = { "<C-e>", "<C-u>" },
+        -- enable/disable float windows
+        toggle = { "<C-x>" },
+    },
+    -- hooks if return false preview doesn't shown
+    hooks = {
+
+        pre_open = function(path)
+            if is_showed(path) then
+                return false
+            end
+
+            if not is_text(path) then
+                return false
+            end
+
+            -- if file > 5 MB or not text -> not preview
+            local size = get_size(path)
+            if type(size) ~= "number" then
+                return false
+            end
+
+            if size > 5 then
+                return false
+            end
+
+            -- len
+            local len = maxline(path)
+            if type(len) ~= "number" then
+                return false
+            end
+
+            if len > vim.o.synmaxcol then
+                return false
+            end
+
+            return true
+        end,
+        post_open = function(bufnr)
+            return true
+        end,
+    },
+}
 
 local FloatPreview = {}
 FloatPreview.__index = FloatPreview
@@ -85,11 +227,11 @@ function FloatPreview.toggle()
     end
 end
 
-function FloatPreview:new(cfg)
+function FloatPreview:new()
     local prev = {}
     setmetatable(prev, FloatPreview)
 
-    cfg = cfg or CFG.config()
+    local cfg = CFG
     prev.buf = nil
     prev.win = nil
     prev.path = nil

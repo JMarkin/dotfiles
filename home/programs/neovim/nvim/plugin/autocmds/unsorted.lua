@@ -34,6 +34,10 @@ fn.augroup("autocreatedir", {
 })
 
 -- Check if we need to reload the file when it changed
-fn.augroup("checktime", { { "FocusGained", "TermClose", "TermLeave" }, {
-    command = "checktime",
-} })
+fn.augroup("checktime", {
+    { "BufEnter", "CursorHold", "CursorHoldI", "FocusGained", "TermLeave", "TermClose" },
+    {
+        command = "if mode() != 'c' | checktime | endif",
+        pattern = { "*" },
+    },
+})

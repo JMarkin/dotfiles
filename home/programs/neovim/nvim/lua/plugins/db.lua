@@ -15,6 +15,9 @@ return {
     {
         "vim-scripts/dbext.vim",
         lazy = true,
+        init = function()
+            vim.g.dbext_default_usermaps = 0
+        end,
         ft = { "sql", "mssql", "plsql" },
     },
     {

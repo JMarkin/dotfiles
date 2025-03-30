@@ -35,6 +35,7 @@ local ext = {
     jinja2 = "jinja",
     j2 = "jinja",
     http = "http",
+    tmpl = "gotmpl",
 }
 
 vim2ext(ext, "*.vert,*.tesc,*.tese,*.glsl,*.geom,*.frag,*.comp,*.rgen,*.rmiss,*.rchit,*.rahit,*.rint,*.rcall", "glsl")
@@ -63,8 +64,12 @@ vim.filetype.add({
         [".*"] = {
             function(path, buf)
                 lf.optimize_buffer(buf, path)
-                if lf.is_large_file(buf, true, path) then
-                    return "largefile"
+                local t = lf.is_large_file(buf, false, path)
+                if t == lf.FILE_TYPE.LARGE_SIZE then
+                    return "size.largefile"
+                end
+                if t == lf.FILE_TYPE.READ_ONLY then
+                    return "readonly.largefile"
                 end
                 return nil
             end,

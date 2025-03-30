@@ -12,12 +12,6 @@ g.snips_email                                     = vim.env.EMAIL or "me@jmarkin
 g.snips_github                                    = vim.env.GITHUB or "https://github.com/JMarkin"
 
 
-opt.foldlevelstart                                = 99
--- opt.foldenable                                    = true
--- opt.foldlevel                                     = 99
--- opt.foldmethod                                    = "expr"
--- opt.foldexpr                                      = "v:lua.vim.treesitter.foldexpr()"
-
 
 opt.colorcolumn                                   = '+1'
 opt.cursorlineopt                                 = 'both'
@@ -60,7 +54,7 @@ opt.hlsearch                                      = true
 opt.autochdir                                     = false
 opt.bs                                            = "indent,eol,start"
 g.editorconfig                                    = true
-opt.synmaxcol                                     = 2000
+opt.synmaxcol                                     = 1000
 opt.exrc                                          = true
 opt.laststatus                                    = 3
 
@@ -95,8 +89,6 @@ opt.listchars                                     = {
                                                       eol     = '↲',
                                                     }
 opt.fillchars                                     = {
-                                                      fold    = '·',
-                                                      foldsep = ' ',
                                                       eob     = ' ',
                                                     }
 
@@ -146,9 +138,6 @@ if g.modern_ui then
     opt.listchars:append({ nbsp = "␣" })
     opt.fillchars:append({
         eob = " ",
-        foldsep = " ",
-        foldopen = "",
-        foldclose = "",
         diff = "╱",
     })
 
@@ -162,7 +151,7 @@ opt.backupdir:remove(".")
 
 -- netrw settings
 -- stylua: ignore start
-g.netrw_winsize         = 20
+g.netrw_winsize         = 30
 g.netrw_banner          = 0
 g.netrw_cursor          = 5
 g.netrw_keepdir         = 1

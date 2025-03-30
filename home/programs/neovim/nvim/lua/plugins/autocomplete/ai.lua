@@ -117,7 +117,7 @@ return {
     {
         "Davidyz/VectorCode",
         lazy = true,
-        version = "0.4.11",
+        version = "0.5.1",
         enabled = false,
         dependencies = { "nvim-lua/plenary.nvim" },
         opts = {
@@ -157,7 +157,7 @@ return {
                 notify = "debug",
                 provider = "openai_fim_compatible",
                 provider_options = {
-                    openai_fim_compatible = OPENCODER,
+                    openai_fim_compatible = CODEGEMMA,
                 },
                 request_timeout = 10,
             })

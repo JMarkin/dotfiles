@@ -85,7 +85,6 @@ vim.keymap.set(
     { desc = "Toggle autoresize height width buffers of window" }
 )
 
-
 vim.keymap.set("n", "<leader>L", function()
     vim.bo.ft = "log"
     vim.cmd(":UfoAttach")

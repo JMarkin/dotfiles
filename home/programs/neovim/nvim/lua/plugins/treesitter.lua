@@ -1,11 +1,17 @@
 local is_large_file = require("largefiles").is_large_file
+local fn = require("funcs")
 local FILE_TYPE = require("largefiles").FILE_TYPE
 
 ---@diagnostic disable-next-line: unused-local
 local is_disable = function(_lang, buf)
     local _type = is_large_file(buf)
 
-    return _type ~= FILE_TYPE.NORMAL
+    local r = _type ~= FILE_TYPE.NORMAL
+    if r then
+        fn.doau("TSFoldAttach", { buf = buf })
+    end
+
+    return r
     -- return _type == FILE_TYPE.READ_ONLY or _type == FILE_TYPE.LARGE_SIZE
 end
 
@@ -22,7 +28,6 @@ return {
     dependencies = {
         {
             "m-demare/hlargs.nvim",
-            dev = true,
         },
         "yioneko/nvim-yati",
         {
@@ -108,6 +113,16 @@ return {
         "nvim-treesitter/nvim-treesitter-textobjects",
     },
     config = function()
+        require("nvim-treesitter").define_modules({
+            fold = {
+                attach = function(buf, lang)
+                    fn.doau("TSFoldAttach", { buf = buf })
+                end,
+                detach = function(buf)
+                    fn.doau("TSFoldDetach", { buf = buf })
+                end,
+            },
+        })
         require("nvim-treesitter.install").prefer_git = true
         require("nvim-treesitter.configs").setup({
             autotag = {

@@ -88,6 +88,7 @@ return {
                     .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
                     :map("<leader>uc")
                 Snacks.toggle.treesitter():map("<leader>uT")
+
             end,
         })
     end,

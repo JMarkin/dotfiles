@@ -122,6 +122,15 @@ return {
                     enabled = false,
                 },
             },
+            exclude = {
+                "notify",
+                "cmp_menu",
+                "noice",
+                "flash_prompt",
+                function(win)
+                    return require("largefiles").is_large_file(win.buf, true)
+                end,
+            },
         },
         keys = {
             {

@@ -74,14 +74,14 @@ return {
             mode = "v",
         },
         {
-            "gr",
+            "grc",
             function()
                 require("fzf-lua").grep_cword({ multiprocess = true })
             end,
             desc = "Search: references",
         },
         {
-            "gr",
+            "grc",
             function()
                 require("fzf-lua").grep_visual({ multiprocess = true })
             end,
