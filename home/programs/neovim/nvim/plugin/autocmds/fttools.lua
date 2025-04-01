@@ -20,11 +20,19 @@ fn.augroup("quit", {
             "neotest-summary",
             "vista_kind",
             "sagaoutline",
+            "PlenaryTestPopup",
+            "dbout",
+            "gitsigns-blame",
+            "grug-far",
+            "spectre_panel",
+            "tsplayground",
         },
         callback = function(event)
             vim.opt_local.wrap = false
             vim.bo[event.buf].buflisted = false
-            vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
+            vim.schedule(function()
+                vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
+            end)
         end,
     },
 })

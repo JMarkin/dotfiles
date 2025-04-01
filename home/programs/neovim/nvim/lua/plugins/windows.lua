@@ -15,7 +15,6 @@ return {
     },
     {
         "ycdzj/win-mover.nvim",
-        lazy = false,
         keys = {
             {
                 "<space>B",

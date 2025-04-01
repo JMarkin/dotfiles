@@ -55,7 +55,7 @@ let
     p.markdown_inline
     p.jq
     # currently not working
-    # p.regex
+    p.regex
     p.query
     p.comment
     p.rst
@@ -86,40 +86,14 @@ in
     lua51Packages.luarocks
 
     # lsp
-    # nginx-language-server
-    # lua-language-server
-    # rust-analyzer-unwrapped
-    # python312Packages.jedi-language-server
-    # basedpyright
     bash-language-server
-    # vscode-langservers-extracted
-    # biome
-    # nil
-    # taplo
-    # nodePackages.typescript-language-server
-    # docker-compose-language-service
-    # yaml-language-server
-    # vim-language-server
-    # gopls
 
     # lsp features
     fswatch
 
     #tools
     nixpkgs-fmt
-    # ruff
-    # python312Packages.mypy
-    # python312Packages.sqlfmt
-    stylua
-    prettierd
     fixjson
-    # rustfmt
-    codespell
-    # sqlfluff
-    # djlint
-    # golangci-lint
-    # golangci-lint-langserver
-
   ];
 
   programs.neovim = {
@@ -128,7 +102,7 @@ in
     vimAlias = true;
     viAlias = true;
     coc.enable = false;
-    withNodeJs = true;
+    withNodeJs = false;
     defaultEditor = true;
     vimdiffAlias = true;
 

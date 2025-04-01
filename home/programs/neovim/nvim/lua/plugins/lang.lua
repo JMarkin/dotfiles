@@ -1,3 +1,4 @@
+local fn = require("funcs")
 local is_not_mini = require("funcs").is_not_mini
 
 return {
@@ -9,8 +10,6 @@ return {
             require("lint").linters_by_ft = vim.g.linter_by_ft
         end,
         init = function()
-            local fn = require("funcs")
-
             fn.augroup("linting", {
                 { "BufWritePost", table.unpack(vim.g.post_load_events) },
                 {
@@ -32,7 +31,7 @@ return {
         keys = {
             {
                 -- Customize or remove this keymap to your liking
-                "<space>bf",
+                "gwb",
                 function()
                     local buf = vim.api.nvim_get_current_buf()
                     if require("largefiles").is_large_file(buf, true) then
@@ -67,7 +66,7 @@ return {
     {
         "mrcjkb/rustaceanvim",
         cond = is_not_mini,
-        version = "^5", -- Recommended
+        -- version = "^5", -- Recommended
         lazy = false,
         -- enabled = false,
     },

@@ -74,5 +74,6 @@
     ./ssh.nix
     ./user.nix
     ./nix-options.nix
+    ./locale.nix
   ];
 }

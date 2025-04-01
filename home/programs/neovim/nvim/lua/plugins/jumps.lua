@@ -15,15 +15,15 @@ return {
             -- plugin
             ";", ",",
             --  t/T/f/F key mappings
-            "t", "f", "T", "F",
+            -- "t", "f", "T", "F",
             --  lezy load key mappings
             "]", "[",
             -- key mappings to jump to diganostics. See demicolon.keymaps.create_default_diagnostic_keymaps
             "]d", "[d",
             -- quickfix
-            "]q", "[q", "]<C-q>", "[<C-q>",
+            -- "]q", "[q", "]<C-q>", "[<C-q>",
             -- local list
-            "]l", "[l", "]<C-l>", "]<C-l>",
+            -- "]l", "[l", "]<C-l>", "]<C-l>",
             -- spell
             "]s", "[s",
             -- fold
@@ -47,11 +47,11 @@ return {
                 -- Create t/T/f/F key mappings
                 horizontal_motions = false,
                 -- Create ]d/[d, etc. key mappings to jump to diganostics. See demicolon.keymaps.create_default_diagnostic_keymaps
-                diagnostic_motions = true,
+                diagnostic_motions = false,
                 -- Create ; and , key mappings
                 repeat_motions = true,
                 -- Create ]q/[q/]<C-q>/[<C-q> and ]l/[l/]<C-l>/[<C-l> quickfix and location list mappings
-                list_motions = true,
+                list_motions = false,
                 -- Create `]s`/`[s` key mappings for jumping to spelling mistakes
                 spell_motions = true,
                 -- Create `]z`/`[z` key mappings for jumping to folds

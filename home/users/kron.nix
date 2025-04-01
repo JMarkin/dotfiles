@@ -23,8 +23,7 @@
     rustic
     rclone
     ptags
-    gnumake
-    hyperfine
+    # hyperfine
     createnv
     dotenv-linter
     kubectl
@@ -38,17 +37,17 @@
     nmap
 
     # lang
-    llvm
-    clang
-    mold
-    rustc
-    cargo
-    go
-    nodejs_22
+    # llvm
+    # clang
+    # mold
+    # rustc
+    # cargo
+    # go
+    # nodejs_22
 
     # for rustc
-    iconv
-    libiconv
+    # iconv
+    # libiconv
 
     # llm
     # vectorcode

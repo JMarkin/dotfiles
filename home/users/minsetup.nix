@@ -20,6 +20,7 @@
     p7zip
     gnused
     gnutar
+    gnumake
     gawk
     zstd
     gnupg
@@ -30,6 +31,7 @@
     iperf3
     dnsutils
     termshark
+    mtr
   ];
 
   programs.ripgrep.enable = true;
