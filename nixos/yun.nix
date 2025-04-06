@@ -39,8 +39,8 @@
       interface = "ens192";
     };
     defaultGateway6 = {
-      address = "fe80::1";
-      interface = "2a0d:6c2:6::1";
+      address = "2a0d:6c2:6::1";
+      interface = "ens192";
     };
   };
 
