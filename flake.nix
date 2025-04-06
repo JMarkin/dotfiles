@@ -125,6 +125,16 @@
             ./home/users/alpine_gw.nix
           ];
         };
+        "kron@yun-nixos" = home-manager.lib.homeManagerConfiguration {
+          pkgs = x86Pkgs;
+
+          modules = [
+            {
+              home.homeDirectory = "/home/kron";
+            }
+            ./home/users/vps.nix
+          ];
+        };
       };
 
       nixosConfigurations = {
