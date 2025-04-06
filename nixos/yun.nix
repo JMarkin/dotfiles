@@ -22,6 +22,8 @@
   networking.useDHCP = lib.mkForce false;
 
   networking = {
+    nameservers = [ "8.8.8.8" "2001:4860:4860::8888" ];
+
     interfaces.ens192 = {
       ipv6.addresses = [{
         address = "2a0d:6c2:6:282::";
