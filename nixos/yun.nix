@@ -16,6 +16,8 @@
     efiInstallAsRemovable = true;
   };
 
+  boot.loader.grub.devices = "/dev/sda2";
+
   networking.useDHCP = lib.mkForce false;
 
   networking = {
