@@ -23,7 +23,16 @@
     microvm.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, nixos, home-manager, darwin, mac-app-util, microvm, ... } @ inputs:
+  outputs =
+    { self
+    , nixpkgs
+    , nixos
+    , home-manager
+    , darwin
+    , mac-app-util
+    , microvm
+    , ...
+    } @ inputs:
     let
       overlays = [
         (import ./overlays/cgrc.nix)
@@ -150,7 +159,6 @@
           system = "x86_64-linux";
           pkgs = nixosPackages;
           modules = [
-            # agenix.nixosModules.default
             {
               environment.etc."nix/inputs/nixpkgs".source = inputs.nixos.outPath;
             }
