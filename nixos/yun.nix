@@ -44,6 +44,10 @@
     };
   };
 
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ 80 443 324 5201 ];
+  };
 
   system.stateVersion = "25.05";
 }
