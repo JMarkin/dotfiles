@@ -11,6 +11,7 @@
       ./hardware/vm.nix
       ./modules/common.nix
       ./modules/wg.nix
+      ./modules/virtualization.nix
     ];
 
   virtualisation.docker.enable = true;

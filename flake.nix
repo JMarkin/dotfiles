@@ -17,27 +17,13 @@
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin/master";
 
-    # nur = {
-    #   url = "github:nix-community/NUR";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-
     mac-app-util.url = "github:hraban/mac-app-util";
 
-    #impermanence.url = "github:nix-community/impermanence/63f4d0443e32b0dd7189001ee1894066765d18a5";
-
-    #disko.inputs.nixpkgs.follows = "nixpkgs";
-    #disko.url = "github:nix-community/disko/master";
-
-    # secrets.inputs.nixpkgs.follows = "nixpkgs";
-    # secrets.url = "git+ssh://forgejo@git.home/kidsan/secrets.git?ref=main";
-
-    # nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
-    # nixpkgs-wayland.inputs.nixpkgs.follows = "nixpkgs";
-
+    microvm.url = "github:astro/microvm.nix";
+    microvm.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, nixos, home-manager, darwin, mac-app-util, ... } @ inputs:
+  outputs = { self, nixpkgs, nixos, home-manager, darwin, mac-app-util, microvm, ... } @ inputs:
     let
       overlays = [
         (import ./overlays/cgrc.nix)
@@ -138,6 +124,7 @@
           pkgs = nixosPackages;
           modules = [
             # agenix.nixosModules.default
+            microvm.nixosModules.host
             {
               environment.etc."nix/inputs/nixpkgs".source = inputs.nixos.outPath;
             }
@@ -155,6 +142,19 @@
               environment.etc."nix/inputs/nixpkgs".source = inputs.nixos.outPath;
             }
             ./nixos/gw.nix
+            # secrets.nixosModules.tln or { }
+            home-manager.nixosModules.home-manager
+          ];
+        };
+        yun = nixos.lib.nixosSystem {
+          system = "x86_64-linux";
+          pkgs = nixosPackages;
+          modules = [
+            # agenix.nixosModules.default
+            {
+              environment.etc."nix/inputs/nixpkgs".source = inputs.nixos.outPath;
+            }
+            ./nixos/yun.nix
             # secrets.nixosModules.tln or { }
             home-manager.nixosModules.home-manager
           ];
@@ -182,7 +182,6 @@
           {
             nativeBuildInputs = [ x86Pkgs.bashInteractive ];
             buildInputs = with x86Pkgs; [
-              nil
               nil
               nixpkgs-fmt
               vim-language-server

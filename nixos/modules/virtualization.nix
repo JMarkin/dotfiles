@@ -2,13 +2,21 @@
 {
 
   environment.systemPackages = with pkgs; [
+    nixos-shell
+    virt-manager
+    virt-viewer
+    spice
+    spice-gtk
+    spice-protocol
     win-virtio
     win-spice
+    adwaita-icon-theme
   ];
 
   users.users."kron".extraGroups = [ "libvirtd" ];
 
   virtualisation = {
+    spiceUSBRedirection.enable = true;
     libvirtd = {
       enable = true;
       qemu = {
@@ -20,4 +28,5 @@
       };
     };
   };
+  services.spice-vdagentd.enable = true;
 }
