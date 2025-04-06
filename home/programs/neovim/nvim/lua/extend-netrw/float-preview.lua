@@ -274,7 +274,7 @@ function FloatPreview:preview(path)
 
     vim.api.nvim_set_option_value("bufhidden", "wipe", { buf = self.buf })
     vim.api.nvim_set_option_value("buftype", "nofile", { buf = self.buf })
-    vim.api.nvim_set_option_value("buflisted", false, { buf = self.buf })
+    -- vim.api.nvim_set_option_value("buflisted", false, { buf = self.buf })
 
     local width = vim.api.nvim_get_option_value("columns", {})
     local max_ = maxline(path)

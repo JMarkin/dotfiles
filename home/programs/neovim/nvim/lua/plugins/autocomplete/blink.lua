@@ -58,8 +58,9 @@ context.in_treesitter_capture = function(capture)
         col = col - 1
     end
 
-    local get_captures_at_pos = -- See neovim/neovim#20331
-        require("vim.treesitter").get_captures_at_pos -- for neovim >= 0.8 or require('vim.treesitter').get_captures_at_position -- for neovim < 0.8
+    local get_captures_at_pos =                       -- See neovim/neovim#20331
+        require("vim.treesitter")
+        .get_captures_at_pos                          -- for neovim >= 0.8 or require('vim.treesitter').get_captures_at_position -- for neovim < 0.8
 
     local captures_at_cursor = vim.tbl_map(function(x)
         return x.capture
@@ -96,11 +97,11 @@ local blink = {
     -- optional: provides snippets for the snippet source
     dependencies = {
         "rafamadriz/friendly-snippets",
-        "mikavilpas/blink-ripgrep.nvim",
+        -- "mikavilpas/blink-ripgrep.nvim",
         "danymat/neogen",
         "quangnguyen30192/cmp-nvim-tags",
         "JMarkin/cmp-diag-codes",
-        { "saghen/blink.compat", opts = { impersonate_nvim_cmp = true } },
+        { "saghen/blink.compat",       opts = { impersonate_nvim_cmp = true } },
         { "xzbdmw/colorful-menu.nvim", config = true },
         "milanglacier/minuet-ai.nvim",
     },
@@ -219,7 +220,7 @@ local blink = {
                 elseif vim.bo.filetype == "codecompanion" then
                     return { "codecompanion", "tags", "buffer" }
                 elseif context.in_treesitter_capture("comment") or context.in_syntax_group("Comment") then
-                    return { "diag-codes", "snippets", "ripgrep" }
+                    return { "diag-codes", "snippets" } --, "ripgrep" }
                 end
                 return { "lazydev", "lsp", "tags", "snippets", "buffer" }
             end,
@@ -230,12 +231,12 @@ local blink = {
                     -- make lazydev completions top priority (see `:h blink.cmp`)
                     score_offset = 100,
                 },
-                ripgrep = {
-                    module = "blink-ripgrep",
-                    name = "Ripgrep",
-                    score_offset = -2,
-                    opts = {},
-                },
+                -- ripgrep = {
+                --     module = "blink-ripgrep",
+                --     name = "Ripgrep",
+                --     score_offset = -2,
+                --     opts = {},
+                -- },
                 dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
                 tags = {
                     name = "tags",

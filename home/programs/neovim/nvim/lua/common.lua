@@ -67,6 +67,8 @@ opt.completeopt                                   = "menu,menuone,noselect,popup
 else
 opt.completeopt                                   = "menu,menuone,noselect,popup,noinsert"
 end
+opt.cia = 'kind,abbr,menu'
+
 opt.tags                                          = { "tags", ".git/tags" }
 
 opt.spell                                         = false
@@ -190,6 +192,7 @@ g.linter_by_ft = {
     htmldjango = { "djlint" },
     python = { "codespell", "mypy" },
     rust = { "codespell" },
+    go = {"codespell"}
 }
 
 g.formatters_by_ft = {

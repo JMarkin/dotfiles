@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # set ft=python
-import sys, re
+import sys
+import re
 from subprocess import check_output
 
 commit_msg_filepath = sys.argv[1]
@@ -9,6 +10,7 @@ branch = check_output(["git", "symbolic-ref", "--short", "HEAD"]).strip().decode
 
 prefixes = "(feature|feat|fix|hotfix|refactor|docs|temp)(/|-)"
 
+task_ = re.compile(r"(\w+-\d+).*")
 issue_ = re.compile(rf"{prefixes}(\w+-\d+).*")
 semantic_ = re.compile(rf"{prefixes}(\w+)")
 
@@ -20,7 +22,10 @@ def read_write(file, prefix):
         fh.write(f"{prefix}{commit_msg}")
 
 
-if matched := re.match(issue_, branch):
+if matched := re.match(task_, branch):
+    issue = matched.group(1)
+    read_write(commit_msg_filepath, f"{issue} - ")
+elif matched := re.match(issue_, branch):
     issue = matched.group(3)
     read_write(commit_msg_filepath, f"{issue}: ")
 elif matched := re.match(semantic_, branch):

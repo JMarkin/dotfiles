@@ -12,6 +12,7 @@
   programs.ssh.extraConfig = ''
     IPQoS none
   '';
+  programs.mosh.enable = true;
 
   systemd.services.sshd.wantedBy = pkgs.lib.mkForce [ "multi-user.target" ];
 }

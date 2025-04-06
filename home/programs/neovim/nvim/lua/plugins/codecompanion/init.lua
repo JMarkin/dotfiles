@@ -120,6 +120,28 @@ return {
         "nvim-lua/plenary.nvim",
         "nvim-treesitter/nvim-treesitter",
         "j-hui/fidget.nvim",
+        {
+            "ravitemer/mcphub.nvim",
+            dependencies = {
+                "nvim-lua/plenary.nvim", -- Required for Job and HTTP requests
+            },
+            -- comment the following line to ensure hub will be ready at the earliest
+            cmd = "MCPHub", -- lazy load by default
+            -- uncomment this if you don't want mcp-hub to be available globally or can't use -g
+            -- build = "bundled_build.lua",  -- Use this and set use_bundled_binary = true in opts  (see Advanced configuration)
+            config = function()
+                require("mcphub").setup({
+                    extensions = {
+                        codecompanion = {
+                            -- Show the mcp tool result in the chat buffer
+                            show_result_in_chat = true,
+                            -- Make chat #variables from MCP server resources
+                            make_vars = true,
+                        }
+                    }
+                })
+            end,
+        },
     },
     init = function()
         require("plugins.codecompanion.fidget-spinner"):init()
@@ -130,11 +152,18 @@ return {
                 opts = {
                     show_defaults = false,
                 },
+                gemini = function()
+                    return require("codecompanion.adapters").extend("gemini", {
+                        env = {
+                            api_key = "GEMINI_API",
+                        },
+                    })
+                end,
                 x5qwen = function()
                     return require("codecompanion.adapters").extend("openai_compatible", {
                         env = {
                             url = "http://proxy-kafka.k8s.airun-dev-1.salt.x5.ru",
-                            api_key = "X5_QWEN_API", -- optional: if your endpoint is authenticated
+                            api_key = "X5_QWEN_API",           -- optional: if your endpoint is authenticated
                             chat_url = "/v1/chat/completions", -- optional: default value, override if different
                             -- models_endpoint = "/v1/models", -- optional: attaches to the end of the URL to form the endpoint to retrieve models
                         },
@@ -179,9 +208,9 @@ return {
                     show_settings = true,
                 },
             },
-            -- opts = {
-            --     system_prompt = require("plugins.codecompanion.system_prompt"),
-            -- },
+            opts = {
+                system_prompt = require("plugins.codecompanion.system_prompt"),
+            },
             prompt_library = require("plugins.codecompanion.prompts"),
         })
 

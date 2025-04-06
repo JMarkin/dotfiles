@@ -1,5 +1,6 @@
 -- local compl = require("plugins.autocomplete._cmp")
 -- local compl = require("plugins.autocomplete.care")
+-- local compl = require("plugins.autocomplete.phoenix")
 local compl = require("plugins.autocomplete.blink")
 local ai = require("plugins.autocomplete.ai")
 

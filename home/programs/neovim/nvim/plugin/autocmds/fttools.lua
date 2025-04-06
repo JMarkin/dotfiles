@@ -46,3 +46,12 @@ fn.augroup("spell", {
         end,
     },
 })
+
+
+fn.augroup("tempfile", {
+    { 'BufWritePre' },
+    {
+        pattern = { '/tmp/*', 'COMMIT_EDITMSG', 'MERGE_MSG', '*.tmp', '*.bak' },
+        command = 'setlocal noundofile',
+    }
+})

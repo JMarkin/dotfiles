@@ -31,7 +31,7 @@ return {
         keys = {
             {
                 -- Customize or remove this keymap to your liking
-                "gwb",
+                "gqb",
                 function()
                     local buf = vim.api.nvim_get_current_buf()
                     if require("largefiles").is_large_file(buf, true) then

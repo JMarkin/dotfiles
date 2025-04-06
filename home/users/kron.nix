@@ -23,34 +23,16 @@
     rustic
     rclone
     ptags
-    # hyperfine
     createnv
     dotenv-linter
     kubectl
     k9s
-    # nur.repos.dustinblackman.oatmeal
-    # cgrc
 
     # networking tools
     mtr
     socat
     nmap
 
-    # lang
-    # llvm
-    # clang
-    # mold
-    # rustc
-    # cargo
-    # go
-    # nodejs_22
-
-    # for rustc
-    # iconv
-    # libiconv
-
-    # llm
-    # vectorcode
     ollama
 
   ];

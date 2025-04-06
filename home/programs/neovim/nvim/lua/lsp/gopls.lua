@@ -8,7 +8,7 @@ local M = {
         local opts = {
             settings = {
                 gopls = {
-                    gofumpt = true,
+                    gofumpt = false,
                     codelenses = {
                         gc_details = false,
                         generate = true,
@@ -38,7 +38,7 @@ local M = {
                     completeUnimported = true,
                     staticcheck = true,
                     directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
-                    semanticTokens = true,
+                    semanticTokens = false,
                 },
             },
         }

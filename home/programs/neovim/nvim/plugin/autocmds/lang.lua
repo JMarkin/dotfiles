@@ -13,12 +13,46 @@ fn.augroup("linting", {
     },
 })
 
+local timer = nil --[[uv_timer_t]]
+local function reset_timer()
+    if timer then
+        timer:stop()
+        timer:close()
+    end
+    timer = nil
+end
+
 fn.augroup("lspattach", {
-    { "LspAttach" },
-    {
-        pattern = { "*" },
-        callback = function()
-            vim.b.lsp_attached = true
-        end,
+        { "LspAttach" },
+        {
+            pattern = { "*" },
+            callback = function(args)
+                vim.b.lsp_attached = true
+                if vim.bo[args.buf].filetype == 'lua' and vim.api.nvim_buf_get_name(args.buf):find('_spec') then
+                    vim.diagnostic.enable(false, { bufnr = args.buf })
+                end
+                local client = vim.lsp.get_clients({ id = args.data.client_id })[1]
+                client.server_capabilities.semanticTokensProvider = nil
+            end,
+        },
     },
-})
+    { { 'LspDetach' }, {
+        callback = function(args)
+            local client_id = args.data.client_id
+            local client = vim.lsp.get_clients({ client_id = client_id })[1]
+            if not client or not vim.tbl_isempty(client.attached_buffers) then
+                return
+            end
+            reset_timer()
+            timer = assert(vim.uv.new_timer())
+            timer:start(200, 0, function()
+                reset_timer()
+                vim.schedule(function()
+                    vim.lsp.stop_client(client_id, true)
+                end)
+            end)
+        end,
+        desc = 'Auto stop client when no buffer atttached',
+    } }
+
+)

@@ -134,24 +134,24 @@ local function on_attach(client, bufnr)
         end,
     })
 
-    if client.name == "gopls" then
-        -- workaround for gopls not supporting semanticTokensProvider
-        -- https://github.com/golang/go/issues/54531#issuecomment-1464982242
-        if not client.server_capabilities.semanticTokensProvider then
-            local semantic = client.config.capabilities.textDocument.semanticTokens
-            if semantic == nil then
-                return
-            end
-            client.server_capabilities.semanticTokensProvider = {
-                full = true,
-                legend = {
-                    tokenTypes = semantic.tokenTypes,
-                    tokenModifiers = semantic.tokenModifiers,
-                },
-                range = true,
-            }
-        end
-    end
+    -- if client.name == "gopls" then
+    --     -- workaround for gopls not supporting semanticTokensProvider
+    --     -- https://github.com/golang/go/issues/54531#issuecomment-1464982242
+    --     if not client.server_capabilities.semanticTokensProvider then
+    --         local semantic = client.config.capabilities.textDocument.semanticTokens
+    --         if semantic == nil then
+    --             return
+    --         end
+    --         client.server_capabilities.semanticTokensProvider = {
+    --             full = true,
+    --             legend = {
+    --                 tokenTypes = semantic.tokenTypes,
+    --                 tokenModifiers = semantic.tokenModifiers,
+    --             },
+    --             range = true,
+    --         }
+    --     end
+    -- end
 
     if not client:supports_method(methods.textDocument_hover, bufnr) then
         client.server_capabilities.hoverProvider = false

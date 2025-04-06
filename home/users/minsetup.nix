@@ -32,6 +32,7 @@
     dnsutils
     termshark
     mtr
+    mosh
   ];
 
   programs.ripgrep.enable = true;

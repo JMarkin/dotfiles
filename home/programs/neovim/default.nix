@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 let
 
   # treesitterWithGrammars = pkgs.vimPlugins.nvim-treesitter.withAllGrammars;
@@ -77,24 +77,44 @@ let
     url = "http://ftp.vim.org/vim/runtime/spell/ru.utf-8.spl";
     sha256 = "sha256:0kf5vbk7lmwap1k4y4c1fm17myzbmjyzwz0arh5v6810ibbknbgb";
   };
+  mchub = pkgs.buildNpmPackage
+    rec {
+      pname = "mchub";
+      version = "1.8.1";
+
+      src = pkgs.fetchFromGitHub {
+        owner = "ravitemer";
+        repo = "mcp-hub";
+        rev = "v${version}";
+        hash = "sha256-urFu1xoxeDVCBtYhrQrijL5uuke5XxkaM2CF5IO9kHo=";
+      };
+
+      npmDepsHash = "sha256-A4d9l8YpRaJdNfa934IEG0a2SLRmwW+CfTWgoXx3vwA=";
+    };
+
 in
 {
-  home.packages = with pkgs; [
+  home.packages = with pkgs;
+    [
 
-    # builder
-    lua51Packages.lua
-    lua51Packages.luarocks
+      # builder
+      lua51Packages.lua
+      lua51Packages.luarocks
 
-    # lsp
-    bash-language-server
+      # lsp
+      bash-language-server
 
-    # lsp features
-    fswatch
+      # lsp features
+      fswatch
 
-    #tools
-    nixpkgs-fmt
-    fixjson
-  ];
+      #tools
+      nixpkgs-fmt
+      fixjson
+      codespell
+
+    ] ++
+    # llm
+    [pkgs.nodejs_22 mchub];
 
   programs.neovim = {
     enable = true;
@@ -102,7 +122,7 @@ in
     vimAlias = true;
     viAlias = true;
     coc.enable = false;
-    withNodeJs = false;
+    withNodeJs = true;
     defaultEditor = true;
     vimdiffAlias = true;
 
