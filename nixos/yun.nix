@@ -10,13 +10,14 @@
   networking.hostName = "yun-nixos";
 
   boot.loader.grub = {
+    enable = true;
+    device = "/dev/sda2";
     # no need to set devices, disko will add all devices that have a EF02 partition to the list already
     # devices = [ ];
     efiSupport = true;
     efiInstallAsRemovable = true;
   };
 
-  boot.loader.grub.devices = "/dev/sda2";
 
   networking.useDHCP = lib.mkForce false;
 
