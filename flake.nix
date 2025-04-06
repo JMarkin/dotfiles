@@ -126,7 +126,7 @@
           ];
         };
         "kron@yun-nixos" = home-manager.lib.homeManagerConfiguration {
-          pkgs = x86Pkgs;
+          pkgs = x86PkgsNeovimNightly;
 
           modules = [
             {
