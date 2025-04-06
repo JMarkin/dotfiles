@@ -74,7 +74,7 @@ let
     paths = treesitterWithGrammars.dependencies;
   };
   nvim-spell-ru-utf8-dictionary = builtins.fetchurl {
-    url = "http://ftp.vim.org/vim/runtime/spell/ru.utf-8.spl";
+    url = "http://ftp.gr.vim.org/pub/vim/runtime/spell/ru.utf-8.spl";
     sha256 = "sha256:0kf5vbk7lmwap1k4y4c1fm17myzbmjyzwz0arh5v6810ibbknbgb";
   };
   mchub = pkgs.buildNpmPackage
