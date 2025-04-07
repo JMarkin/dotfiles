@@ -7,11 +7,11 @@
 {
   imports =
     [
-      # Include the results of the hardware scan.
       ./hardware/vm.nix
       ./modules/common.nix
       ./modules/wg.nix
       ./modules/virtualization.nix
+      # ./modules/mongo.nix
     ];
 
   virtualisation.docker.enable = true;
@@ -77,6 +77,11 @@
     fsType = "ext4";
     neededForBoot = true;
     options = [ "noatime" ];
+  };
+
+  boot.kernel.sysctl = {
+    "fs.inotify.max_user_watches" = 524288;
+    "fs.file-max" = 2097152;
   };
 
 
