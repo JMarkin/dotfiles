@@ -19,8 +19,8 @@
 
     mac-app-util.url = "github:hraban/mac-app-util";
 
-    microvm.url = "github:astro/microvm.nix";
-    microvm.inputs.nixpkgs.follows = "nixpkgs";
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -30,7 +30,7 @@
     , home-manager
     , darwin
     , mac-app-util
-    , microvm
+    , disko
     , ...
     } @ inputs:
     let
@@ -125,16 +125,6 @@
             ./home/users/alpine_gw.nix
           ];
         };
-        "kron@yun-nixos" = home-manager.lib.homeManagerConfiguration {
-          pkgs = x86PkgsNeovimNightly;
-
-          modules = [
-            {
-              home.homeDirectory = "/home/kron";
-            }
-            ./home/users/vps.nix
-          ];
-        };
       };
 
       nixosConfigurations = {
@@ -143,7 +133,6 @@
           pkgs = nixosPackages;
           modules = [
             # agenix.nixosModules.default
-            microvm.nixosModules.host
             {
               environment.etc."nix/inputs/nixpkgs".source = inputs.nixos.outPath;
             }
@@ -165,16 +154,20 @@
             home-manager.nixosModules.home-manager
           ];
         };
-        yun = nixos.lib.nixosSystem {
+        /*
+        nixos-rebuild switch --flake .#yun_svr67279 \
+        --target-host yun_svr67279 --verbose --use-remote-sudo
+        */
+        yun_svr67279 = nixos.lib.nixosSystem {
           system = "x86_64-linux";
           pkgs = nixosPackages;
           modules = [
             {
               environment.etc."nix/inputs/nixpkgs".source = inputs.nixos.outPath;
             }
-            ./nixos/yun.nix
-            # secrets.nixosModules.tln or { }
+            disko.nixosModules.disko
             home-manager.nixosModules.home-manager
+            ./vps/yun_svr_67279
           ];
         };
       };

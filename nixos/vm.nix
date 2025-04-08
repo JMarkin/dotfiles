@@ -83,6 +83,7 @@
     "fs.inotify.max_user_watches" = 524288;
     "fs.file-max" = 2097152;
   };
+  systemd.extraConfig = "DefaultLimitNOFILE=1024:1048576";
 
 
   system.stateVersion = "25.05";

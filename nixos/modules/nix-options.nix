@@ -27,6 +27,7 @@
       keep-derivations = true
     '';
     settings = {
+      trusted-users = [ "root" "kron" ];
       auto-optimise-store = true;
       substituters = [
         "https://nix-community.cachix.org"

@@ -192,7 +192,7 @@ g.linter_by_ft = {
     htmldjango = { "djlint" },
     python = { "codespell", "mypy" },
     rust = { "codespell" },
-    go = {"codespell"}
+    go = { "golangcilint", "codespell"}
 }
 
 g.formatters_by_ft = {
