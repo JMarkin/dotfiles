@@ -102,7 +102,7 @@ local blink = {
         "quangnguyen30192/cmp-nvim-tags",
         "JMarkin/cmp-diag-codes",
         { "saghen/blink.compat",       opts = { impersonate_nvim_cmp = true } },
-        { "xzbdmw/colorful-menu.nvim", config = true },
+        { "xzbdmw/colorful-menu.nvim" },
         "milanglacier/minuet-ai.nvim",
     },
     -- version = "*",

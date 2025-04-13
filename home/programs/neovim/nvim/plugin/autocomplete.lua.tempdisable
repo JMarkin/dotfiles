@@ -1,0 +1,338 @@
+-- https://github.com/deathbeam/myplugins.nvim/blob/main/lua/myplugins
+
+local config = {
+    -- entry_mapper = function(vim_item, client)
+    --     local entry = {
+    --         source = {
+    --             source = {
+    --                 client = client,
+    --             }
+    --         }
+    --     }
+    --     entry.get_completion_item = function(self)
+    --         return {
+    --                 label = vim_item.abbr,
+    --                 abbr = vim_item.abbr,
+    --                 kind = vim_item.kind,
+    --                 menu = vim_item.menu,
+    --                 icase = vim_item.icase,
+    --                 dup = vim_item.dup,
+    --                 empty = vim_item.empty,
+    --                 detail = vim_item.menu,
+    --         }
+    --     end
+    --     local highlights_info = require("colorful-menu").cmp_highlights(entry)
+    --     vim.print(highlights_info)
+    --     if highlights_info ~= nil then
+    --         vim_item.abbr_hl_group = highlights_info.highlights
+    --         vim_item.abbr = highlights_info.text
+    --     end
+    --     return vim_item
+    -- end,
+    debounce_delay = 200,
+}
+
+local methods = vim.lsp.protocol.Methods
+
+local state = {
+    entries = {
+        completion = nil,
+        info = nil,
+    },
+}
+
+local utils = {}
+
+function utils.entry()
+    return { timer = nil, cancel = nil }
+end
+
+function utils.debounce(entry, ms, func)
+    if not entry then
+        return
+    end
+
+    utils.stop(entry)
+    entry.timer = vim.uv.new_timer()
+    entry.timer:start(
+        ms,
+        0,
+        vim.schedule_wrap(function()
+            entry.cancel = func()
+        end)
+    )
+end
+
+function utils.stop(entry)
+    if not entry then
+        return
+    end
+
+    if entry.timer then
+        entry.timer:close()
+        entry.timer:stop()
+        entry.timer = nil
+    end
+
+    if entry.cancel then
+        entry.cancel()
+        entry.cancel = nil
+    end
+end
+
+local function complete(prefix, cmp_start, items)
+    if vim.fn.mode() ~= 'i' then
+        return
+    end
+
+    items = vim.tbl_filter(function(item)
+        return #prefix == 0 or #vim.fn.matchfuzzy({ item.word }, prefix) > 0
+    end, items)
+
+    if config.entry_mapper then
+        items = vim.tbl_map(function(i) return config.entry_mapper(i, nil) end, items)
+    end
+
+    vim.fn.complete(cmp_start + 1, items)
+end
+
+local function complete_treesitter(bufnr, prefix, cmp_start)
+    -- Check if treesitter is available
+    local ok, parsers = pcall(require, 'nvim-treesitter.parsers')
+    if not ok or not parsers.has_parser() then
+        return
+    end
+
+    local locals = require('nvim-treesitter.locals')
+    local defs = locals.get_definitions_lookup_table(bufnr)
+    local ft = vim.bo[bufnr].filetype
+    local items = {}
+
+    for id, entry in pairs(defs) do
+        local name = id:match('k_(.+)_%d+_%d+_%d+_%d+$')
+        local node = entry.node
+        local kind = entry.kind
+        if node and kind then
+            for _, k in ipairs(vim.lsp.protocol.CompletionItemKind) do
+                if string.find(k:lower(), kind:lower()) then
+                    kind = k
+                    break
+                end
+            end
+
+            local start_line_node, _, _ = node:start()
+            local end_line_node, _, _ = node:end_()
+
+            local full_text =
+                vim.trim(vim.api.nvim_buf_get_lines(bufnr, start_line_node, end_line_node + 1, false)[1] or '')
+
+            full_text = '```' .. ft .. '\n' .. full_text .. '\n```'
+            items[#items + 1] = {
+                word = name,
+                kind = kind,
+                info = full_text,
+                icase = 1,
+                dup = 0,
+                empty = 0,
+            }
+        end
+    end
+
+    complete(prefix, cmp_start, items)
+end
+
+local function text_changed(args)
+    if vim.fn.pumvisible() == 1 then
+        return
+    end
+
+    local line = vim.api.nvim_get_current_line()
+    local col = vim.api.nvim_win_get_cursor(0)[2]
+    if col == 0 or #line == 0 then
+        return
+    end
+
+    local prefix, cmp_start = unpack(vim.fn.matchstrpos(line:sub(1, col), [[\k*$]]))
+
+    utils.debounce(state.entries.completion, config.debounce_delay, function()
+        local clients = vim.lsp.get_clients({ bufnr = args.buf, method = methods.textDocument_completion })
+        clients = vim.tbl_filter(function(client)
+            return client and client.name ~= 'copilot'
+        end, clients)
+
+        if not vim.tbl_isempty(clients) and vim.lsp.completion then
+            if vim.lsp.completion.trigger then
+                vim.lsp.completion.trigger()
+                return
+            end
+            if vim.lsp.completion.get then
+                vim.lsp.completion.get()
+                return
+            end
+        end
+
+        complete_treesitter(args.buf, prefix, cmp_start)
+    end)
+end
+
+local function complete_changed(args)
+    if not string.find(vim.o.completeopt, 'popup') then
+        return
+    end
+
+    if not vim.v.event or not vim.v.event.completed_item then
+        return
+    end
+
+    local cur_item = vim.v.event.completed_item
+    local cur_info = vim.fn.complete_info()
+    local selected = cur_info.selected
+
+    utils.debounce(state.entries.info, config.debounce_delay, function()
+        local completion_item = vim.tbl_get(cur_item or {}, 'user_data', 'nvim', 'lsp', 'completion_item')
+        if not completion_item then
+            return
+        end
+
+        local _, cancel = vim.lsp.buf_request(
+            args.buf,
+            methods.completionItem_resolve,
+            completion_item,
+            vim.schedule_wrap(function(err, item)
+                if err or not item then
+                    return
+                end
+
+                local docs = vim.tbl_get(item, 'documentation', 'value')
+                if not docs or #docs == 0 then
+                    return
+                end
+
+                local wininfo = vim.api.nvim__complete_set(selected, { info = docs })
+                if not wininfo.winid or not wininfo.bufnr then
+                    return
+                end
+
+                vim.api.nvim_win_set_config(wininfo.winid, {
+                    ---@diagnostic disable-next-line: assign-type-mismatch
+                    border = vim.o.winborder,
+                    focusable = false,
+                })
+
+                vim.treesitter.start(wininfo.bufnr, 'markdown')
+                vim.wo[wininfo.winid].conceallevel = 3
+                vim.wo[wininfo.winid].concealcursor = 'niv'
+            end)
+        )
+
+        return cancel
+    end)
+end
+
+
+function bufcmp()
+    state.entries.completion = utils.entry()
+    state.entries.info = utils.entry()
+
+    local group = vim.api.nvim_create_augroup('myplugins-bufcomplete', { clear = true })
+
+    vim.api.nvim_create_autocmd('TextChangedI', {
+        group = group,
+        desc = 'Auto show completion',
+        callback = text_changed,
+    })
+
+    vim.api.nvim_create_autocmd('CompleteChanged', {
+        group = group,
+        desc = 'Auto show LSP documentation',
+        callback = complete_changed,
+    })
+
+    vim.api.nvim_create_autocmd('LspAttach', {
+        group = group,
+        desc = 'Attach completion events',
+        callback = function(args)
+            if not vim.lsp.completion or not vim.lsp.completion.enable then
+                return
+            end
+
+            local client = vim.lsp.get_client_by_id(args.data.client_id)
+            if not client then
+                return
+            end
+            if not client:supports_method(methods.textDocument_completion, args.buf) then
+                return
+            end
+
+            vim.lsp.completion.enable(true, client.id, args.buf, {
+                autotrigger = false,
+                convert = function(item)
+                    local entry = {
+                        abbr = item.label,
+                        kind = vim.lsp.protocol.CompletionItemKind[item.kind] or 'Unknown',
+                        menu = item.detail or '',
+                        icase = 1,
+                        dup = 0,
+                        empty = 0,
+                    }
+
+                    if config.entry_mapper then
+                        return config.entry_mapper(entry, client)
+                    end
+
+                    return entry
+                end,
+            })
+        end,
+    })
+end
+
+-- cmdcompletion
+function cmdcmp()
+    if vim.fn.has('nvim-0.11.0') == 0 then
+        return
+    end
+
+    local group = vim.api.nvim_create_augroup('myplugins-cmdcomplete', { clear = true })
+    local term = vim.api.nvim_replace_termcodes('<C-@>', true, true, true)
+
+    vim.cmd([[set wildcharm=<C-@>]])
+    vim.opt.wildmenu = true
+    vim.opt.wildmode = 'noselect:lastused,full'
+
+    vim.keymap.set('c', '<Up>', '<End><C-U><Up>', { silent = true })
+    vim.keymap.set('c', '<Down>', '<End><C-U><Down>', { silent = true })
+
+    vim.api.nvim_create_autocmd('CmdlineChanged', {
+        group = group,
+        desc = 'Auto show command line completion',
+        pattern = ':',
+        callback = function()
+            local cmdline = vim.fn.getcmdline()
+            local curpos = vim.fn.getcmdpos()
+            local last_char = cmdline:sub(curpos - 1, curpos - 1)
+
+            if
+                curpos == #cmdline + 1
+                and vim.fn.pumvisible() == 0
+                and last_char:match('[%w%/%:- ]')
+                and not cmdline:match('^%d+$')
+            then
+                vim.api.nvim_feedkeys(term, 'ti', false)
+                vim.opt.eventignore:append('CmdlineChanged')
+                vim.schedule(function()
+                    vim.fn.setcmdline(vim.fn.substitute(vim.fn.getcmdline(), '\\%x00', '', 'g'))
+                    vim.opt.eventignore:remove('CmdlineChanged')
+                end)
+            end
+        end,
+    })
+end
+
+vim.api.nvim_create_autocmd({ "InsertEnter", "CmdlineEnter" }, {
+    once = true,
+    callback = function()
+        bufcmp()
+        cmdcmp()
+    end,
+})

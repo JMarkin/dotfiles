@@ -18,7 +18,13 @@ return {
         quickfile = { enabled = true },
         scope = { enabled = false },
         scroll = { enabled = false },
-        statuscolumn = { enabled = false },
+        statuscolumn = {
+            enabled = true,
+            folds = {
+                open = true, -- show open fold icons
+                git_hl = true, -- use Git Signs hl for fold icons
+            },
+        },
         words = { enabled = false },
         styles = {
             notification = {
@@ -88,7 +94,6 @@ return {
                     .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
                     :map("<leader>uc")
                 Snacks.toggle.treesitter():map("<leader>uT")
-
             end,
         })
     end,

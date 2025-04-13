@@ -113,7 +113,7 @@ return {
         dashboard.section.footer.opts.hl = "AlphaFooter"
 
         if height > 40 then
-            local header = require("banner")
+            local header = require("banner").get_by_day()
             dashboard.section.header.val = header
             fetch(dashboard)
         else

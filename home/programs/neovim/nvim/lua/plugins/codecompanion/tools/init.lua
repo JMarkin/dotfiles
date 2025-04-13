@@ -13,13 +13,13 @@ return {
             },
         },
     },
-    ["mcp"] = {
-      callback = require("mcphub.extensions.codecompanion"),
-      description = "Call tools and resources from the MCP Servers",
-      opts = {
-        requires_approval = true,
-      },
-    },
+    -- ["mcp"] = {
+    --   callback = require("mcphub.extensions.codecompanion"),
+    --   description = "Call tools and resources from the MCP Servers",
+    --   opts = {
+    --     requires_approval = true,
+    --   },
+    -- },
     ["cmd_runner"] = {
         callback = tools_prefix .. "cmd_runner.lua",
         description = "Command Runner Tool",

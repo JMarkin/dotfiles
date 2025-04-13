@@ -447,4 +447,17 @@ M.pacman = {
 }
 
 local keys = vim.tbl_keys(M)
-return M[keys[math.random(1, #keys + 1)]]
+
+local function get_days()
+	local seconds = vim.uv.clock_gettime("realtime").sec
+	local day = math.ceil(seconds / (60 * 60 * 24))
+	return day
+end
+
+
+M.get_by_day = function ()
+    local index = (get_days() % #keys) + 1
+    return M[keys[index]]
+end
+
+return M

@@ -95,16 +95,6 @@
             ./home/users/kron_darwin.nix
           ];
         };
-        "kron@alpine-gw" = home-manager.lib.homeManagerConfiguration {
-          pkgs = x86Pkgs;
-
-          modules = [
-            {
-              home.homeDirectory = "/home/kron";
-            }
-            ./home/users/alpine_gw.nix
-          ];
-        };
         "kron@nixos" = home-manager.lib.homeManagerConfiguration {
           pkgs = x86PkgsNeovimNightly;
 
@@ -122,7 +112,7 @@
             {
               home.homeDirectory = "/home/kron";
             }
-            ./home/users/alpine_gw.nix
+            ./home/users/gw.nix
           ];
         };
       };
@@ -141,6 +131,10 @@
             home-manager.nixosModules.home-manager
           ];
         };
+        /*
+        nixos-rebuild switch --flake .#gw \
+        --target-host gw-home --verbose --use-remote-sudo
+        */
         gw = nixos.lib.nixosSystem {
           system = "x86_64-linux";
           pkgs = nixosPackages;
@@ -152,6 +146,18 @@
             ./nixos/gw.nix
             # secrets.nixosModules.tln or { }
             home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+
+              home-manager.users.kron = {...} :{
+                home.homeDirectory = "/home/kron";
+
+                imports = [
+                  ./home/users/gw.nix
+                ];
+              };
+            }
           ];
         };
         /*
@@ -166,7 +172,6 @@
               environment.etc."nix/inputs/nixpkgs".source = inputs.nixos.outPath;
             }
             disko.nixosModules.disko
-            home-manager.nixosModules.home-manager
             ./vps/yun_svr_67279
           ];
         };
