@@ -3,7 +3,6 @@ local fn = require("funcs")
 vim.o.foldenable = true
 vim.o.foldlevel = 99
 vim.o.foldmethod = "marker"
-vim.o.foldmarker = "###,###"
 vim.o.foldtext = ""
 vim.opt.foldcolumn = "0"
 
@@ -19,87 +18,82 @@ if vim.g.modern_ui then
     })
 end
 
-local function setfold(buf, func, rollback)
-    if vim.b[buf].foldmethodfreeze then
-        return
-    end
-
+local function setfold(_buf, func)
     local win = vim.api.nvim_get_current_win()
     func(win)
 
-    if not rollback then
-        vim.b[buf].foldmethodfreeze = true
-    end
 end
 
-local function undofold(buf)
+local function undofoldexpr(buf)
     setfold(buf, function()
         vim.cmd([[setl foldmethod<]])
         vim.cmd([[setl foldexpr<]])
-    end, true)
+    end)
 end
+
+local function undofoldmarker(buf)
+    setfold(buf, function()
+        vim.cmd([[setl foldmethod<]])
+        vim.cmd([[setl foldexpr<]])
+    end)
+end
+
+vim.api.nvim_create_user_command("FoldDefault", function(opts)
+    local buf = vim.api.nvim_get_current_buf()
+
+    if opts.bang then
+        undofoldmarker(buf)
+        return
+    end
+
+    setfold(buf, function(_win)
+        vim.opt_local.foldmethod = "marker"
+        vim.opt_local.foldmarker = "{{{,}}}"
+    end)
+end, { bang = true })
 
 vim.api.nvim_create_user_command("FoldRegion", function(opts)
     local buf = vim.api.nvim_get_current_buf()
 
     if opts.bang then
-        setfold(buf, function()
-            vim.cmd([[setl foldmethod<]])
-            vim.cmd([[setl foldmarker<]])
-        end, true)
+        undofoldmarker(buf)
         return
     end
 
     setfold(buf, function(_win)
         vim.opt_local.foldmethod = "marker"
         vim.opt_local.foldmarker = "#region,#endregion"
-    end, true)
+    end)
 end, { bang = true })
 
-fn.augroup("TSFolding", {
-    { "User" },
-    {
-        pattern = "TSFoldAttach",
-        callback = function(args)
-            setfold(args.buf, function(win)
-                vim.wo[win][0].foldmethod = "expr"
-                vim.wo[win][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
-            end, true)
-        end,
-    },
-}, {
-    { "User" },
-    {
-        pattern = "TSFoldDetach",
-        callback = function(args)
-            undofold(args.buf)
-        end,
-    },
-})
+vim.api.nvim_create_user_command("FoldTS", function(opts)
+    local buf = vim.api.nvim_get_current_buf()
 
-fn.augroup("LspFolding", {
-    { "LspAttach" },
-    {
-        pattern = "*",
-        callback = function(args)
-            setfold(args.buf, function(win)
-                local client = vim.lsp.get_client_by_id(args.data.client_id)
-                if client:supports_method("textDocument/foldingRange") then
-                    vim.wo[win][0].foldmethod = "expr"
-                    vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
-                end
-            end, true)
-        end,
-    },
-}, {
-    { "LspDetach" },
-    {
-        pattern = "*",
-        callback = function(args)
-            undofold(args.buf)
-        end,
-    },
-})
+    if opts.bang then
+        undofoldexpr(buf)
+        return
+    end
+
+
+    setfold(buf, function(win)
+        vim.opt_local.foldmethod = "expr"
+        vim.opt_local.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+    end)
+end, { bang = true })
+
+vim.api.nvim_create_user_command("FoldLsp", function(opts)
+    local buf = vim.api.nvim_get_current_buf()
+
+    if opts.bang then
+        undofoldexpr(buf)
+        return
+    end
+
+    setfold(buf, function(win)
+        vim.opt_local.foldmethod = "expr"
+        vim.opt_local.foldexpr = "v:lua.vim.lsp.foldexpr()"
+    end)
+end, { bang = true })
 
 fn.augroup("FoldByFt", {
     { "FileType" },
@@ -114,11 +108,21 @@ fn.augroup("FoldByFt", {
 }, {
     { "FileType" },
     {
-        pattern = { "vim", "help" },
+        pattern = { "vim" },
         callback = function(args)
             setfold(args.buf, function(win)
                 vim.wo[win][0].foldmethod = "marker"
                 vim.wo[win][0].foldmarker = "{{{,}}}"
+            end)
+        end,
+    },
+},{
+    { "FileType" },
+    {
+        pattern = { "json" },
+        callback = function(args)
+            setfold(args.buf, function(win)
+                vim.wo[win][0].foldmethod = "syntax"
             end)
         end,
     },

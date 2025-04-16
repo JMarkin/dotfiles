@@ -21,9 +21,10 @@ return {
         statuscolumn = {
             enabled = true,
             folds = {
-                open = true, -- show open fold icons
+                open = true,   -- show open fold icons
                 git_hl = true, -- use Git Signs hl for fold icons
             },
+            refresh = 200,     -- ms
         },
         words = { enabled = false },
         styles = {
