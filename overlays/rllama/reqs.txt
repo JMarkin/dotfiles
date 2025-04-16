@@ -1,0 +1,3 @@
+pdfminer.six
+docx2txt
+xlsx2csv

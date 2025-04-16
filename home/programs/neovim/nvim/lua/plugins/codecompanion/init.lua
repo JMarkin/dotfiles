@@ -122,7 +122,8 @@ return {
         "j-hui/fidget.nvim",
         {
             "ravitemer/mcphub.nvim",
-            enabled = false,
+            enabled = true,
+            vertion = "v4.8.0",
             dependencies = {
                 "nvim-lua/plenary.nvim", -- Required for Job and HTTP requests
             },
@@ -182,6 +183,7 @@ return {
                     })
                 end,
                 ollama_deepseek = ollama_params("deepseek-r1", "hf.co/unsloth/DeepSeek-R1-Distill-Qwen-7B-GGUF:Q4_K_M"),
+                ollama_deepcode = ollama_params("deepcode", "hf.co/lmstudio-community/DeepCoder-14B-Preview-GGUF:Q4_K_M"),
                 ollama_qwencoder = ollama_params("qwen2.5", "qwen2.5-coder:14b-instruct-q4_K_M"),
                 ollama_gemma3 = ollama_params("gemma3", "hf.co/unsloth/gemma-3-12b-it-GGUF:Q4_K_M"),
                 ollama_phimini = ollama_params("phimini", "phi4-mini:latest"),
@@ -209,9 +211,9 @@ return {
                     show_settings = true,
                 },
             },
-            opts = {
-                system_prompt = require("plugins.codecompanion.system_prompt"),
-            },
+            -- opts = {
+            --     system_prompt = require("plugins.codecompanion.system_prompt"),
+            -- },
             prompt_library = require("plugins.codecompanion.prompts"),
         })
 

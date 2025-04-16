@@ -9,4 +9,5 @@ return {
   ["review_git_diffs"] = require("plugins.codecompanion.slash_commands.review_git_diffs"),
   ["graphviz"] = require("plugins.codecompanion.slash_commands.graphviz"),
   ["summarize_text"] = require("plugins.codecompanion.slash_commands.summarize_text"),
+  -- ["codebase"] = require("vectorcode.integrations").codecompanion.chat.make_slash_command(),
 }

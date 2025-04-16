@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, ... }:
 let
 
   # treesitterWithGrammars = pkgs.vimPlugins.nvim-treesitter.withAllGrammars;
@@ -77,20 +77,6 @@ let
     url = "http://ftp.gr.vim.org/pub/vim/runtime/spell/ru.utf-8.spl";
     sha256 = "sha256:0kf5vbk7lmwap1k4y4c1fm17myzbmjyzwz0arh5v6810ibbknbgb";
   };
-  mchub = pkgs.buildNpmPackage
-    rec {
-      pname = "mchub";
-      version = "1.8.1";
-
-      src = pkgs.fetchFromGitHub {
-        owner = "ravitemer";
-        repo = "mcp-hub";
-        rev = "v${version}";
-        hash = "sha256-urFu1xoxeDVCBtYhrQrijL5uuke5XxkaM2CF5IO9kHo=";
-      };
-
-      npmDepsHash = "sha256-A4d9l8YpRaJdNfa934IEG0a2SLRmwW+CfTWgoXx3vwA=";
-    };
 
 in
 {
@@ -112,9 +98,7 @@ in
       fixjson
       codespell
 
-    ] ++
-    # llm
-    [pkgs.nodejs_22 mchub];
+    ];
 
   programs.neovim = {
     enable = true;
@@ -147,6 +131,7 @@ in
       recursive = true;
       source = "${treesitter-parsers}/parser";
     };
+
   };
 
 }

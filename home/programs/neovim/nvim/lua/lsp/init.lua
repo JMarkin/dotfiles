@@ -43,6 +43,7 @@ M.lsps = {
             basedpyright = {
                 disableOrganizeImports = true,
                 analysis = {
+                    autoImportCompletions = false,
                     typeCheckingMode = "off",
                     diagnosticMode = "openFilesOnly",
                 },

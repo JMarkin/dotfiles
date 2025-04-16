@@ -91,25 +91,20 @@ local CODEGEMMA = {
     end_point = vim.g.ollama_completions_endpoint,
     model = "codegemma:latest",
     template = {
-        prompt = get_prompt,
+        prompt = function(pref, suff)
+            local prompt_message = ([[Perform fill-in-middle from the following snippet of a %s code. Respond with only the filled-in code.]])
+                :format(vim.bo.filetype)
+
+            local h_vc, vc = vectorcacher()
+            if h_vc and vc then
+                local cache_result = vectorcode_cacher.query_from_cache(0)
+                for _, file in ipairs(cache_result) do
+                    prompt_message = "<|file_separator|>" .. file.path .. "\n" .. file.document
+                end
+            end
+            return prompt_message .. "<|fim_prefix|>" .. pref .. "<|fim_suffix|>" .. suff .. "<|fim_middle|>"
+        end,
         suffix = false,
-    },
-    optional = {
-        stop = {
-            "<|endoftext|>",
-            "<|fim_prefix|>",
-            "<|fim_middle|>",
-            "<|fim_suffix|>",
-            "<|fim_pad|>",
-            "<|repo_name|>",
-            "<|file_sep|>",
-            "<|im_start|>",
-            "<|im_end|>",
-            "/src/",
-            "#- coding: utf-8",
-            "# Path:",
-        },
-        max_tokens = 300,
     },
 }
 
@@ -117,18 +112,20 @@ return {
     {
         "Davidyz/VectorCode",
         lazy = true,
-        version = "0.5.1",
+        version = "0.5.5",
         enabled = false,
         dependencies = { "nvim-lua/plenary.nvim" },
         opts = {
             async_backend = "lsp",
             n_query = 1,
+            async_opts = {
+                notify = true,
+            },
         },
-        config = function(_, opts)
-            require("vectorcode").setup(opts)
-            local cacher = require("vectorcode.config").get_cacher_backend()
+        init = function()
             vim.api.nvim_create_autocmd("LspAttach", {
                 callback = function()
+                    local cacher = require("vectorcode.config").get_cacher_backend()
                     local bufnr = vim.api.nvim_get_current_buf()
                     cacher.async_check("config", function()
                         cacher.register_buffer(bufnr, {
@@ -138,6 +135,9 @@ return {
                 end,
                 desc = "Register buffer for VectorCode",
             })
+        end,
+        config = function(_, opts)
+            require("vectorcode").setup(opts)
         end,
     },
     {
@@ -157,7 +157,8 @@ return {
                 notify = "debug",
                 provider = "openai_fim_compatible",
                 provider_options = {
-                    openai_fim_compatible = CODEGEMMA,
+                    openai_fim_compatible = X5Qwen,
+                    -- openai_fim_compatible = CODEGEMMA,
                 },
                 request_timeout = 10,
             })
