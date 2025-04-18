@@ -32,7 +32,7 @@ return {
         "yioneko/nvim-yati",
         {
             "andymass/vim-matchup",
-            -- enabled = false,
+            enabled = false,
             init = function()
                 vim.g.matchup_transmute_enabled = 1
 
@@ -50,7 +50,7 @@ return {
         },
         {
             "HiPhish/rainbow-delimiters.nvim",
-            enabled = false,
+            enabled = true,
             config = function()
                 local rainbow = require("rainbow-delimiters")
                 require("rainbow-delimiters.setup").setup({
@@ -85,13 +85,13 @@ return {
             config = function()
                 local tsc = require("treesitter-context")
                 tsc.setup({
-                    enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
-                    max_lines = 5, -- How many lines the window should span. Values <= 0 mean no limit.
-                    min_window_height = 30, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+                    enable = true,            -- Enable this plugin (Can be enabled/disabled later via commands)
+                    max_lines = 5,            -- How many lines the window should span. Values <= 0 mean no limit.
+                    min_window_height = 30,   -- Minimum editor window height to enable context. Values <= 0 mean no limit.
                     line_numbers = true,
                     multiline_threshold = 20, -- Maximum number of lines to show for a single context
-                    trim_scope = "outer", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-                    mode = "cursor", -- Line used to calculate context. Choices: 'cursor', 'topline'
+                    trim_scope = "outer",     -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+                    mode = "cursor",          -- Line used to calculate context. Choices: 'cursor', 'topline'
                     -- Separator between context and content. Should be a single character string, like '-'.
                     -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
                     -- separator = "-",
@@ -110,7 +110,41 @@ return {
                 })
             end,
         },
-        "nvim-treesitter/nvim-treesitter-textobjects",
+        {
+            'nvim-treesitter/nvim-treesitter-textobjects',
+            ft = { 'c', 'rust', 'go', 'lua', 'cpp' },
+            config = function()
+                vim.defer_fn(function()
+                    require('nvim-treesitter.configs').setup({
+                        textobjects = {
+                            disable = is_disable,
+                            select = {
+                                enable = true,
+                                keymaps = {
+                                    ['af'] = '@function.outer',
+                                    ['if'] = '@function.inner',
+                                    ['ac'] = '@class.outer',
+                                    ['ic'] = { query = '@class.inner' },
+                                },
+                            },
+                            move = {
+                                enable = true,
+                                goto_next_start = {
+                                    ["]f"] = "@function.outer",
+                                    ["]a"] = "@argument.outer",
+                                    ["]m"] = "@method.outer",
+                                },
+                                goto_previous_start = {
+                                    ["[f"] = "@function.outer",
+                                    ["[a"] = "@argument.outer",
+                                    ["[m"] = "@method.outer",
+                                },
+                            },
+                        },
+                    })
+                end, 0)
+            end,
+        }
     },
     config = function()
         require("nvim-treesitter").define_modules({
@@ -153,24 +187,9 @@ return {
                 disable = is_disable,
             },
             matchup = {
-                enable = true,
+                enable = false,
                 include_match_words = true,
                 disable = is_disable,
-            },
-            textobjects = {
-                move = {
-                    enable = true,
-                    goto_next_start = {
-                        ["]f"] = "@function.outer",
-                        ["]a"] = "@argument.outer",
-                        ["]m"] = "@method.outer",
-                    },
-                    goto_previous_start = {
-                        ["[f"] = "@function.outer",
-                        ["[a"] = "@argument.outer",
-                        ["[m"] = "@method.outer",
-                    },
-                },
             },
         })
 

@@ -30,6 +30,7 @@ fn.augroup("lspattach", {
                 vim.b.lsp_attached = true
                 if vim.bo[args.buf].filetype == 'lua' and vim.api.nvim_buf_get_name(args.buf):find('_spec') then
                     vim.diagnostic.enable(false, { bufnr = args.buf })
+                    return
                 end
                 local client = vim.lsp.get_clients({ id = args.data.client_id })[1]
                 client.server_capabilities.semanticTokensProvider = nil
@@ -53,6 +54,15 @@ fn.augroup("lspattach", {
             end)
         end,
         desc = 'Auto stop client when no buffer atttached',
+    } },
+    --disable diagnostic in neovim test file *_spec.lua
+    { 'FileType', {
+        pattern = 'lua',
+        callback = function(opt)
+            local fname = vim.api.nvim_buf_get_name(opt.buf)
+            if fname:find('%w_spec%.lua') then
+                vim.diagnostic.enable(not vim.diagnostic.is_enabled({ bufnr = opt.buf }))
+            end
+        end,
     } }
-
 )

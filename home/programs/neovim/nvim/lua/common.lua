@@ -13,7 +13,7 @@ g.snips_github                                    = vim.env.GITHUB or "https://g
 
 
 
-opt.colorcolumn                                   = '+1'
+-- opt.bolorcolumn                                   = '+1'
 opt.cursorlineopt                                 = 'both'
 opt.cursorline                                    = true
 g.cursorhold_updatetime                           = 200

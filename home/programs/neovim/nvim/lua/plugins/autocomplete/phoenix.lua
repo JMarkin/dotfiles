@@ -20,7 +20,7 @@ return {
 
             -- Completion control the scoring
             completion = {
-                max_items = 1000,    -- Max result items
+                max_items = 100,     -- Max result items
                 decay_minutes = 30,  -- Time period for decay calculation
                 weights = {
                     recency = 0.3,   -- 30% weight to recent usage
@@ -45,12 +45,12 @@ return {
 
             -- Scanner settings control filesystem interaction
             scanner = {
-                scan_batch_size = 1000,   -- Scan 1000 items per batch
-                cache_duration_ms = 5000, -- Cache results for 5s
-                throttle_delay_ms = 200,  -- Wait 200ms between updates
-                ignore_patterns = {},     -- Dictionary or file ignored when path completion
+                scan_batch_size = 1000,                        -- Scan 1000 items per batch
+                cache_duration_ms = 5000,                      -- Cache results for 5s
+                throttle_delay_ms = 200,                       -- Wait 200ms between updates
+                ignore_patterns = {},                          -- Dictionary or file ignored when path completion
             },
-            snippet = ''                  -- path of snippet json file like c.json/zig.json/go.json
+            snippet = vim.fn.stdpath("config") .. "/snippets" -- path of snippet json file like c.json/zig.json/go.json
         }
 
         api.nvim_create_autocmd('CompleteChanged', {

@@ -60,3 +60,12 @@ vim.api.nvim_create_autocmd("CmdlineLeave", {
     end
 }
 )
+
+
+if vim.env.TERM == 'alacritty' then
+    vim.api.nvim_create_autocmd('ExitPre', {
+        once = true,
+        command = 'set guicursor=a:ver90',
+        desc = 'Set cursor back to beam when leaving Neovim.',
+    })
+end
