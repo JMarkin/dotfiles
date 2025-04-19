@@ -1,6 +1,6 @@
 local api, completion, lsp = vim.api, vim.lsp.completion, vim.lsp
 local ms = lsp.protocol.Methods
-local g = api.nvim_create_augroup('glepnir.completion', { clear = true })
+local g = api.nvim_create_augroup('completion', { clear = true })
 
 return {
     "nvimdev/phoenix.nvim",
