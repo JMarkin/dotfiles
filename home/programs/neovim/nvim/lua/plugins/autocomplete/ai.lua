@@ -89,7 +89,7 @@ local CODEGEMMA = {
     name = "CODEGEMMA",
     stream = true,
     end_point = vim.g.ollama_completions_endpoint,
-    model = "codegemma:latest",
+    model = "codegemma:2b",
     template = {
         prompt = function(pref, suff)
             local prompt_message = ([[Perform fill-in-middle from the following snippet of a %s code. Respond with only the filled-in code.]])
@@ -143,6 +143,7 @@ return {
     {
         "milanglacier/minuet-ai.nvim",
         lazy = true,
+        cmd = { "Minuet" },
         config = function()
             -- This uses the async cache to accelerate the prompt construction.
             -- There's also the require('vectorcode').query API, which provides
@@ -157,10 +158,32 @@ return {
                 notify = "debug",
                 provider = "openai_fim_compatible",
                 provider_options = {
-                    openai_fim_compatible = X5Qwen,
-                    -- openai_fim_compatible = CODEGEMMA,
+                    -- openai_fim_compatible = X5Qwen,
+                    openai_fim_compatible = CODEGEMMA,
                 },
                 request_timeout = 10,
+                -- virtualtext = {
+                --     auto_trigger_ft = {"python"},
+                --     keymap = {
+                --         -- accept whole completion
+                --         accept = '<A-a>',
+                --         -- accept one line
+                --         accept_line = '<A-a>',
+                --         -- accept n lines (prompts for number)
+                --         -- e.g. "A-z 2 CR" will accept 2 lines
+                --         accept_n_lines = '<A-z>',
+                --         -- Cycle to prev completion item, or manually invoke completion
+                --         prev = '<A-[>',
+                --         -- Cycle to next completion item, or manually invoke completion
+                --         next = '<A-]>',
+                --         dismiss = '<A-e>',
+                --     },
+                -- },
+                lsp = {
+                    enabled_ft = { 'lua', 'python' },
+                    -- Enables automatic completion triggering using `vim.lsp.completion.enable`
+                    enabled_auto_trigger_ft = { 'python', 'lua' },
+                }
             })
         end,
     },

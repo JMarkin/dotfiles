@@ -45,17 +45,17 @@ return {
 
             -- Scanner settings control filesystem interaction
             scanner = {
-                scan_batch_size = 1000,                        -- Scan 1000 items per batch
-                cache_duration_ms = 5000,                      -- Cache results for 5s
-                throttle_delay_ms = 200,                       -- Wait 200ms between updates
-                ignore_patterns = {},                          -- Dictionary or file ignored when path completion
+                scan_batch_size = 1000,                       -- Scan 1000 items per batch
+                cache_duration_ms = 5000,                     -- Cache results for 5s
+                throttle_delay_ms = 200,                      -- Wait 200ms between updates
+                ignore_patterns = {},                         -- Dictionary or file ignored when path completion
             },
             snippet = vim.fn.stdpath("config") .. "/snippets" -- path of snippet json file like c.json/zig.json/go.json
         }
 
         api.nvim_create_autocmd('CompleteChanged', {
             callback = function()
-                local info = vim.fn.complete_info({ 'selected' })
+                local info = vim.fn.complete_info()
                 if info.preview_bufnr then
                     vim.bo[info.preview_bufnr].filetype = 'markdown'
                     vim.wo[info.preview_winid].conceallevel = 2
@@ -71,6 +71,10 @@ return {
                 local bufnr = args.buf
                 local client = lsp.get_client_by_id(args.data.client_id)
                 if not client or not client:supports_method(ms.textDocument_completion) then
+                    return
+                end
+
+                if client.name == 'minuet' then
                     return
                 end
                 local chars = client.server_capabilities.completionProvider.triggerCharacters

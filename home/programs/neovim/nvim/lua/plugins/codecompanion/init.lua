@@ -1,4 +1,4 @@
-local adapter = "ollama_gemma3"
+local adapter = "ollama_codegemma"
 
 local function ollama_params(model_name, model)
     return function()
@@ -187,6 +187,7 @@ return {
                 ollama_qwencoder = ollama_params("qwen2.5", "qwen2.5-coder:14b-instruct-q4_K_M"),
                 ollama_gemma3 = ollama_params("gemma3", "hf.co/unsloth/gemma-3-12b-it-GGUF:Q4_K_M"),
                 ollama_phimini = ollama_params("phimini", "phi4-mini:latest"),
+                ollama_codegemma = ollama_params("codegemma", "codegemma:2b-code"),
             },
             strategies = {
                 chat = {

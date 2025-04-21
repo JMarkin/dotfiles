@@ -523,9 +523,6 @@ return {
             --     config = function()
             --         local cmp_ai = require("cmp_ai.config")
             --
-            --         local host = vim.env.OLLAMA_HOST or "192.168.88.251"
-            --         local port = vim.env.OLLAMA_PORt or "11434"
-            --
             --         cmp_ai:setup({
             --             max_lines = 200,
             --             provider = "Ollama",

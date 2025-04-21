@@ -5,9 +5,9 @@
   imports = [
     ./kron.nix
 
-    # ../programs/ghostty
     ../programs/alacritty
     ../programs/neovide.nix
+    ../programs/mchub.nix
   ];
 
 
