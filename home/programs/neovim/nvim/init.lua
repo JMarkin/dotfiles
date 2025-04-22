@@ -19,7 +19,6 @@ vim.keymap.set = function(mode, lhs, rhs, opts)
         default_vim_keymap_set(mode, lhs, rhs, opts)
     end
 end
-require("funcs")
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
