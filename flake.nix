@@ -11,8 +11,8 @@
     neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
-    # agenix.inputs.nixpkgs.follows = "nixpkgs";
-    # agenix.url = "github:ryantm/agenix";
+    agenix.inputs.nixpkgs.follows = "nixpkgs";
+    agenix.url = "github:ryantm/agenix";
 
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     darwin.url = "github:lnl7/nix-darwin/master";
@@ -31,6 +31,7 @@
     , darwin
     , mac-app-util
     , disko
+    , agenix
     , ...
     } @ inputs:
     let
@@ -39,7 +40,7 @@
         (import ./overlays/createnv.nix)
         (import ./overlays/jedi_language_server.nix)
         (import ./overlays/vpn_slice.nix)
-        (import ./overlays/vectorcode.nix)
+        # (import ./overlays/vectorcode.nix)
         # (import ./overlays/rllama)
       ];
 
@@ -123,29 +124,27 @@
           system = "x86_64-linux";
           pkgs = nixosPackages;
           modules = [
-            # agenix.nixosModules.default
+            agenix.nixosModules.default
             {
               environment.etc."nix/inputs/nixpkgs".source = inputs.nixos.outPath;
             }
             ./nixos/vm.nix
-            # secrets.nixosModules.tln or { }
             home-manager.nixosModules.home-manager
           ];
         };
         /*
         nixos-rebuild switch --flake .#gw \
-        --target-host gw-home --verbose --use-remote-sudo
+        --target-host gw-nix-home --verbose --use-remote-sudo
         */
         gw = nixos.lib.nixosSystem {
           system = "x86_64-linux";
           pkgs = nixosPackages;
           modules = [
-            # agenix.nixosModules.default
+            agenix.nixosModules.default
             {
               environment.etc."nix/inputs/nixpkgs".source = inputs.nixos.outPath;
             }
             ./nixos/gw.nix
-            # secrets.nixosModules.tln or { }
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
@@ -173,6 +172,7 @@
               environment.etc."nix/inputs/nixpkgs".source = inputs.nixos.outPath;
             }
             disko.nixosModules.disko
+            agenix.nixosModules.default
             ./vps/yun_svr_67279
           ];
         };
