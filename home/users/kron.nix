@@ -21,7 +21,6 @@ in
     ../programs/fish
     ../programs/neovim
     ../programs/direnv.nix
-    ../programs/nix-flake-templates
   ];
 
 

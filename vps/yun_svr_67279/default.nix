@@ -11,8 +11,6 @@
     ];
 
   environment.systemPackages = with pkgs; [
-    rustic
-    rclone
     rsync
     curl
     gitMinimal
