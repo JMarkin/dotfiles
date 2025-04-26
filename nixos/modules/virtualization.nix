@@ -10,7 +10,7 @@
     spice-protocol
     win-virtio
     win-spice
-    adwaita-icon-theme
+    gnome.adwaita-icon-theme
   ];
 
   users.users."kron".extraGroups = [ "libvirtd" ];

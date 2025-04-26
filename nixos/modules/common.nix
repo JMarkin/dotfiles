@@ -1,6 +1,13 @@
 { pkgs, config, ... }:
 {
 
+  imports = [
+    ./ssh.nix
+    ./user.nix
+    ./nix-options.nix
+    ./locale.nix
+  ];
+
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
@@ -69,11 +76,11 @@
     };
   };
 
+  services = {
+    earlyoom = {
+      enable = true;
+      freeMemThreshold = 5;
+    };
+  };
 
-  imports = [
-    ./ssh.nix
-    ./user.nix
-    ./nix-options.nix
-    ./locale.nix
-  ];
 }

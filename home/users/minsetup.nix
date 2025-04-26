@@ -14,6 +14,7 @@
 
 
   home.packages = with pkgs; [
+    rsync
     zip
     xz
     unzip
@@ -28,11 +29,15 @@
     curl
     man
     ps
+    mtr
+    mosh
+
+    # networking tools
     iperf3
     dnsutils
     termshark
-    mtr
-    mosh
+    socat
+    nmap
   ];
 
   programs.ripgrep.enable = true;
