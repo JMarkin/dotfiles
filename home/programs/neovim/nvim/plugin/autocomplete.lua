@@ -50,16 +50,26 @@ local function complete_changed(args)
     local cur_info = vim.fn.complete_info()
     local selected = cur_info.selected
 
+
     funcs.debounce(config.debounce_delay, function()
         local completion_item = vim.tbl_get(cur_item or {}, 'user_data', 'nvim', 'lsp', 'completion_item')
         if not completion_item then
             return
         end
 
-        local _, cancel = vim.lsp.buf_request(
+        -- vim.print(methods.completionItem_resolve)
+
+        local _, cancel = vim.lsp.buf_request_all(
             args.buf,
             methods.completionItem_resolve,
-            completion_item,
+            ---@param client vim.lsp.Client
+            function(client, buf)
+                -- vim.print(client, buf)
+                if not client:supports_method(methods.completionItem_resolve, buf) then
+                    return
+                end
+                return completion_item
+            end,
             vim.schedule_wrap(function(err, item)
                 if err or not item then
                     return

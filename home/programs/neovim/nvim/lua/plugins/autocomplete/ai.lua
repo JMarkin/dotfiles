@@ -15,15 +15,23 @@ local vectorcacher = function()
     return has_vc, vectorcode_cacher
 end
 
-local get_prompt = function(pref, suff)
-    local prompt_message = ""
-    local h_vc, vc = vectorcacher()
-    if h_vc and vc then
-        for _, file in ipairs(vc.query_from_cache(0)) do
-            prompt_message = "<|file_sep|>" .. file.path .. "\n" .. file.document
-        end
+local get_prompt = function(get_prompt_message, file_sep)
+    get_prompt_message = get_prompt_message or function ()
+        return ""
     end
-    return prompt_message .. "<|fim_prefix|>" .. pref .. "<|fim_suffix|>" .. suff .. "<|fim_middle|>"
+    return  function(pref, suff)
+
+        local prompt_message = get_prompt_message()
+
+        local h_vc, vc = vectorcacher()
+        if h_vc and vc then
+            for _, file in ipairs(vc.query_from_cache(0)) do
+                prompt_message = file_sep .. file.path .. "\n" .. file.document
+            end
+        end
+        local msg =  prompt_message .. "<|fim_prefix|>" .. pref .. "<|fim_suffix|>" .. suff .. "<|fim_middle|>"
+        return msg
+    end
 end
 
 local X5Qwen = {
@@ -33,7 +41,7 @@ local X5Qwen = {
     end_point = "http://proxy-kafka.k8s.airun-dev-1.salt.x5.ru/v1/completions",
     model = "x5-airun-medium-coder-prod",
     template = {
-        prompt = get_prompt,
+        prompt = get_prompt(nil, "<|file_sep|>"),
         suffix = false,
     },
     optional = {
@@ -62,24 +70,16 @@ local OPENCODER = {
     end_point = vim.g.ollama_completions_endpoint,
     model = "opencoder:8b",
     template = {
-        prompt = get_prompt,
+        prompt = get_prompt(
+            function()
+                return ([[Perform fill-in-middle from the following snippet of a %s code. Respond with only the filled-in code.]])
+                    :format(vim.bo.filetype)
+            end,
+            "<|file_sep|>"
+        ),
         suffix = false,
     },
     optional = {
-        stop = {
-            "<|endoftext|>",
-            "<|fim_prefix|>",
-            "<|fim_middle|>",
-            "<|fim_suffix|>",
-            "<|fim_pad|>",
-            "<|repo_name|>",
-            "<|file_sep|>",
-            "<|im_start|>",
-            "<|im_end|>",
-            "/src/",
-            "#- coding: utf-8",
-            "# Path:",
-        },
         max_tokens = 300,
     },
 }
@@ -89,34 +89,29 @@ local CODEGEMMA = {
     name = "CODEGEMMA",
     stream = true,
     end_point = vim.g.ollama_completions_endpoint,
-    model = "codegemma:2b",
+    model = "codegemma:2b-code",
     template = {
-        prompt = function(pref, suff)
-            local prompt_message = ([[Perform fill-in-middle from the following snippet of a %s code. Respond with only the filled-in code.]])
-                :format(vim.bo.filetype)
-
-            local h_vc, vc = vectorcacher()
-            if h_vc and vc then
-                local cache_result = vectorcode_cacher.query_from_cache(0)
-                for _, file in ipairs(cache_result) do
-                    prompt_message = "<|file_separator|>" .. file.path .. "\n" .. file.document
-                end
-            end
-            return prompt_message .. "<|fim_prefix|>" .. pref .. "<|fim_suffix|>" .. suff .. "<|fim_middle|>"
-        end,
+        prompt = get_prompt(nil, "<|file_separator|>"),
         suffix = false,
+    },
+    optional = {
+        max_tokens = 300,
+        num_predict = 128,
+        temperature = 0,
+        top_p = 0.9,
+        stop = { '<|file_separator|>' }
     },
 }
 
 return {
     {
         "Davidyz/VectorCode",
-        lazy = true,
-        version = "0.5.5",
-        enabled = false,
+        -- lazy = true,
+        dev = true,
+        dir = vim.fn.stdpath("data") .. "/nix/VectorCode",
         dependencies = { "nvim-lua/plenary.nvim" },
         opts = {
-            async_backend = "lsp",
+            -- async_backend = "lsp",
             n_query = 1,
             async_opts = {
                 notify = true,
@@ -142,7 +137,6 @@ return {
     },
     {
         "milanglacier/minuet-ai.nvim",
-        lazy = true,
         cmd = { "Minuet" },
         config = function()
             -- This uses the async cache to accelerate the prompt construction.
@@ -163,7 +157,7 @@ return {
                 },
                 request_timeout = 10,
                 -- virtualtext = {
-                --     auto_trigger_ft = {"python"},
+                --     auto_trigger_ft = {},
                 --     keymap = {
                 --         -- accept whole completion
                 --         accept = '<A-a>',
@@ -181,8 +175,6 @@ return {
                 -- },
                 lsp = {
                     enabled_ft = { 'lua', 'python' },
-                    -- Enables automatic completion triggering using `vim.lsp.completion.enable`
-                    enabled_auto_trigger_ft = { 'python', 'lua' },
                 }
             })
         end,

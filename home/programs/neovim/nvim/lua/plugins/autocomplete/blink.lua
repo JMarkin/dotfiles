@@ -58,9 +58,9 @@ context.in_treesitter_capture = function(capture)
         col = col - 1
     end
 
-    local get_captures_at_pos =                       -- See neovim/neovim#20331
+    local get_captures_at_pos = -- See neovim/neovim#20331
         require("vim.treesitter")
-        .get_captures_at_pos                          -- for neovim >= 0.8 or require('vim.treesitter').get_captures_at_position -- for neovim < 0.8
+        .get_captures_at_pos    -- for neovim >= 0.8 or require('vim.treesitter').get_captures_at_position -- for neovim < 0.8
 
     local captures_at_cursor = vim.tbl_map(function(x)
         return x.capture
@@ -101,7 +101,7 @@ local blink = {
         "danymat/neogen",
         "quangnguyen30192/cmp-nvim-tags",
         "JMarkin/cmp-diag-codes",
-        { "saghen/blink.compat",       opts = { impersonate_nvim_cmp = true } },
+        { "saghen/blink.compat",      opts = { impersonate_nvim_cmp = true } },
         { "xzbdmw/colorful-menu.nvim" },
         "milanglacier/minuet-ai.nvim",
     },
@@ -218,11 +218,11 @@ local blink = {
                 elseif lf.is_large_file(vim.api.nvim_get_current_buf(), true) then
                     return { "tags", "omni" }
                 elseif vim.bo.filetype == "codecompanion" then
-                    return { "codecompanion", "tags", "buffer" }
+                    return { "codecompanion", "tags" }
                 elseif context.in_treesitter_capture("comment") or context.in_syntax_group("Comment") then
                     return { "diag-codes", "snippets" } --, "ripgrep" }
                 end
-                return { "lazydev", "lsp", "tags", "snippets", "buffer" }
+                return { "lazydev", "lsp", "tags", "snippets" }
             end,
             providers = {
                 lazydev = {

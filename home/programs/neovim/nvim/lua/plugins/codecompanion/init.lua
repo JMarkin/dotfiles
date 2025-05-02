@@ -1,30 +1,4 @@
-local adapter = "ollama_codegemma"
-
-local function ollama_params(model_name, model)
-    return function()
-        return require("codecompanion.adapters").extend("ollama", {
-            env = {
-                url = vim.g.ollama_url,
-            },
-            headers = {
-                ["Content-Type"] = "application/json",
-            },
-            parameters = {
-                sync = true,
-                keep_alive = "30m",
-            },
-            name = model_name,
-            schema = {
-                model = {
-                    default = model,
-                },
-                num_ctx = {
-                    default = 16384,
-                },
-            },
-        })
-    end
-end
+local adapters = require("plugins.codecompanion.adapters")
 
 return {
     "olimorris/codecompanion.nvim",
@@ -123,25 +97,15 @@ return {
         {
             "ravitemer/mcphub.nvim",
             enabled = true,
-            vertion = "v4.8.0",
+            -- from nix
+            dir = vim.fn.stdpath("data") .. "/nix/mchub.nvim",
+            dev = true,
             dependencies = {
                 "nvim-lua/plenary.nvim", -- Required for Job and HTTP requests
             },
-            -- comment the following line to ensure hub will be ready at the earliest
-            cmd = "MCPHub", -- lazy load by default
-            -- uncomment this if you don't want mcp-hub to be available globally or can't use -g
-            -- build = "bundled_build.lua",  -- Use this and set use_bundled_binary = true in opts  (see Advanced configuration)
+            cmd = "MCPHub",              -- lazy load by default
             config = function()
-                require("mcphub").setup({
-                    extensions = {
-                        codecompanion = {
-                            -- Show the mcp tool result in the chat buffer
-                            show_result_in_chat = true,
-                            -- Make chat #variables from MCP server resources
-                            make_vars = true,
-                        }
-                    }
-                })
+                require("mcphub").setup()
             end,
         },
     },
@@ -149,64 +113,26 @@ return {
         require("plugins.codecompanion.fidget-spinner"):init()
     end,
     config = function()
-        require("codecompanion").setup({
-            adapters = {
-                opts = {
-                    show_defaults = false,
-                },
-                gemini = function()
-                    return require("codecompanion.adapters").extend("gemini", {
-                        env = {
-                            api_key = "GEMINI_API",
-                        },
-                    })
-                end,
-                x5qwen = function()
-                    return require("codecompanion.adapters").extend("openai_compatible", {
-                        env = {
-                            url = "http://proxy-kafka.k8s.airun-dev-1.salt.x5.ru",
-                            api_key = "X5_QWEN_API",           -- optional: if your endpoint is authenticated
-                            chat_url = "/v1/chat/completions", -- optional: default value, override if different
-                            -- models_endpoint = "/v1/models", -- optional: attaches to the end of the URL to form the endpoint to retrieve models
-                        },
-                        schema = {
-                            model = {
-                                default = "x5-airun-medium-coder-prod",
-                                choices = function(self)
-                                    return {}
-                                end,
-                            },
-                            num_ctx = {
-                                default = 32768,
-                            },
-                        },
-                    })
-                end,
-                ollama_deepseek = ollama_params("deepseek-r1", "hf.co/unsloth/DeepSeek-R1-Distill-Qwen-7B-GGUF:Q4_K_M"),
-                ollama_deepcode = ollama_params("deepcode", "hf.co/lmstudio-community/DeepCoder-14B-Preview-GGUF:Q4_K_M"),
-                ollama_qwencoder = ollama_params("qwen2.5", "qwen2.5-coder:14b-instruct-q4_K_M"),
-                ollama_gemma3 = ollama_params("gemma3", "hf.co/unsloth/gemma-3-12b-it-GGUF:Q4_K_M"),
-                ollama_phimini = ollama_params("phimini", "phi4-mini:latest"),
-                ollama_codegemma = ollama_params("codegemma", "codegemma:2b-code"),
-            },
+        local opts = {
+            adapters = adapters,
             strategies = {
                 chat = {
-                    adapter = adapter,
+                    adapter = "default_adapter",
                     slash_commands = require("plugins.codecompanion.slash_commands"),
                     keymaps = require("plugins.codecompanion.keymaps"),
                     tools = require("plugins.codecompanion.tools"),
                 },
-                inline = { adapter = adapter },
-                agent = { adapter = adapter },
+                inline = { adapter = "default_adapter" },
+                agent = { adapter = "default_adapter" },
             },
             display = {
                 chat = {
+                    -- window = {
+                    --     layout = "float",
+                    -- },
                     icons = {
                         pinned_buffer = "📌 ",
                         watched_buffer = "👀 ",
-                    },
-                    window = {
-                        position = "right",
                     },
                     show_header_separator = true,
                     show_settings = true,
@@ -216,7 +142,24 @@ return {
             --     system_prompt = require("plugins.codecompanion.system_prompt"),
             -- },
             prompt_library = require("plugins.codecompanion.prompts"),
-        })
+        }
+
+        local ok, _ = pcall(require, "mchup")
+        if ok then
+            opts.extensions = {
+                mcphub = {
+                    callback = "mcphub.extensions.codecompanion",
+                    opts = {
+                        make_vars = true,
+                        make_slash_commands = true,
+                        show_result_in_chat = true,
+                    },
+                },
+            }
+        end
+
+        require("codecompanion").setup(opts)
+
 
         local group = vim.api.nvim_create_augroup("CodeCompanionHooks", {})
 

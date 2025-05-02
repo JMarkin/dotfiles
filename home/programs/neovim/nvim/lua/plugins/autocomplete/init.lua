@@ -2,12 +2,12 @@
 -- local compl = require("plugins.autocomplete.care")
 local compl = require("plugins.autocomplete.phoenix")
 -- local compl = require("plugins.autocomplete.blink")
-local ai = require("plugins.autocomplete.ai")
+-- local ai = require("plugins.autocomplete.ai")
 
 -- local luasnip = require("plugins.autocomplete.luasnipets")
 
 return {
-    ai,
+    -- ai,
     compl,
     -- luasnip,
 }

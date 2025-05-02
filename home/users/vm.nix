@@ -13,6 +13,7 @@
   imports = [
     ./kron.nix
     ../programs/mchub.nix
+    ../programs/vectorcode.nix
   ];
 
   home.sessionVariables.OLLAMA_HOST = "192.168.88.15";

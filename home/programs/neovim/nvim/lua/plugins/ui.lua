@@ -126,5 +126,9 @@ return {
         -- enabled = false,
         keys = { "<C-i>", "<C-o>" },
     },
+    {
+        "MeanderingProgrammer/render-markdown.nvim",
+        ft = { "markdown", "codecompanion" }
+    },
     -- { "xzbdmw/colorful-menu.nvim", config = true },
 }

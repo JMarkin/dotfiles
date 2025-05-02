@@ -91,6 +91,11 @@ return {
         dashboard.section.buttons.val = {
             dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert <CR>"),
             dashboard.button("f", " " .. " Find file", ":FzfLua files<cr>"),
+            dashboard.button("a", "󰊳 " .. " AI", function()
+                local buf = vim.api.nvim_get_current_buf()
+                vim.cmd [[:CodeCompanionChat]]
+                vim.cmd("bd " .. tostring(buf))
+            end),
             dashboard.button("s", " " .. " Search", ":FzfLua grep_project<cr>"),
             dashboard.button(
                 "r",

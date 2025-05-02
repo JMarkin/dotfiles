@@ -62,7 +62,7 @@
   ];
 
   home.sessionVariables = {
-    NIX_PATH = "${config.home.homeDirectory}/.shells:nixpkgs=flake:nixpkgs$\{NIX_PATH:+:$NIX_PATH}";
+    NIX_PATH = "nixpkgs=flake:nixpkgs$\{NIX_PATH:+:$NIX_PATH}";
     EDITOR = "nvim";
     VISUAL = "nvim";
     PAGER = "bat";

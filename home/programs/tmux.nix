@@ -1,19 +1,30 @@
 { config, pkgs, ... }:
 let
+  smartsplits = pkgs.fetchFromGitHub {
+    owner = "mrjones2014";
+    repo = "smart-splits.nvim";
+    rev = "184985c87c4dd1383d66963131df9a35297089f5";
+    sha256 = "sha256-JnqlXUEBVyoLiPUkVHZCrO2B/PMF/luir1+U7TbpAX8=";
+  };
+
   tmux-smart-splits = pkgs.tmuxPlugins.mkTmuxPlugin
-    {
+    ({
       pluginName = "smart-splits.nvim";
-      version = "unstable-2025-03-21";
+      version = "unstable-2025-05-02";
       rtpFilePath = "smart-splits.tmux";
-      src = pkgs.fetchFromGitHub {
-        owner = "mrjones2014";
-        repo = "smart-splits.nvim";
-        rev = "096d23df87d5c430e6e96f3e99d67e360fb2097f";
-        sha256 = "sha256-UhdBbCAkfM30iJA3YyflPFfdpqTs6hXDJ97ZGPq2eIk=";
-      };
-    };
+      src = smartsplits;
+    });
 in
 {
+
+
+  home.file = {
+    ".local/share/nvim/nix/smart-splits.nvim/" = {
+      recursive = true;
+      source = smartsplits;
+    };
+  };
+
   programs.tmux = {
     enable = true;
     escapeTime = 5;
@@ -27,6 +38,7 @@ in
       tmuxPlugins.prefix-highlight
 
       tmux-smart-splits
+
     ];
     extraConfig = /*tmux*/''
       # if multiple clients are attached to the same window, maximize it to the

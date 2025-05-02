@@ -7,11 +7,11 @@
     format = lib.concatStrings [
       "$time"
       "$username@$hostname($localip)"
-      " $directory"
+      "$directory"
       "$git_branch"
-      "$git_state"
-      "$git_status"
-      "$cmd_duration"
+      # "$git_state"
+      # "$git_status"
+      # "$cmd_duration"
       "$line_break"
       "$all"
       "$line_break"
@@ -32,12 +32,16 @@
 
 
     git_state = {
+      disabled = true;
       format = "\\([$state( $progress_current/$progress_total)]($style)\\) ";
     };
+    git_status.disabled = true;
+    cmd_duration.disabled = true;
 
 
     time = {
       disabled = false;
+      format = "[$time]($style) ";
     };
 
     hostname = {

@@ -45,9 +45,7 @@
       overlays = [
         (import ./overlays/cgrc.nix)
         (import ./overlays/createnv.nix)
-        (import ./overlays/jedi_language_server.nix)
         (import ./overlays/vpn_slice.nix)
-        # (import ./overlays/vectorcode.nix)
         # (import ./overlays/rllama)
       ];
 

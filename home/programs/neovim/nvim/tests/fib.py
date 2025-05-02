@@ -1,5 +1,5 @@
+import os
 from time import time
-
 
 def fib():
     a, b = 0, 1

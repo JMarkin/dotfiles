@@ -119,7 +119,7 @@ g.ollama_port                                     = vim.env.OLLAMA_PORT or "1143
 g.ollama_url                                      = string.format("http://%s:%s", g.ollama_host, g.ollama_port)
 g.ollama_generate_endpoint                        = string.format("%s/api/generate", g.ollama_url)
 g.ollama_chat_endpoint                            = string.format("%s/api/chat", g.ollama_url)
-g.ollama_completions_endpoint                     = string.format("%s/v1/completions", g.ollama_url)
+g.ollama_completions_endpoint                     = string.format("%s/api/generate", g.ollama_url)
 
 
 g.lsp_autostart                                   = vim.env.LSP_AUTOSTART

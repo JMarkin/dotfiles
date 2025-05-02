@@ -20,15 +20,14 @@ return {
     -- build = ":TSUpdate",
     -- enabled = false,
     lazy = true,
+    -- from nix
     dir = vim.fn.stdpath("data") .. "/nix/nvim-treesitter",
     dev = true,
     -- ft = "qf",
     event = vim.g.post_load_events,
     -- event = "VeryLazy",
     dependencies = {
-        {
-            "m-demare/hlargs.nvim",
-        },
+        "m-demare/hlargs.nvim",
         "yioneko/nvim-yati",
         {
             "andymass/vim-matchup",
