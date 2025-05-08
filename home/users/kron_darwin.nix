@@ -7,7 +7,7 @@
 
     ../programs/alacritty
     ../programs/neovide.nix
-    ../programs/mchub.nix
+    ../programs/ai
   ];
 
 
