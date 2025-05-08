@@ -3,6 +3,7 @@
 {
   home.packages = with pkgs; [
     python3
+    gh
   ];
   imports = [ ./gitignore_global.nix ];
   programs.git = {

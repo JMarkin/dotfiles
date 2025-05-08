@@ -7,7 +7,7 @@ local buf = vim.api.nvim_get_current_buf()
 vim.opt_local.wrap = false
 vim.opt_local.number = false
 vim.opt_local.bufhidden = "wipe"
-vim.opt_local.colorcolumn = ''
+vim.opt_local.colorcolumn = ""
 
 keymap.init(buf)
 float.attach_netrw(buf)

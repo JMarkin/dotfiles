@@ -1,63 +1,63 @@
 local tools_prefix = vim.fn.stdpath("config") .. "/lua/plugins/codecompanion/tools/"
 
 return {
-    groups = {
-        ["full_stack_dev"] = {
-            description = "Full Dev Developer",
-            system_prompt = [[]],
-            tools = {
-                "cmd_runner",
-                "nvim_runner",
-                "files",
-            },
-        },
+  groups = {
+    ["full_stack_dev"] = {
+      description = "Full Dev Developer",
+      system_prompt = [[]],
+      tools = {
+        "cmd_runner",
+        "nvim_runner",
+        "files",
+      },
     },
-    ["cmd_runner"] = {
-        callback = tools_prefix .. "cmd_runner.lua",
-        description = "Command Runner Tool",
-        opts = {
-            requires_approval = true,
-            hide_output = false,
-        },
-    },
-    ["nvim_runner"] = {
-        callback = tools_prefix .. "nvim_runner.lua",
-        description = "Neovim Runner Tool",
-        opts = {
-            requires_approval = true,
-            hide_output = false,
-        },
-    },
-    ["editor"] = {
-        callback = tools_prefix .. "editor.lua",
-        description = "Editor Tool",
-        opts = {
-            requires_approval = false,
-            hide_output = true,
-        },
-    },
-    ["files"] = {
-        callback = tools_prefix .. "files.lua",
-        description = "File Tool",
-        opts = {
-            requires_approval = false,
-            hide_output = true,
-        },
-    },
-    ["change_adapter"] = {
-        callback = tools_prefix .. "change_adapter.lua",
-        description = "Change Adapter Tool",
-        opts = {
-            requires_approval = true,
-            hide_output = false,
-        },
-    },
-
+  },
+  ["cmd_runner"] = {
+    callback = tools_prefix .. "cmd_runner.lua",
+    description = "Command Runner Tool",
     opts = {
-        system_prompt = string.format([[]]),
-        auto_submit_success = true,
-        auto_submit_errors = true,
+      requires_approval = true,
+      hide_output = false,
     },
+  },
+  ["nvim_runner"] = {
+    callback = tools_prefix .. "nvim_runner.lua",
+    description = "Neovim Runner Tool",
+    opts = {
+      requires_approval = true,
+      hide_output = false,
+    },
+  },
+  ["editor"] = {
+    callback = tools_prefix .. "editor.lua",
+    description = "Editor Tool",
+    opts = {
+      requires_approval = false,
+      hide_output = true,
+    },
+  },
+  ["files"] = {
+    callback = tools_prefix .. "files.lua",
+    description = "File Tool",
+    opts = {
+      requires_approval = false,
+      hide_output = true,
+    },
+  },
+  ["change_adapter"] = {
+    callback = tools_prefix .. "change_adapter.lua",
+    description = "Change Adapter Tool",
+    opts = {
+      requires_approval = true,
+      hide_output = false,
+    },
+  },
+
+  opts = {
+    system_prompt = string.format([[]]),
+    auto_submit_success = true,
+    auto_submit_errors = true,
+  },
 }
 
 -- # Tool General Guidelines

@@ -131,21 +131,21 @@ opt.wildignore:append({ -- Ignore on file name completion.
 
 -- stylua: ignore end
 g.dbs = {
-    { name = "local", url = "postgresql://kron:@/postgres" },
+  { name = "local", url = "postgresql://kron:@/postgres" },
 }
 
 opt.shortmess:append({ W = false, I = true, c = true, C = true, A = false })
 
 if g.modern_ui then
-    opt.listchars:append({ nbsp = "␣" })
-    opt.fillchars:append({
-        eob = " ",
-        diff = "╱",
-    })
+  opt.listchars:append({ nbsp = "␣" })
+  opt.fillchars:append({
+    eob = " ",
+    diff = "╱",
+  })
 
-    vim.api.nvim_command("colorscheme ex-bamboo")
+  vim.api.nvim_command("colorscheme ex-bamboo")
 else
-    opt.termguicolors = false
+  opt.termguicolors = false
 end
 
 opt.backup = true
@@ -187,52 +187,52 @@ g.loaded_perl_provider = 0
 -- stylua: ignore end
 
 g.linter_by_ft = {
-    sql = { "codespell", "sqlfluff" },
-    jinja = { "djlint" },
-    htmldjango = { "djlint" },
-    python = { "codespell", "mypy" },
-    rust = { "codespell" },
-    go = { "golangcilint", "codespell"}
+  sql = { "codespell", "sqlfluff" },
+  jinja = { "djlint" },
+  htmldjango = { "djlint" },
+  python = { "codespell", "mypy" },
+  rust = { "codespell" },
+  go = { "golangcilint", "codespell" },
 }
 
 g.formatters_by_ft = {
-    lua = { "stylua" },
-    python = { "ruff_format" },
-    rust = { "rustfmt" },
-    javascript = { "prettierd" },
-    json = { "fixjson" },
-    jinja = { "djlint" },
-    htmldjango = { "djlint" },
-    nix = { "nixpkgs_fmt" },
-    go = { "gofmt" },
+  lua = { "stylua" },
+  python = { "ruff_format" },
+  rust = { "rustfmt" },
+  javascript = { "prettierd" },
+  json = { "fixjson" },
+  jinja = { "djlint" },
+  htmldjango = { "djlint" },
+  nix = { "nixpkgs_fmt" },
+  go = { "gofmt" },
 }
 
 for _, lang in ipairs({
-    "javascript",
-    "typescript",
-    "jsx",
-    "tsx",
-    "jsonc",
+  "javascript",
+  "typescript",
+  "jsx",
+  "tsx",
+  "jsonc",
 }) do
-    g.formatters_by_ft[lang] = { "biome" }
+  g.formatters_by_ft[lang] = { "biome" }
 end
 for _, lang in ipairs({
-    "markdown",
-    "html",
-    "css",
-    "yaml",
-    "scss",
-    "vue",
+  "markdown",
+  "html",
+  "css",
+  "yaml",
+  "scss",
+  "vue",
 }) do
-    g.formatters_by_ft[lang] = { "prettierd" }
+  g.formatters_by_ft[lang] = { "prettierd" }
 end
 
 vim.g.rainbow_delimiters_highlight = {
-    "RainbowDelimiterRed",
-    "RainbowDelimiterYellow",
-    "RainbowDelimiterBlue",
-    "RainbowDelimiterOrange",
-    "RainbowDelimiterGreen",
-    "RainbowDelimiterViolet",
-    "RainbowDelimiterCyan",
+  "RainbowDelimiterRed",
+  "RainbowDelimiterYellow",
+  "RainbowDelimiterBlue",
+  "RainbowDelimiterOrange",
+  "RainbowDelimiterGreen",
+  "RainbowDelimiterViolet",
+  "RainbowDelimiterCyan",
 }

@@ -1,22 +1,21 @@
 return {
-    {
-        "nanozuki/tabby.nvim",
-        event = "TabNew", -- if you want lazy load, see below
-        dependencies = "nvim-tree/nvim-web-devicons",
-        config = function()
-            require("tabby").setup({
-                option = {
-                    lualine_theme = vim.g.lualine_theme or nil,
-                    buf_name = { mode = "unique" },
-                },
-            })
-        end,
-    },
-    {
-        "echasnovski/mini.statusline",
-        event = vim.g.post_load_events,
-        config = function()
-            require("mini.statusline").setup()
-        end,
-    },
+  {
+    "nanozuki/tabby.nvim",
+    event = "TabNew", -- if you want lazy load, see below
+    config = function()
+      require("tabby").setup({
+        option = {
+          lualine_theme = vim.g.lualine_theme or nil,
+          buf_name = { mode = "unique" },
+        },
+      })
+    end,
+  },
+  {
+    "echasnovski/mini.statusline",
+    event = vim.g.post_load_events,
+    config = function()
+      require("mini.statusline").setup()
+    end,
+  },
 }

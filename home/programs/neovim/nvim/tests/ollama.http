@@ -1,0 +1,62 @@
+@ollama = http://192.168.88.15:11434
+
+### generate
+POST {{ollama}}/api/generate
+Content-Type: application/json
+
+{
+  "raw": true,
+  "prompt": "# language: python indentation: use 4 spaces for a tab <|fim_prefix|>def quicksort(arr):\n    if len(arr) <= 1:\n        return arr\n    pivot = arr[len(arr) // 2]\n    <|fim_suffix|>\n    middle = [x for x in arr if x == pivot]\n    right = [x for x in arr if x > pivot]\n    return quicksort(left) + middle + quicksort(right)<|fim_middle|>",
+  "model":"hf.co/unsloth/Qwen2.5-Coder-7B-Instruct-128K-GGUF:Q4_K_M",
+  "stream": false
+}
+
+### openai completion
+POST {{ollama}}/v1/chat/completions
+Content-Type: application/json
+
+{
+  "raw": true,
+  "messages": [
+       {
+           "role": "system",
+           "content": "You are Fill in the Middle completion. Respond with only the filled-in code."
+       },
+       {
+           "role": "user",
+           "content": "generate 2 completion for next fim code. language python indentation 4 spaces for a tab. separate <COMPLETION> as separator of completion"
+       },
+       {
+           "role": "user",
+           "content": "<|fim_prefix|>def quicksort(arr):\n    if len(arr) <= 1:\n        return arr\n    pivot = arr[len(arr) // 2]\n    <|fim_suffix|>\n    middle = [x for x in arr if x == pivot]\n    right = [x for x in arr if x > pivot]\n    return quicksort(left) + middle + quicksort(right)<|fim_middle|>"
+       }
+   ],
+  "model":"hf.co/unsloth/Qwen2.5-Coder-7B-Instruct-128K-GGUF:Q4_K_M",
+  "stream": false
+}
+
+
+### openai completion gemma
+POST {{ollama}}/v1/chat/completions
+Content-Type: application/json
+
+{
+  "raw": true,
+  "messages": [
+       {
+           "role": "system",
+           "content": "You are Fill in the Middle completion. Respond with only the filled-in code. Generate 5 different completion separate <COMPLETION> as separator of completion"
+       },
+       {
+           "role": "user",
+           "content": "language python indentation 4 spaces for a tab."
+       },
+       {
+           "role": "user",
+           "content": "<|fim_prefix|>def quicksort(arr):\n    if len(arr) <= 1:\n        return arr\n    pivot = arr[len(arr) // 2]\n    <|fim_suffix|>\n    middle = [x for x in arr if x == pivot]\n    right = [x for x in arr if x > pivot]\n    return quicksort(left) + middle + quicksort(right)<|fim_middle|>"
+       }
+   ],
+  "model":"hf.co/unsloth/gemma-3-12b-it-qat-GGUF:Q4_K_M",
+  "stream": false
+}
+

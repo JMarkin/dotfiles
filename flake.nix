@@ -237,6 +237,7 @@
               ruff
               python312Packages.mypy
               lua-language-server
+              stylua
               basedpyright
             ];
           };
@@ -250,6 +251,7 @@
               ruff
               python312Packages.mypy
               lua-language-server
+              stylua
               basedpyright
             ];
           };
