@@ -153,7 +153,6 @@ return {
     })
   end,
   dependencies = {
-    "nvim-web-devicons",
     -- { "JMarkin/ascii.nvim", lazy = true },
   },
 }

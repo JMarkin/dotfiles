@@ -58,6 +58,7 @@ M.lsps = {
   docker_compose_language_service = default_lsp("docker-compose-langserver", "docker_compose_language_service"),
   dockerls = default_lsp("docker-langserver", "dockerls"),
   yamlls = default_lsp("yaml-language-server", "yamlls", {
+    filetypes = { "yaml", "yaml.openapi", "yaml.helm", "yaml.ansible" },
     settings = {
       yaml = {
         schemaStore = {

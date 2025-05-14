@@ -124,4 +124,16 @@ fn.augroup("FoldByFt", {
       end)
     end,
   },
+},{
+  { "FileType" },
+  {
+    -- without nvim-treesitter
+    pattern = { "lua", "c", "cpp", "h", "markdown" },
+    callback = function(args)
+      setfold(args.buf, function(win)
+        vim.wo[win][0].foldmethod = "expr"
+        vim.wo[win][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+      end)
+    end,
+  },
 })

@@ -97,6 +97,10 @@ return {
           -- separator = "-",
           zindex = 20, -- The Z-index of the context window
           on_attach = function(buf)
+            local line_count = vim.api.nvim_buf_line_count(buf)
+            if line_count > 1000 then
+              return false
+            end
             return not is_disable(nil, buf)
           end, -- (fun(buf: integer): boolean) return false to disable attaching
         })

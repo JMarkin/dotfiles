@@ -92,21 +92,36 @@ end
 local blink = {
   "saghen/blink.cmp",
   lazy = true,
+  -- from nix
+  dev = true,
+  dir = vim.fn.stdpath("data") .. "/nix/blink.cmp",
+  pin = true,
   event = { "InsertEnter", "CmdlineEnter" },
   -- optional: provides snippets for the snippet source
   dependencies = {
     "rafamadriz/friendly-snippets",
-    -- "mikavilpas/blink-ripgrep.nvim",
     "danymat/neogen",
-    "quangnguyen30192/cmp-nvim-tags",
-    "JMarkin/cmp-diag-codes",
-    { "saghen/blink.compat", opts = { impersonate_nvim_cmp = true } },
-    { "xzbdmw/colorful-menu.nvim" },
+    "xzbdmw/colorful-menu.nvim",
     "milanglacier/minuet-ai.nvim",
+
+    {
+      dev = true,
+      dir = vim.fn.stdpath("data") .. "/nix/blink-cmp-avante",
+      pin = true,
+      "Kaiser-Yang/blink-cmp-avante",
+    },
+
+    -- cmp compact
+    {
+      dev = true,
+      dir = vim.fn.stdpath("data") .. "/nix/blink.compat",
+      pin = true,
+      "saghen/blink.compat",
+      opts = { impersonate_nvim_cmp = true },
+    },
+    "JMarkin/cmp-diag-codes",
+    "quangnguyen30192/cmp-nvim-tags",
   },
-  -- version = "*",
-  -- On musl libc based systems you need to add this flag
-  -- build = 'RUSTFLAGS="-C target-feature=-crt-static" cargo build --release',
   opts = {
     cmdline = {
       enabled = true,
@@ -169,21 +184,6 @@ local blink = {
       },
       ["<c-x><c-z>"] = { call_minuet },
     },
-    -- snippets = {
-    --     expand = function(snippet)
-    --         require("luasnip").lsp_expand(snippet)
-    --     end,
-    --     active = function(filter)
-    --         if filter and filter.direction then
-    --             return require("luasnip").jumpable(filter.direction)
-    --         end
-    --         return require("luasnip").in_snippet()
-    --     end,
-    --     jump = function(direction)
-    --         require("luasnip").jump(direction)
-    --     end,
-    -- },
-
     completion = {
       keyword = { range = "full" },
       accept = {
@@ -217,9 +217,11 @@ local blink = {
         elseif lf.is_large_file(vim.api.nvim_get_current_buf(), true) then
           return { "tags", "omni" }
         elseif vim.bo.filetype == "codecompanion" then
-          return { "codecompanion", "tags" }
+          return { "codecompanion", "tags", "lsp" }
+        elseif vim.bo.filetype == "AvanteInput" then
+          return { "avente", "tags", "lsp" }
         elseif context.in_treesitter_capture("comment") or context.in_syntax_group("Comment") then
-          return { "diag-codes", "snippets" } --, "ripgrep" }
+          return { "diag-codes", "snippets", "lsp" }
         end
         return { "lazydev", "lsp", "tags", "snippets" }
       end,
@@ -230,12 +232,13 @@ local blink = {
           -- make lazydev completions top priority (see `:h blink.cmp`)
           score_offset = 100,
         },
-        -- ripgrep = {
-        --     module = "blink-ripgrep",
-        --     name = "Ripgrep",
-        --     score_offset = -2,
-        --     opts = {},
-        -- },
+        avante = {
+          module = "blink-cmp-avante",
+          name = "Avante",
+          opts = {
+            -- options for blink-cmp-avante
+          },
+        },
         dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
         tags = {
           name = "tags",

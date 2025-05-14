@@ -17,7 +17,7 @@ return {
     "ycdzj/win-mover.nvim",
     keys = {
       {
-        "<space>B",
+        "<space>m",
         function(ev)
           return require("win-mover").enter_move_mode(ev)
         end,

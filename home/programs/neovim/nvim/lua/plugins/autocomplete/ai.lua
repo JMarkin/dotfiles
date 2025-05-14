@@ -103,6 +103,7 @@ local CODEGEMMA = {
 return {
   {
     "Davidyz/VectorCode",
+    enabled = false,
     -- lazy = true,
     dev = true,
     dir = vim.fn.stdpath("data") .. "/nix/VectorCode",
@@ -149,8 +150,8 @@ return {
         notify = "debug",
         provider = "openai_fim_compatible",
         provider_options = {
-          -- openai_fim_compatible = X5Qwen,
-          openai_fim_compatible = CODEGEMMA,
+          openai_fim_compatible = X5Qwen,
+          -- openai_fim_compatible = CODEGEMMA,
         },
         request_timeout = 10,
         -- virtualtext = {
@@ -170,9 +171,9 @@ return {
         --         dismiss = '<A-e>',
         --     },
         -- },
-        lsp = {
-          enabled_ft = { "lua", "python" },
-        },
+        -- lsp = {
+        --   enabled_ft = { "lua", "python" },
+        -- },
       })
     end,
   },

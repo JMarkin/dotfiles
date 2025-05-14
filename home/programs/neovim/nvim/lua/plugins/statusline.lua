@@ -1,7 +1,7 @@
 return {
   {
     "nanozuki/tabby.nvim",
-    event = "TabNew", -- if you want lazy load, see below
+    event = "TabNew",
     config = function()
       require("tabby").setup({
         option = {

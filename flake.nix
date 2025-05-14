@@ -22,11 +22,6 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
-    nixos-generators = {
-      url = "github:nix-community/nixos-generators";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
   };
 
   outputs =
@@ -38,7 +33,6 @@
     , mac-app-util
     , disko
     , agenix
-    , nixos-generators
     , ...
     } @ inputs:
     let
@@ -103,7 +97,7 @@
           ];
         };
         "kron@nixos" = home-manager.lib.homeManagerConfiguration {
-          pkgs = x86PkgsNeovimNightly;
+          pkgs = x86Pkgs;
 
           modules = [
             {
@@ -121,33 +115,6 @@
             }
             ./home/users/gw.nix
           ];
-        };
-      };
-
-      packages.x86_64-linux = {
-        qemu = nixos-generators.nixosGenerate {
-          system = "x86_64-linux";
-          modules = [
-            {
-              nix.registry.nixpkgs.flake = nixpkgs;
-            }
-            ./nixos/ipad.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-
-              home-manager.users.kron = { ... }: {
-                home.homeDirectory = "/home/kron";
-
-                imports = [
-                  ./home/users/minsetup.nix
-                  ./home/programs/neovim/minimal.nix
-                ];
-              };
-            }
-          ];
-          format = "qcow";
         };
       };
 

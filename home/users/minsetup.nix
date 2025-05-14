@@ -27,7 +27,6 @@
     gnupg
     pigz
     curl
-    man
     ps
     mtr
     mosh

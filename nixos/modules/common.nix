@@ -82,5 +82,6 @@
       freeMemThreshold = 5;
     };
   };
+  programs.nix-ld.enable = true;
 
 }

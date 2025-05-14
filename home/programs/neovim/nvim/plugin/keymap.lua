@@ -48,7 +48,8 @@ vim.keymap.set("n", "<space>[", ":-tabmove<CR>", { desc = "Tabs: move to prev" }
 vim.keymap.set("n", "<space>]", ":+tabmove<CR>", { desc = "Tabs: move to next" })
 
 for i = 1, 9, 1 do
-  vim.keymap.set({ "n", "x" }, "<space>" .. i, tabswitch(vim.cmd.tabnext, i), { desc = "Tabs: go to " .. i })
+  vim.keymap.set({ "n", "x" }, "<space>" .. i, tabswitch(vim.cmd.tabnext, i), { desc = "Tabs: go to " .. i})
+  vim.keymap.set({ "t" }, "<c-" .. i .. ">", tabswitch(vim.cmd.tabnext, i), { desc = "Tabs: go to " .. i })
 end
 
 vim.keymap.set("n", "<space>f", "<cmd>Explore<cr>", { noremap = true, desc = "Netrw: open" })
@@ -62,7 +63,7 @@ end, { noremap = true, desc = "Copy as: line" })
 
 vim.cmd([[command CDC lcd %:p:h]])
 
-vim.keymap.set("n", "<A-g>", ":DiffviewOpen<cr>", { desc = "Neogit" })
+vim.keymap.set("n", "<A-g>", ":DiffviewOpen<cr>", { desc = "DIFF" })
 
 vim.keymap.set("n", "<space>D", ":DBUIToggle<CR>", { desc = "DBUI" })
 

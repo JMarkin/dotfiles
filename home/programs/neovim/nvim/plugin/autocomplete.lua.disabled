@@ -122,10 +122,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
       return
     end
 
-    if client.name == "minuet" then
-      return
-    end
-
     local chars = client.server_capabilities.completionProvider.triggerCharacters
     if chars then
       for i = string.byte("a"), string.byte("z") do

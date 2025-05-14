@@ -2,7 +2,7 @@
 {
   imports = [
     ./mchub.nix
-    # ./avante.nix
+    ./avante.nix
     # ./vectorcode.nix
   ];
 }

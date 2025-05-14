@@ -85,5 +85,5 @@ M.ollama_qwen = ollama_qwen("qwen3", "qwen3:8b")
 M.ollama_qwenamall = ollama_qwen("qwen3-small", "qwen3:0.6b")
 M.ollama_qwenlarge = ollama_qwen("qwen3-large", "qwen3:30b-a3b")
 
-M.default_adapter = M.ollama_qwencoder
+M.default_adapter = M.ollama_gemma3
 return M

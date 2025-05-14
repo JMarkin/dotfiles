@@ -41,7 +41,7 @@ local ext = {
 vim2ext(ext, "*.vert,*.tesc,*.tese,*.glsl,*.geom,*.frag,*.comp,*.rgen,*.rmiss,*.rchit,*.rahit,*.rint,*.rcall", "glsl")
 vim2ext(ext, "*.vs,*.fs", "glsl")
 vim2ext(ext, "*.graphql,*.graphqls,*.gql,*.prisma", "graphql")
-vim2ext(ext, "*.gotmpl,helmfile*.yaml", "helm.yaml")
+vim2ext(ext, "*.gotmpl,helmfile*.yaml", "yaml.helm")
 
 vim.filetype.add({
   extension = ext,
@@ -58,18 +58,18 @@ vim.filetype.add({
     [".*compose.*.y*"] = "yaml.docker-compose",
     ["Caddyfile.*"] = "caddyfile",
     ["haproxy.*.c.*"] = "haproxy",
-    [".*/templates/.*.yaml"] = "helm.yaml",
-    [".*/templates/.*.tpl"] = "helm.yaml",
-    [".*/helm/.*.yaml"] = "helm.yaml",
+    [".*/templates/.*.yaml"] = "yaml.helm",
+    [".*/templates/.*.tpl"] = "yaml.helm",
+    [".*/helm/.*.yaml"] = "yaml.helm",
     [".*"] = {
       function(path, buf)
         lf.optimize_buffer(buf, path)
         local t = lf.is_large_file(buf, false, path)
         if t == lf.FILE_TYPE.LARGE_SIZE then
-          return "size.largefile"
+          return "largefile.size"
         end
         if t == lf.FILE_TYPE.READ_ONLY then
-          return "readonly.largefile"
+          return "largefile.readonly"
         end
         return nil
       end,

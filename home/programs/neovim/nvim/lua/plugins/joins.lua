@@ -28,7 +28,7 @@ return {
         silent = true,
       },
       {
-        "<space>m",
+        "gm",
         function()
           local tsj_langs = require("treesj.langs")["presets"]
           local lang = get_pos_lang()
@@ -42,7 +42,7 @@ return {
         silent = true,
       },
       {
-        "<space>M",
+        "gM",
         function()
           require("treesj").toggle({ split = { recursive = true }, join = { recursive = true } })
         end,

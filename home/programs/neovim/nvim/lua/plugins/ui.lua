@@ -79,7 +79,13 @@ return {
       return not vim.g.neovide
     end,
     opts = {
-      enabled = true, --- (boolean | fun():boolean) check if enabled
+      enabled = function()
+        local line_count = vim.api.nvim_buf_line_count(vim.api.nvim_get_current_buf())
+        if line_count > 1000 then
+          return false
+        end
+        return true
+      end, --- (boolean | fun():boolean) check if enabled
       speed = 2, --- integer speed at wich animation goes
       width = 40, --- integer width of the beacon window
       winblend = 70, --- integer starting transparency of beacon window :h winblend
@@ -124,12 +130,17 @@ return {
   },
   {
     "MeanderingProgrammer/render-markdown.nvim",
-    ft = { "markdown", "codecompanion" },
+    ft = { "markdown", "codecompanion", "Avante" },
+    opts = {
+      file_types = { "markdown", "Avante", "codecompanion" },
+    },
   },
   {
     "ramilito/winbar.nvim",
     event = "BufAdd",
     config = function()
+      MiniIcons.mock_nvim_web_devicons()
+
       require("winbar").setup({
         -- your configuration comes here, for example:
         icons = true,
@@ -155,6 +166,10 @@ return {
           "http",
           "rest_nvim_result",
           "netrw",
+          "kulala_ui",
+          "AvanteInput",
+          "AvanteSelectedFiles",
+          "Avante",
         },
         diagnostics = true,
         buf_modified = true,
@@ -170,5 +185,16 @@ return {
         },
       })
     end,
+  },
+  {
+    "vzze/cmdline.nvim",
+    enabled = false,
+    opts = {
+      cmdtype = ":",
+      column = {
+        maxNumber = 6,
+        minWidth = 20,
+      },
+    },
   },
 }

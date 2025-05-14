@@ -1,5 +1,5 @@
 return {
-  { "echasnovski/mini.icons" },
+  { "echasnovski/mini.icons", config = true },
   -- Fast and feature-rich surround actions. For text that includes
   -- surrounding characters like brackets or quotes, this allows you
   -- to select the text inside, change or modify the surrounding characters,
