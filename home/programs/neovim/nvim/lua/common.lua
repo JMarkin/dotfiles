@@ -76,13 +76,10 @@ opt.spelllang                                     = { "en", "ru" }
 g.spellfile_URL                                   = "https://ftp.nluug.nl/vim/runtime/spell/"
 
 g.root_pattern                                    = {
-                                                        "pyproject.toml",
-                                                        "package.json",
-                                                        "Cargo.toml",
                                                         ".nvim.lua",
+                                                        "flake.nix",
                                                         "Makefile",
                                                         ".git",
-                                                        ".venv",
                                                     }
 opt.list                                          = true
 opt.listchars                                     = {
@@ -122,7 +119,7 @@ g.ollama_chat_endpoint                            = string.format("%s/api/chat",
 g.ollama_completions_endpoint                     = string.format("%s/api/generate", g.ollama_url)
 
 
-g.lsp_autostart                                   = vim.env.LSP_AUTOSTART
+g.lsp_autostart                                   = vim.env.LSP_AUTOSTART ~= nil
 
 opt.wildignore:append({ -- Ignore on file name completion.
 	".DS_store",

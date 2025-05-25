@@ -6,12 +6,12 @@ return {
   dir = vim.fn.stdpath("data") .. "/nix/avante.nvim",
   pin = true,
   opts = {
-    debug = true,
+    debug = false,
     ---@alias Provider "claude" | "openai" | "azure" | "gemini" | "cohere" | "copilot" | string
-    provider = "ollama", -- The provider used in Aider mode or in the planning phase of Cursor Planning Mode
+    provider = "x5qwen", -- The provider used in Aider mode or in the planning phase of Cursor Planning Mode
     ollama = {
       endpoint = vim.g.ollama_url,
-      model = "hf.co/unsloth/Qwen2.5-Coder-7B-Instruct-128K-GGUF:Q4_K_M",
+      model = "hf.co/unsloth/Qwen2.5-Coder-3B-Instruct-128K-GGUF:Q4_K_M",
     },
     vendors = {
       ["x5qwen"] = {
@@ -32,7 +32,6 @@ return {
       enabled = true,
       provider = "ollama",
       runner = "nix",
-      llm_model = "hf.co/unsloth/Qwen2.5-Coder-7B-Instruct-128K-GGUF:Q4_K_M",
     },
     dual_boost = {
       enabled = false,
@@ -42,7 +41,7 @@ return {
     },
     behaviour = {
       auto_focus_sidebar = false,
-      auto_suggestions = false, -- Experimental stage
+      auto_suggestions = true, -- Experimental stage
       auto_suggestions_respect_ignore = false,
       auto_set_highlight_group = true,
       auto_set_keymaps = true,
@@ -53,48 +52,6 @@ return {
       enable_token_counting = true,
       use_cwd_as_project_root = true,
       auto_focus_on_diff_view = true,
-    },
-    mappings = {
-      --- @class AvanteConflictMappings
-      diff = {
-        ours = "co",
-        theirs = "ct",
-        all_theirs = "ca",
-        both = "cb",
-        cursor = "cc",
-        next = "]x",
-        prev = "[x",
-      },
-      suggestion = {
-        accept = "<c-space>",
-        next = "<C-]>",
-        prev = "<C-[>",
-        dismiss = "<C-e>",
-      },
-      jump = {
-        next = "]]",
-        prev = "[[",
-      },
-      submit = {
-        normal = "<CR>",
-        insert = "<C-s>",
-      },
-      cancel = {
-        normal = { "<C-c>", "<Esc>", "q" },
-        insert = { "<C-c>" },
-      },
-      sidebar = {
-        apply_all = "A",
-        apply_cursor = "a",
-        retry_user_request = "r",
-        edit_user_request = "e",
-        switch_windows = "<Tab>",
-        reverse_switch_windows = "<S-Tab>",
-        remove_file = "d",
-        add_file = "@",
-        close = { "<Esc>", "q" },
-        close_from_input = { insert = "<C-d>" },
-      },
     },
     hints = { enabled = true },
   },

@@ -41,14 +41,6 @@ in
     withNodeJs = true;
     defaultEditor = true;
     vimdiffAlias = true;
-    # plugins = with pkgs.vimPlugins; [
-    #   blink-cmp
-    #   blink-ripgrep-nvim
-    #   blink-pairs
-    #   blink-cmp-avante
-    #   blink-compat
-    #   nvim-treesitter.withAllGrammars
-    # ];
   };
 
   home.file = {

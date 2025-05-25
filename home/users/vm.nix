@@ -12,7 +12,6 @@
 
   imports = [
     ./kron.nix
-    ../programs/ai
   ];
 
   home.sessionVariables.OLLAMA_HOST = "192.168.88.15";

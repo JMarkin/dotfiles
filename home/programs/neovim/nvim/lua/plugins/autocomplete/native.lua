@@ -122,19 +122,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
       return
     end
 
-    local chars = client.server_capabilities.completionProvider.triggerCharacters
-    if chars then
-      for i = string.byte("a"), string.byte("z") do
-        if not vim.list_contains(chars, string.char(i)) then
-          table.insert(chars, string.char(i))
-        end
-      end
-
-      for i = string.byte("A"), string.byte("Z") do
-        if not vim.list_contains(chars, string.char(i)) then
-          table.insert(chars, string.char(i))
-        end
-      end
+    if client.name == "minuet" then
+      return
     end
 
     vim.lsp.completion.enable(true, client.id, args.buf, {
@@ -163,17 +152,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
       end,
     })
 
-    vim.api.nvim_create_autocmd("TextChangedP", {
-      buffer = args.buf,
-      group = group,
-      command = "let g:_ts_force_sync_parsing = v:true",
-    })
-
-    vim.api.nvim_create_autocmd("CompleteDone", {
-      buffer = args.buf,
-      group = group,
-      command = "let g:_ts_force_sync_parsing = v:false",
-    })
   end,
 })
 

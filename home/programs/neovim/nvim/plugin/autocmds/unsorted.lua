@@ -12,9 +12,9 @@ fn.augroup("Format Options", {
         - "o" -- O and o, don't continue comments
         + "r" -- But do continue when pressing enter.
         + "n" -- Indent past the formatlistpat, not underneath it.
-        + "j" -- Auto-remove comments if possible.
         - "2" -- I'm not in gradeschool anymore
-        + "p" --
+        + "j" -- Auto-remove comments if possible.
+        + "p" -- I want under stand shorts
     end,
   },
 })
@@ -37,33 +37,9 @@ fn.augroup("autocreatedir", {
 fn.augroup("checktime", {
   { "BufEnter", "CursorHold", "CursorHoldI", "FocusGained", "TermLeave", "TermClose" },
   {
-    command = "if mode() != 'c' | checktime | endif",
+    command = "if &buftype == '' | checktime | endif",
     pattern = { "*" },
   },
-})
-
-vim.api.nvim_create_autocmd("CmdlineLeave", {
-  once = true,
-  callback = function()
-    if vim.v.event.cmdtype ~= "/" then
-      return
-    end
-    fn.augroup(
-      "nohl",
-      {
-        { "InsertEnter", "CursorHold" },
-        {
-          callback = function()
-            if vim.v.hlsearch == 0 then
-              return
-            end
-            local keycode = vim.api.nvim_replace_termcodes("<Cmd>nohl<CR>", true, false, true)
-            vim.api.nvim_feedkeys(keycode, "n", false)
-          end,
-        },
-      }
-    )
-  end,
 })
 
 if vim.env.TERM == "alacritty" then

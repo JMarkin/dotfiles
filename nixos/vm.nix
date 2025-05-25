@@ -81,6 +81,6 @@
   systemd.extraConfig = "DefaultLimitNOFILE=1024:1048576";
 
 
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 }
 

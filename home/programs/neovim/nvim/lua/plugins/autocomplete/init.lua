@@ -1,12 +1,7 @@
--- local compl = require("plugins.autocomplete._cmp")
--- local compl = require("plugins.autocomplete.care")
-local compl = require("plugins.autocomplete.blink")
-local ai = require("plugins.autocomplete.ai")
-
--- local luasnip = require("plugins.autocomplete.luasnipets")
-
 return {
-  ai,
-  compl,
+  require("plugins.autocomplete.ai"),
+  -- require("plugins.autocomplete._cmp"),
+  -- require("plugins.autocomplete.native"),
+  require("plugins.autocomplete.blink"),
   -- luasnip,
 }

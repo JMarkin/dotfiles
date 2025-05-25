@@ -22,14 +22,23 @@ Terminal.set_keymaps = function(winnr, bufnr)
 end
 
 Terminal.configure = function()
-  -- vim.bo[bufnr].buflisted = false
-  -- vim.opt_local.bufhidden = "wipe"
-  vim.opt_local.swapfile = false
-  vim.opt_local.number = false
-  vim.opt_local.relativenumber = false
-  vim.opt_local.winfixbuf = false
-  vim.opt_local.winfixheight = true
-  vim.opt_local.winfixwidth = true
+  local opts = {
+    swapfile = false,
+    buflisted = false,
+    relativenumber = false,
+    number = false,
+    readonly = true,
+    scl = "no",
+    statuscolumn = "",
+    cursorline = false,
+    cursorcolumn = false,
+    winfixbuf = false,
+    winfixheight = true,
+    winfixwidth = true,
+  }
+  for key, value in pairs(opts) do
+    vim.opt_local[key] = value
+  end
 end
 
 local au_id = vim.api.nvim_create_augroup("terminal_nvim", { clear = true })

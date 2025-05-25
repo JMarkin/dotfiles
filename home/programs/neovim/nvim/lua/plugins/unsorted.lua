@@ -28,7 +28,7 @@ return {
     enabled = false,
     dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
     opts = {
-      disabled_filetypes = { "qf", "netrw", "NvimTree", "lazy", "mason", "dashboard", "vista", "vista_kind" },
+      disabled_filetypes = { "qf", "netrw", "NvimTree", "lazy", "mason", "dashboard", "vista", "vista_kind", "oil" },
       disable_mouse = true,
       restriction_mode = "hint",
       disabled_keys = {

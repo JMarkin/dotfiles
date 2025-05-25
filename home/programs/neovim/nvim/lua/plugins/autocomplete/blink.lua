@@ -1,93 +1,5 @@
-local is_not_mini = require("funcs").is_not_mini
+local funcs = require("funcs")
 local lf = require("largefiles")
-
-local context = {}
-
--- https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/utils/api.lua
-local api = {}
-local CTRL_V = vim.api.nvim_replace_termcodes("<C-v>", true, true, true)
-local CTRL_S = vim.api.nvim_replace_termcodes("<C-s>", true, true, true)
-
-api.get_mode = function()
-  local mode = vim.api.nvim_get_mode().mode:sub(1, 1)
-  if mode == "i" then
-    return "i" -- insert
-  elseif mode == "v" or mode == "V" or mode == CTRL_V then
-    return "x" -- visual
-  elseif mode == "s" or mode == "S" or mode == CTRL_S then
-    return "s" -- select
-  elseif mode == "c" and vim.fn.getcmdtype() ~= "=" then
-    return "c" -- cmdline
-  end
-end
-
-api.is_insert_mode = function()
-  return api.get_mode() == "i"
-end
-
----Check if cursor is in syntax group
----@param group string | []string
----@return boolean
-context.in_syntax_group = function(group)
-  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-  if not api.is_insert_mode() then
-    col = col + 1
-  end
-
-  for _, syn_id in ipairs(vim.fn.synstack(row, col)) do
-    syn_id = vim.fn.synIDtrans(syn_id) -- Resolve :highlight links
-    local g = vim.fn.synIDattr(syn_id, "name")
-    if type(group) == "string" and g == group then
-      return true
-    elseif type(group) == "table" and vim.tbl_contains(group, g) then
-      return true
-    end
-  end
-
-  return false
-end
-
----Check if cursor is in treesitter capture
----@param capture string | []string
----@return boolean
-context.in_treesitter_capture = function(capture)
-  local buf = vim.api.nvim_get_current_buf()
-  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-  row = row - 1
-  if vim.api.nvim_get_mode().mode == "i" then
-    col = col - 1
-  end
-
-  local get_captures_at_pos = -- See neovim/neovim#20331
-    require("vim.treesitter").get_captures_at_pos -- for neovim >= 0.8 or require('vim.treesitter').get_captures_at_position -- for neovim < 0.8
-
-  local captures_at_cursor = vim.tbl_map(function(x)
-    return x.capture
-  end, get_captures_at_pos(buf, row, col))
-
-  if vim.tbl_isempty(captures_at_cursor) then
-    return false
-  elseif type(capture) == "string" and vim.tbl_contains(captures_at_cursor, capture) then
-    return true
-  elseif type(capture) == "table" then
-    for _, v in ipairs(capture) do
-      if vim.tbl_contains(captures_at_cursor, v) then
-        return true
-      end
-    end
-  end
-
-  return false
-end
-
-local minuet_blink_map = nil
-
-local call_minuet = function(cmp)
-  if not minuet_blink_map then
-    minuet_blink_map = require("minuet").make_blink_map()[1]
-  end
-  return minuet_blink_map(cmp)
-end
 
 local blink = {
   "saghen/blink.cmp",
@@ -102,14 +14,13 @@ local blink = {
     "rafamadriz/friendly-snippets",
     "danymat/neogen",
     "xzbdmw/colorful-menu.nvim",
-    "milanglacier/minuet-ai.nvim",
 
-    {
-      dev = true,
-      dir = vim.fn.stdpath("data") .. "/nix/blink-cmp-avante",
-      pin = true,
-      "Kaiser-Yang/blink-cmp-avante",
-    },
+    -- {
+    --   dev = true,
+    --   dir = vim.fn.stdpath("data") .. "/nix/blink-cmp-avante",
+    --   pin = true,
+    --   "Kaiser-Yang/blink-cmp-avante",
+    -- },
 
     -- cmp compact
     {
@@ -162,11 +73,6 @@ local blink = {
         "snippet_forward",
         "fallback",
       },
-      ["<c-x><c-g>"] = {
-        function()
-          require("blink-cmp").show({ providers = { "ripgrep" } })
-        end,
-      },
       ["<c-x><c-f>"] = {
         function()
           require("blink-cmp").show({ providers = { "path" } })
@@ -182,7 +88,6 @@ local blink = {
           require("blink-cmp").show({ providers = { "lsp" } })
         end,
       },
-      ["<c-x><c-z>"] = { call_minuet },
     },
     completion = {
       keyword = { range = "full" },
@@ -219,8 +124,8 @@ local blink = {
         elseif vim.bo.filetype == "codecompanion" then
           return { "codecompanion", "tags", "lsp" }
         elseif vim.bo.filetype == "AvanteInput" then
-          return { "avente", "tags", "lsp" }
-        elseif context.in_treesitter_capture("comment") or context.in_syntax_group("Comment") then
+          return { "avante", "tags", "lsp" }
+        elseif funcs.in_treesitter_capture("comment") or funcs.in_syntax_group("Comment") then
           return { "diag-codes", "snippets", "lsp" }
         end
         return { "lazydev", "lsp", "tags", "snippets" }
@@ -232,31 +137,20 @@ local blink = {
           -- make lazydev completions top priority (see `:h blink.cmp`)
           score_offset = 100,
         },
-        avante = {
-          module = "blink-cmp-avante",
-          name = "Avante",
-          opts = {
-            -- options for blink-cmp-avante
-          },
-        },
+        -- avante = {
+        --   module = "blink-cmp-avante",
+        --   name = "Avante",
+        --   opts = {
+        --     -- options for blink-cmp-avante
+        --   },
+        -- },
         dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
         tags = {
           name = "tags",
           module = "blink.compat.source",
           score_offset = -2,
           opts = {
-            -- this is the default options, change them if you want.
-            -- Delayed time after user input, in milliseconds.
-            complete_defer = 100,
-            -- Max items when searching `taglist`.
-            max_items = 10,
-            -- The number of characters that need to be typed to trigger
-            -- auto-completion.
-            keyword_length = 3,
-            -- Use exact word match when searching `taglist`, for better searching
-            -- performance.
-            exact_match = false,
-            -- Prioritize searching result for current buffer.
+            exact_match = true,
             current_buffer_only = false,
           },
         },
@@ -270,12 +164,6 @@ local blink = {
         },
       },
     },
-
-    appearance = {
-      use_nvim_cmp_as_default = false,
-      nerd_font_variant = "mono",
-    },
-
     fuzzy = {
       prebuilt_binaries = {
         download = false,
@@ -300,22 +188,8 @@ local blink = {
         },
       },
     }
-    if is_not_mini() then
-      opts.sources.providers.minuet = {
-        name = "minuet",
-        module = "minuet.blink",
-        score_offset = 8, -- Gives minuet higher priority among suggestions
-      }
-    end
     require("blink.cmp").setup(opts)
   end,
 }
-
-if is_not_mini() then
-  blink.build = "nix run .#build-plugin"
-  blink.version = "*"
-else
-  blink.version = "*"
-end
 
 return blink

@@ -12,7 +12,7 @@ vim.api.nvim_create_user_command("Vterm", function(input)
   term.open(input.args, "vsplit")
 end, { nargs = "*" })
 
-function term_open()
+local function term_open()
   local bufnr = vim.api.nvim_get_current_buf()
   if string.find(vim.fn.bufname(bufnr), "term://") ~= nil then
     term.open(nil, "vsplit")

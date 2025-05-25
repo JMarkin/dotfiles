@@ -55,7 +55,7 @@ return {
     {
       "mistweaverco/kulala.nvim",
       -- from nix
-      dir = vim.fn.stdpath("data") .. "/nix/nvim-treesitter",
+      dir = vim.fn.stdpath("data") .. "/nix/kulala.nvim",
       dev = true,
       pin = true,
       keys = {

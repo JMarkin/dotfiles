@@ -1,35 +1,5 @@
-local maxline = require("funcs").maxline
+local funcs = require("funcs")
 
-local get_size = function(path)
-  local ok, stats = pcall(function()
-    return vim.loop.fs_stat(path)
-  end)
-  if not (ok and stats) then
-    return
-  end
-  return math.floor(0.5 + (stats.size / (1024 * 1024)))
-end
-
-local is_text = function(path)
-  -- Determine if file is text. This is not 100% proof, but good enough.
-  -- Source: https://github.com/sharkdp/content_inspector
-  local ok, fd = pcall(function()
-    return vim.loop.fs_open(path, "r", 1)
-  end)
-  if not (ok and fd) then
-    return false
-  end
-  ---@diagnostic disable-next-line: redefined-local
-  local ok, bytes = pcall(function()
-    return vim.loop.fs_read(fd, 1024)
-  end)
-  if not (ok and bytes) then
-    return false
-  end
-  local is_text = bytes:find("\0") == nil
-  vim.loop.fs_close(fd)
-  return is_text
-end
 
 local detach_lsp_clients = function(bufnr)
   -- currently not working
@@ -112,12 +82,12 @@ local CFG = {
         return false
       end
 
-      if not is_text(path) then
+      if not funcs.is_text(path) then
         return false
       end
 
       -- if file > 5 MB or not text -> not preview
-      local size = get_size(path)
+      local size = funcs.get_size(path)
       if type(size) ~= "number" then
         return false
       end
@@ -127,7 +97,7 @@ local CFG = {
       end
 
       -- len
-      local len = maxline(path)
+      local len = funcs.maxline(path)
       if type(len) ~= "number" then
         return false
       end

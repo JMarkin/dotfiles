@@ -1,6 +1,5 @@
 local is_large_file = require("largefiles").is_large_file
 local methods = vim.lsp.protocol.Methods
-local M = {}
 
 local opts_l = { silent = true, noremap = true }
 
@@ -72,11 +71,6 @@ local keys = {
     end,
     { desc = "Jump to the previous diagnostic in the current buffer", table.unpack(opts_l) },
   },
-  -- {
-  --     "<space>T",
-  --     ":Namu symbols<cr>",
-  --     { desc = "Tagbar", table.unpack(opts_l) },
-  -- },
 }
 
 --- https://github.com/neovim/nvim-lspconfig/blob/f4619ab31fc4676001ea05ae8200846e6e7700c7/plugin/lspconfig.lua#L123
@@ -134,25 +128,6 @@ local function on_attach(client, bufnr)
     end,
   })
 
-  -- if client.name == "gopls" then
-  --     -- workaround for gopls not supporting semanticTokensProvider
-  --     -- https://github.com/golang/go/issues/54531#issuecomment-1464982242
-  --     if not client.server_capabilities.semanticTokensProvider then
-  --         local semantic = client.config.capabilities.textDocument.semanticTokens
-  --         if semantic == nil then
-  --             return
-  --         end
-  --         client.server_capabilities.semanticTokensProvider = {
-  --             full = true,
-  --             legend = {
-  --                 tokenTypes = semantic.tokenTypes,
-  --                 tokenModifiers = semantic.tokenModifiers,
-  --             },
-  --             range = true,
-  --         }
-  --     end
-  -- end
-
   if not client:supports_method(methods.textDocument_hover, bufnr) then
     client.server_capabilities.hoverProvider = false
   end
@@ -193,8 +168,6 @@ local function on_attach(client, bufnr)
 
   return 1
 end
-
-M.on_attach = on_attach
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 
@@ -243,36 +216,59 @@ capabilities.textDocument = {
   },
 }
 
-M.capabilities = capabilities
+vim.lsp.config("*", {
+  capabilities = capabilities,
+  root_markers = vim.g.root_pattern,
+})
 
-local function setup_lsp(lsp_name, opts)
-  local lsp_util = require("lspconfig.util")
+local group = vim.api.nvim_create_augroup("my-lsp-config", { clear = true })
 
-  local _opts = {
-    root_dir = lsp_util.root_pattern(table.unpack(vim.g.root_pattern)),
-    capabilities = capabilities,
-    on_attach = on_attach,
-    autostart = vim.g.lsp_autostart ~= nil,
-  }
-  opts = vim.tbl_extend("force", opts, _opts)
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = group,
+  desc = "attach lsp event",
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if not client then
+      return
+    end
 
-  local lsp = require("lspconfig")
-  local conf = lsp[lsp_name]
-  conf.setup(opts)
+    local attached = on_attach(client, args.buf)
+    if not attached then
+      vim.lsp.buf_detach_client(args.buf, client)
+    end
 
-  -- local try_add = conf.manager.try_add
-  -- conf.manager.try_add = function(self, bufnr, project_root)
-  --     if is_large_file(bufnr, true) then
-  --         vim.notify("disable lsp large buffer", vim.log.levels.ERROR)
-  --         vim.bo[bufnr].tagfunc = nil
-  --         vim.bo[bufnr].omnifunc = "syntaxcomplete#Complete"
-  --         return
-  --     end
-  --
-  --     return try_add(self, bufnr, project_root)
-  -- end
-end
+    if not client:supports_method(vim.lsp.protocol.Methods.textDocument_completion, args.buf) then
+      return
+    end
 
-M.setup_lsp = setup_lsp
+    if not vim.lsp.completion or not vim.lsp.completion.enable then
+      return
+    end
+    local chars = client.server_capabilities.completionProvider.triggerCharacters
+    if chars then
+      for i = string.byte("a"), string.byte("z") do
+        if not vim.list_contains(chars, string.char(i)) then
+          table.insert(chars, string.char(i))
+        end
+      end
 
-return M
+      for i = string.byte("A"), string.byte("Z") do
+        if not vim.list_contains(chars, string.char(i)) then
+          table.insert(chars, string.char(i))
+        end
+      end
+    end
+
+    vim.api.nvim_create_autocmd("TextChangedP", {
+      buffer = args.buf,
+      group = group,
+      command = "let g:_ts_force_sync_parsing = v:true",
+    })
+
+    vim.api.nvim_create_autocmd("CompleteDone", {
+      buffer = args.buf,
+      group = group,
+      command = "let g:_ts_force_sync_parsing = v:false",
+    })
+  end,
+})

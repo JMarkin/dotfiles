@@ -38,17 +38,28 @@ local X5Qwen = {
   name = "X5Qwen",
   stream = true,
   end_point = "http://proxy-kafka.k8s.airun-dev-1.salt.x5.ru/v1/completions",
-  model = "x5-airun-medium-coder-prod",
+  model = "x5-airun-small-coder-prod",
   template = {
-    prompt = get_prompt(nil, "<|file_sep|>"),
+    prompt = function(pref, suff)
+      local prompt_message = ""
+
+      local h_vc, vc = vectorcacher()
+      if h_vc and vc then
+        for _, file in ipairs(vc.query_from_cache(0)) do
+          prompt_message = "<|file-sep|>" .. file.path .. "\n" .. file.document
+        end
+      end
+      local msg = prompt_message .. "<[fim-suffix]>" .. suff .. "<[fim-prefix]>" .. pref .. "<[fim-middle]>"
+      return msg
+    end,
     suffix = false,
   },
   optional = {
     stop = {
       "<|endoftext|>",
-      "<|fim_prefix|>",
-      "<|fim_middle|>",
-      "<|fim_suffix|>",
+      "<|fim-prefix|>",
+      "<|fim-middle|>",
+      "<|fim-suffix|>",
       "<|fim_pad|>",
       "<|repo_name|>",
       "<|file_sep|>",
@@ -100,6 +111,62 @@ local CODEGEMMA = {
   },
 }
 
+local attach = function(bufnr)
+  local lsps = vim.lsp.get_clients({ name = "minuet", bufnr = bufnr })
+
+  if #lsps and #lsps > 0 then
+    vim.notify("Minuet LSP already attached to current buffer", vim.log.levels.INFO)
+    return
+  end
+
+  require("minuet.lsp").start_server({ buf = bufnr })
+end
+
+local detach = function(bufnr)
+  local lsps = vim.lsp.get_clients({ name = "minuet", bufnr = bufnr })
+
+  if #lsps == 0 then
+    vim.notify("Minuet LSP not attached to current buffer", vim.log.levels.INFO)
+    return
+  end
+
+  for _, client in ipairs(lsps) do
+    vim.lsp.buf_detach_client(bufnr, client.id)
+  end
+
+  vim.notify("Minuet LSP detached from current buffer", vim.log.levels.INFO)
+end
+
+local enable_auto_trigger = function(bufnr)
+  local lsps = vim.lsp.get_clients({ name = "minuet", bufnr = bufnr })
+
+  if #lsps == 0 then
+    vim.b[bufnr].minuet_lsp_enable_auto_trigger = true
+    attach()
+    return
+  end
+
+  for _, client in ipairs(lsps) do
+    vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = true })
+  end
+
+  vim.notify("Minuet LSP is enabled for auto triggering", vim.log.levels.INFO)
+end
+
+local disable_auto_trigger = function(bufnr)
+  vim.b[bufnr].minuet_lsp_enable_auto_trigger = nil
+  local lsps = vim.lsp.get_clients({ name = "minuet", bufnr = bufnr })
+
+  if #lsps == 0 then
+    return
+  end
+
+  for _, client in ipairs(lsps) do
+    vim.lsp.completion.enable(false, client.id, bufnr)
+    vim.notify("Minuet LSP is disabled for auto triggering", vim.log.levels.INFO)
+  end
+end
+
 return {
   {
     "Davidyz/VectorCode",
@@ -122,7 +189,7 @@ return {
           local bufnr = vim.api.nvim_get_current_buf()
           cacher.async_check("config", function()
             cacher.register_buffer(bufnr, {
-              n_query = 10,
+              n_query = 1,
             })
           end, nil)
         end,
@@ -136,6 +203,26 @@ return {
   {
     "milanglacier/minuet-ai.nvim",
     cmd = { "Minuet" },
+    keys = {
+      {
+        "<C-_>",
+        function()
+          local bufnr = vim.api.nvim_get_current_buf()
+          attach(bufnr)
+          enable_auto_trigger(bufnr)
+          vim.api.nvim_create_autocmd({ "InsertLeave", "BufLeave", "BufWinLeave" }, {
+            once = true,
+            callback = function()
+              if vim.b[bufnr].minuet_lsp_enable_auto_trigger then
+                disable_auto_trigger(bufnr)
+                detach(bufnr)
+              end
+            end,
+          })
+        end,
+        mode = "i",
+      },
+    },
     config = function()
       -- This uses the async cache to accelerate the prompt construction.
       -- There's also the require('vectorcode').query API, which provides

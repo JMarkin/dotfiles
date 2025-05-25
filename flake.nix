@@ -34,12 +34,13 @@
     , disko
     , agenix
     , ...
-    } @ inputs:
-    let
-      overlays = [
-        (import ./overlays/cgrc.nix)
-        (import ./overlays/createnv.nix)
-        (import ./overlays/vpn_slice.nix)
+  } @ inputs:
+  let
+    overlays = [
+      # (import ./overlays/cgrc.nix)
+      (import ./overlays/createnv.nix)
+      (import ./overlays/vpn_slice.nix)
+      (import ./overlays/vectorcode.nix)
         # (import ./overlays/rllama)
       ];
 

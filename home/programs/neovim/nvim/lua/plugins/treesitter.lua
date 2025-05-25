@@ -7,9 +7,6 @@ local is_disable = function(_lang, buf)
   local _type = is_large_file(buf)
 
   local r = _type ~= FILE_TYPE.NORMAL
-  if r then
-    fn.doau("TSFoldAttach", { buf = buf })
-  end
 
   return r
   -- return _type == FILE_TYPE.READ_ONLY or _type == FILE_TYPE.LARGE_SIZE
@@ -50,7 +47,7 @@ return {
     },
     {
       "HiPhish/rainbow-delimiters.nvim",
-      enabled = true,
+      enabled = false,
       config = function()
         local rainbow = require("rainbow-delimiters")
         require("rainbow-delimiters.setup").setup({
@@ -66,6 +63,7 @@ return {
               end
               return rainbow.strategy["local"]
             end,
+            json = rainbow["local"],
           },
           query = {
             [""] = "rainbow-delimiters",
@@ -151,16 +149,6 @@ return {
     },
   },
   config = function()
-    require("nvim-treesitter").define_modules({
-      fold = {
-        attach = function(buf, lang)
-          fn.doau("TSFoldAttach", { buf = buf })
-        end,
-        detach = function(buf)
-          fn.doau("TSFoldDetach", { buf = buf })
-        end,
-      },
-    })
     require("nvim-treesitter.install").prefer_git = true
     require("nvim-treesitter.configs").setup({
       autotag = {

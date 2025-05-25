@@ -142,7 +142,7 @@ return {
             frequency = 0.7, -- 70% weight to frequency
           },
           priority = {
-            base = 20, -- Base priority score (0-999)
+            base = 500, -- Base priority score (0-999)
             position = "after", -- Position relative to other LSP results: 'before' or 'after'
           },
         },
@@ -174,6 +174,7 @@ return {
     "JMarkin/gentags.lua",
     -- enabled = false,
     dev = true,
+    dir = "/projects/jmarkin/gentags.lua",
     cond = vim.fn.executable("ctags") == 1,
     opts = {
       autostart = false,
@@ -198,5 +199,78 @@ return {
       "GenTagsEnable",
       "GenTagsDisable",
     },
+  },
+
+  {
+    "Vigemus/iron.nvim",
+    cmd = {
+      "IronRepl",
+      "IronReplHere",
+      "IronRestart",
+      "IronSend",
+      "IronFocus",
+      "IronHide",
+      "IronWatch",
+      "IronAttach",
+    },
+    keys = {
+      "<space>sc",
+      "<space>sc",
+      "<space>sf",
+      "<space>sl",
+      "<space>su",
+      "<space>sm",
+      "<space>mc",
+      "<space>mc",
+      "<space>md",
+      "<space>s<cr>",
+      "<space>s<space>",
+      "<space>sq",
+      "<space>cl",
+
+      { "<space>rs", "<cmd>IronRepl<cr>" },
+      { "<space>rr", "<cmd>IronRestart<cr>" },
+      { "<space>rf", "<cmd>IronFocus<cr>" },
+      { "<space>rh", "<cmd>IronHide<cr>" },
+    },
+    config = function()
+      local iron = require("iron")
+      local view = require("iron.view")
+      local executable = function(exe)
+        return vim.api.nvim_call_function("executable", { exe }) == 1
+      end
+      local opts = {
+        config = {
+          -- Whether a repl should be discarded or not
+          scratch_repl = true,
+          -- Your repl definitions come here
+          repl_definition = {
+            sh = {
+              command = { "bash" },
+            },
+            python = executable("ipython") and require("iron.fts.python").ipython or require("iron.fts.python").python,
+          },
+          repl_open_cmd = view.split.vertical.botright(50),
+        },
+        keymaps = {
+          send_motion = "<space>sc",
+          visual_send = "<space>sc",
+          send_file = "<space>sf",
+          send_line = "<space>sl",
+          send_until_cursor = "<space>su",
+          send_mark = "<space>sm",
+          mark_motion = "<space>mc",
+          mark_visual = "<space>mc",
+          remove_mark = "<space>md",
+          cr = "<space>s<cr>",
+          interrupt = "<space>si",
+          exit = "<space>sq",
+          clear = "<space>scl",
+        },
+        highlight = { italic = true },
+        ignore_blank_lines = true, -- ignore blank lines when sending visual select lines
+      }
+      iron.setup(opts)
+    end,
   },
 }

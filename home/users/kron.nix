@@ -21,6 +21,7 @@ in
     ../programs/fish
     ../programs/neovim
     ../programs/direnv.nix
+    ../programs/ai
   ];
 
 
@@ -40,8 +41,6 @@ in
 
 
     ollama
-    # vectorcode
-    # rllama
 
     rustic
     rclone

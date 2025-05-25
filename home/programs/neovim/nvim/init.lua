@@ -39,11 +39,11 @@ require("lazy").setup({ import = "plugins" }, {
     enabled = false,
     notify = true,
   },
-  dev = {
-    path = "~/projects",
-    patterns = {},
-    fallback = true, -- Fallback to git when local plugin doesn't exist
-  },
+  -- dev = {
+  --   path = "~/projects",
+  --   patterns = {},
+  --   fallback = true, -- Fallback to git when local plugin doesn't exist
+  -- },
   throttle = {
     enabled = true, -- not enabled by default
     -- max 2 ops every 5 seconds

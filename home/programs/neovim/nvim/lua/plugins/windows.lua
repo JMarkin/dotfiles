@@ -21,7 +21,7 @@ return {
         function(ev)
           return require("win-mover").enter_move_mode(ev)
         end,
-        { "Window: mover" },
+        desc = "Window: mover",
       },
     },
     config = function()

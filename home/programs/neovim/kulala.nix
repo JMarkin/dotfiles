@@ -3,8 +3,8 @@ let
   kulala-nvim = pkgs.fetchFromGitHub {
     owner = "mistweaverco";
     repo = "kulala.nvim";
-    rev = "v5.2.1";
-    hash = "sha256-kTA2EtLwJbwlgFFWekrQn2B9jnqW8FREqxpvdWTZA+4=";
+    rev = "v5.3.0";
+    hash = "sha256-+Wor0L3NxTCXIZBdpX0ylOu26N5z8nFwinrzeRtFxOE=";
   };
 
   # kulala-lsp = pkgs.buildNpmPackage
@@ -21,7 +21,7 @@ let
   #
   #     npmDepsHash = "sha256-/6JZYsIYDJHS/8TOPjtR/SrRbzTbL43X0g/tPIn2YfQ=";
   #   };
-
+  #
   # kulala-fmt = pkgs.buildNpmPackage
   #   rec {
   #     pname = "kulala-fmt";
