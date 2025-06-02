@@ -1,7 +1,7 @@
 vim.keymap.set({ "n" }, { "<leader>q", "<space>q" }, ":q<cr>", { desc = "Quit", silent = true })
 
-vim.keymap.set({ "n", "v" }, "<C-d>", "10j")
-vim.keymap.set({ "n", "v" }, "<C-u>", "10k")
+vim.keymap.set({ "n", "v" }, "<C-d>", "10jzz")
+vim.keymap.set({ "n", "v" }, "<C-u>", "10kzz")
 vim.keymap.set({ "n", "v" }, "<C-e>", "<C-u>")
 
 vim.keymap.set({ "n" }, "o", "o<Esc>", { desc = "Add line under" })
@@ -52,7 +52,7 @@ vim.keymap.set("n", "<space>]", ":+tabmove<CR>", { desc = "Tabs: move to next" }
 
 for i = 1, 9, 1 do
   vim.keymap.set({ "n", "x" }, "<space>" .. i, tabswitch(vim.cmd.tabnext, i), { desc = "Tabs: go to " .. i })
-  vim.keymap.set({ "t" }, "<c-" .. i .. ">", tabswitch(vim.cmd.tabnext, i), { desc = "Tabs: go to " .. i })
+  vim.keymap.set({ "t" }, "<c-t>" .. i, tabswitch(vim.cmd.tabnext, i), { desc = "Tabs: go to " .. i })
 end
 
 vim.keymap.set("n", "<leader>lcl", function()

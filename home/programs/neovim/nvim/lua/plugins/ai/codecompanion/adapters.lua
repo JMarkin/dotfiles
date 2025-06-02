@@ -33,6 +33,20 @@ M.x5qwen = function()
   })
 end
 
+M.openrouter = function()
+  return require("codecompanion.adapters").extend("openai_compatible", {
+    env = {
+      url = "https://openrouter.ai/api/v1",
+      api_key = "OPENROUTER_API",
+    },
+    schema = {
+      model = {
+        default = "deepseek/deepseek-r1-0528:free",
+      },
+    },
+  })
+end
+
 local function ollama_params(model_name, model)
   return function()
     return require("codecompanion.adapters").extend("ollama", {
@@ -71,28 +85,20 @@ local function ollama_modify(model_name, model, func)
   end
 end
 
-M.ollama_deepseek = ollama_params("deepseek-r1", "hf.co/unsloth/DeepSeek-R1-Distill-Qwen-7B-GGUF:Q4_K_M")
+M.ollama_deepseek = ollama_params("deepseek-r1", "deepseek-r1:8b")
 M.ollama_deepcode = ollama_params("deepcode", "hf.co/lmstudio-community/DeepCoder-14B-Preview-GGUF:Q4_K_M")
 M.ollama_gemma3 = ollama_params("gemma3", "hf.co/unsloth/gemma-3-12b-it-GGUF:Q4_K_M")
 M.ollama_codegemma = ollama_params("codegemma", "codegemma:latest")
 
-M.ollama_phimini = ollama_modify("phimini", "phi4-mini:latest", function(params)
-  params.schema.num_ctx.default = 1024 * 128
-  return params
-end)
+M.ollama_phimini = ollama_params("phimini", "phi4-mini:latest")
 
 M.ollama_devstral = ollama_modify("devstral", "hf.co/unsloth/Devstral-Small-2505-GGUF:Q3_K_XL", function(params)
-  params.schema.num_ctx.default = 1024 * 128
   params.schema.temperature.default = 0.15
   return params
 end)
 
 local function ollama_qwen(model_name, model)
-  return ollama_modify(model_name, model, function(params)
-    params.schema.num_ctx.default = 1024 * 42
-    params.schema.num_predict.default = 1024 * 32
-    return params
-  end)
+  return ollama_modify(model_name, model)
 end
 
 M.ollama_qwencoder = ollama_qwen("qwen2.5", "hf.co/unsloth/Qwen2.5-Coder-7B-Instruct-128K-GGUF:Q4_K_M")

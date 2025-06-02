@@ -99,61 +99,50 @@ local function complete_changed(args)
   end)
 end
 
-vim.api.nvim_create_autocmd("CompleteChanged", {
-  group = group,
-  desc = "Auto show LSP documentation",
-  callback = complete_changed,
-})
+local M = {}
 
-vim.api.nvim_create_autocmd("LspAttach", {
-  group = group,
-  desc = "Attach completion events",
-  callback = function(args)
-    if not vim.lsp.completion or not vim.lsp.completion.enable then
-      return
-    end
+M.attach_completion = function(client, buf)
+  if not client:supports_method(vim.lsp.protocol.Methods.textDocument_completion, buf) then
+    return
+  end
 
-    local client = vim.lsp.get_client_by_id(args.data.client_id)
-    if not client then
-      return
-    end
+  if client.name == "minuet" then
+    return
+  end
 
-    if not client:supports_method(vim.lsp.protocol.Methods.textDocument_completion, args.buf) then
-      return
-    end
+  vim.api.nvim_create_autocmd("CompleteChanged", {
+    group = group,
+    desc = "Auto show LSP documentation",
+    callback = complete_changed,
+    buffer = buf,
+  })
 
-    if client.name == "minuet" then
-      return
-    end
+  vim.lsp.completion.enable(true, client.id, buf, {
+    autotrigger = true,
+    convert = function(item)
+      local doc = item.documentation or {}
+      local info
+      if vim.bo.filetype == "c" then
+        info = ("%s%s\n \n%s"):format(item.detail or "", item.label, doc.value or "")
+      end
+      local entry = {
+        abbr = item.label,
+        kind = vim.lsp.protocol.CompletionItemKind[item.kind] or "Unknown",
+        menu = item.detail or "",
+        icase = 1,
+        dup = 0,
+        empty = 0,
+        info = info and info:gsub("\n+%s*\n$", "") or nil,
+      }
 
-    vim.lsp.completion.enable(true, client.id, args.buf, {
-      autotrigger = true,
-      convert = function(item)
-        local doc = item.documentation or {}
-        local info
-        if vim.bo.filetype == "c" then
-          info = ("%s%s\n \n%s"):format(item.detail or "", item.label, doc.value or "")
-        end
-        local entry = {
-          abbr = item.label,
-          kind = vim.lsp.protocol.CompletionItemKind[item.kind] or "Unknown",
-          menu = item.detail or "",
-          icase = 1,
-          dup = 0,
-          empty = 0,
-          info = info and info:gsub("\n+%s*\n$", "") or nil,
-        }
+      if config.entry_mapper then
+        return config.entry_mapper(entry, client)
+      end
 
-        if config.entry_mapper then
-          return config.entry_mapper(entry, client)
-        end
-
-        return entry
-      end,
-    })
-
-  end,
-})
+      return entry
+    end,
+  })
+end
 
 -- cmdcompletion
 local function cmdcmp()
@@ -200,3 +189,5 @@ end
 --     once = true,
 --     callback = cmdcmp,
 -- })
+
+return M

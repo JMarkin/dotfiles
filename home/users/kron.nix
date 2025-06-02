@@ -29,16 +29,16 @@ in
     # utils
     jaq
     delta
-    universal-ctags
     docker-compose
     dust
     tree-sitter
-    ptags
     createnv
     dotenv-linter
     kubectl
     k9s
 
+    universal-ctags
+    ptags
 
     ollama
 

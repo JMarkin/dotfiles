@@ -5,7 +5,7 @@ if vim.env.NVIM_MINI ~= nil then
   return
 end
 
-vim.lsp.enable({
+local lsps = {
   "nginx_language_server",
   "nil_ls",
   "lua_ls",
@@ -30,7 +30,15 @@ vim.lsp.enable({
   "yamlls",
   "jsonls",
   "clangd",
-}, vim.g.lsp_autostart)
+}
+
+for _, lsp in ipairs(lsps) do
+  local cmd = vim.lsp.config[lsp].cmd[1]
+
+  if vim.fn.executable(cmd) == 1 then
+    vim.lsp.enable(lsp, vim.g.lsp_autostart)
+  end
+end
 
 -- vim.lsp.handlers["workspace/diagnostic/refresh"] = function(_, _, ctx)
 --   local ns = vim.lsp.diagnostic.get_namespace(ctx.client_id)

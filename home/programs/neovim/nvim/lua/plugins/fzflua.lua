@@ -98,21 +98,21 @@ return {
     {
       "<leader>st",
       function()
-        require("fzf-lua").btags({ multiprocess = true })
+        require("fzf-lua").btags({ multiprocess = true, cwd = vim.uv.cwd() })
       end,
       desc = "Search: tags current file",
     },
     {
       "<leader>sT",
       function()
-        require("fzf-lua").tags({ multiprocess = true })
+        require("fzf-lua").tags({ multiprocess = true, cwd = vim.uv.cwd() })
       end,
       desc = "Search: tags global",
     },
     {
       "<leader>sT",
       function()
-        require("fzf-lua").tags_grep_visual({ multiprocess = true })
+        require("fzf-lua").tags_grep_visual({ multiprocess = true, cwd = vim.uv.cwd() })
       end,
       desc = "Search: tags",
       mode = "v",

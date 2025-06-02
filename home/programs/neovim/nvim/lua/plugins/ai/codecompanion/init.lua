@@ -42,33 +42,17 @@ return {
       noremap = true,
     },
     {
-      "<leader>ce",
+      "<leader>ci",
       ":CodeCompanion<cr>",
-      desc = "Code Companion",
+      desc = "Code Companion inline",
       silent = true,
       mode = "n",
       noremap = true,
     },
     {
-      "<leader>ce",
+      "<leader>ci",
       ":'<,'>CodeCompanion<cr>",
-      desc = "Code Companion",
-      silent = true,
-      mode = "x",
-      noremap = true,
-    },
-    {
-      "<C-CR>",
-      ":CodeCompanion<cr>",
-      desc = "Code Companion",
-      silent = true,
-      mode = "n",
-      noremap = true,
-    },
-    {
-      "<C-CR>",
-      ":'<,'>CodeCompanion<cr>",
-      desc = "Code Companion",
+      desc = "Code Companion inline",
       silent = true,
       mode = "x",
       noremap = true,
@@ -122,7 +106,19 @@ return {
           keymaps = require("plugins.ai.codecompanion.keymaps"),
           tools = require("plugins.ai.codecompanion.tools"),
         },
-        inline = { adapter = "default_adapter" },
+        inline = {
+          adapter = "default_adapter",
+          keymaps = {
+            accept_change = {
+              modes = { n = "gh" },
+              description = "Accept the suggested change",
+            },
+            reject_change = {
+              modes = { n = "gH" },
+              description = "Reject the suggested change",
+            },
+          },
+        },
         agent = { adapter = "default_adapter" },
       },
       display = {
@@ -135,7 +131,7 @@ return {
             watched_buffer = "👀 ",
           },
           show_header_separator = true,
-          show_settings = true,
+          show_settings = false,
         },
       },
       -- opts = {

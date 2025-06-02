@@ -2,6 +2,7 @@ VERSION = "2.19.1"
 from decimal import Decimal
 from fastjsonschema import JsonSchemaValueException
 
+print_n_fi
 NoneType = type(None)
 
 def validate(data, custom_formats={}, name_prefix=None):

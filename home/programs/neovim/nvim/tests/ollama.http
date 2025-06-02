@@ -16,7 +16,7 @@ POST {{ollama}}/v1/chat/completions
 Content-Type: application/json
 
 {
-  "raw": true,
+  "think": false,
   "messages": [
        {
            "role": "system",
@@ -31,7 +31,7 @@ Content-Type: application/json
            "content": "<|fim_prefix|>def quicksort(arr):\n    if len(arr) <= 1:\n        return arr\n    pivot = arr[len(arr) // 2]\n    <|fim_suffix|>\n    middle = [x for x in arr if x == pivot]\n    right = [x for x in arr if x > pivot]\n    return quicksort(left) + middle + quicksort(right)<|fim_middle|>"
        }
    ],
-  "model":"hf.co/unsloth/Qwen2.5-Coder-7B-Instruct-128K-GGUF:Q4_K_M",
+  "model":"deepseek-r1:8b",
   "stream": false
 }
 

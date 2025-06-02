@@ -29,4 +29,10 @@ return {
       },
     },
   },
+  on_attach = function(client, buf)
+    if vim.bo[buf].filetype == "lua" and vim.api.nvim_buf_get_name(buf):find("_spec") then
+      vim.diagnostic.enable(false, { bufnr = buf })
+      return
+    end
+  end,
 }
