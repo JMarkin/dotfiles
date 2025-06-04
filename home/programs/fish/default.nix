@@ -64,6 +64,7 @@
       ll = "ls --header -l --time-style=long-iso -M -m";
       lla = "ll -a";
       rustic = "rustic -P ~/.config/rustic.toml";
+      ctags = "ptags";
     };
     plugins = [
       # { name = "grc"; src = pkgs.fishPlugins.grc.src; }
@@ -148,7 +149,7 @@
             vim $argv
         end
       '';
-      shh = /*fish*/ ''
+      shh.body = /*fish*/ ''
         if [ -t 0 ]
             set CONTEXT ""
         else
@@ -156,23 +157,36 @@
         end
 
         set -l QUERY $argv
-        set -l PROMPT "$QUERY\n$CONTEXT"
+        set -l PROMPT "$CONTEXT\n$QUERY"
         set -l OLLAMA_URL $OLLAMA_URL "http://localhost:11434"
         set -l SHELL_HELPER_MODEL $SHELL_HELPER_MODEL "shell-helper:latest"
 
-        set -l PROMPT (echo "$PROMPT" | jaq -Rs)
+        set -l PROMPT (echo "$PROMPT" | ${pkgs.jaq}/bin/jaq -Rs)
 
         set -l CURL_DATA '{
             "model": "'$SHELL_HELPER_MODEL'",
             "stream": false,
+            "think": false,
             "prompt": '$PROMPT'
         }'
 
-        curl -H "Content-Type: application/json" -H "Accept: application/json" \
+        ${pkgs.curl}/bin/curl -H "Content-Type: application/json" -H "Accept: application/json" \
             -s $OLLAMA_URL"/api/generate" \
             --data $CURL_DATA \
-            | jaq -r '.response' | xargs -0 printf "%b"
+            | ${pkgs.jaq}/bin/jaq -r '.response' | xargs -0 printf "%b"
       '';
+      kubectl-pods-logs = {
+        argumentNames = [
+          "config"
+          "ns"
+          "name"
+        ];
+        body = /*fish*/''
+          kubectl --insecure-skip-tls-verify --kubeconfig $config get --namespace $ns pods | grep $name \
+          | awk '{print $1}' \
+          | xargs -I {} kubectl --insecure-skip-tls-verify --kubeconfig $config --namespace $ns logs {} | nvim -
+        '';
+      };
     };
   };
 }

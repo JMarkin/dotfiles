@@ -1,6 +1,7 @@
 import os
 from time import time
 
+
 def fib():
     a, b = 0, 1
     while True:  # First iteration:
@@ -15,8 +16,5 @@ for index, fibonacci_number in zip(range(100), fib()):
     t = ti
 
 
-
 # Generate function where print first N of fibonachi numbers using fib function
-def print_n_fibonacchi_numbers(n, messag_on_complete: str):
-  for i in range(n):
-
+def print_n_fibonacchi_numbers(n, messag_on_complete: str): ...

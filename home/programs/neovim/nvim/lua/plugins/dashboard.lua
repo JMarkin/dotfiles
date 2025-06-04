@@ -54,21 +54,10 @@ local function fetch(dashboard)
       end)
     )
   end
-  if vim.system then
-    vim.system({ cmd, table.unpack(args) }, {
-      text = true,
-      stdout = stdout,
-    }, on_exit)
-  else
-    require("plenary.job")
-      :new({
-        command = cmd,
-        args = args,
-        on_stdout = stdout,
-        on_exit = on_exit,
-      })
-      :start()
-  end
+  vim.system({ cmd, table.unpack(args) }, {
+    text = true,
+    stdout = stdout,
+  }, on_exit)
 end
 
 return {

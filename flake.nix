@@ -22,6 +22,11 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
   outputs =
@@ -33,14 +38,16 @@
     , mac-app-util
     , disko
     , agenix
+    , rust-overlay
     , ...
-  } @ inputs:
-  let
-    overlays = [
-      # (import ./overlays/cgrc.nix)
-      (import ./overlays/createnv.nix)
-      (import ./overlays/vpn_slice.nix)
-      (import ./overlays/vectorcode.nix)
+    } @ inputs:
+    let
+      overlays = [
+        # (import ./overlays/cgrc.nix)
+        (import ./overlays/createnv.nix)
+        (import ./overlays/vpn_slice.nix)
+        (import ./overlays/vectorcode.nix)
+        rust-overlay.overlays.default
         # (import ./overlays/rllama)
       ];
 

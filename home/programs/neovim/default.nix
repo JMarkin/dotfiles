@@ -17,8 +17,8 @@ in
     [
 
       # builder
-      lua51Packages.lua
-      lua51Packages.luarocks
+      # lua51Packages.lua
+      # lua51Packages.luarocks
 
       # lsp
       bash-language-server
@@ -41,6 +41,10 @@ in
     withNodeJs = true;
     defaultEditor = true;
     vimdiffAlias = true;
+
+    plugins = [
+      pkgs.vimPlugins.lazy-nvim
+    ];
   };
 
   home.file = {

@@ -98,8 +98,9 @@ fn.augroup("FoldByFt", {
   {
     pattern = "python",
     callback = function(args)
-      setfold(args.buf, function(win)
-        vim.wo[win][0].foldmethod = "indent"
+      setfold(buf, function(win)
+        vim.opt_local.foldmethod = "expr"
+        vim.opt_local.foldexpr = "v:lua.vim.treesitter.foldexpr()"
       end)
     end,
   },

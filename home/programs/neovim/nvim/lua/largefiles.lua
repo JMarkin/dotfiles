@@ -125,6 +125,9 @@ local function optimize_buffer(bufnr, path)
   vim.opt_local.swapfile = false
   vim.opt_local.bufhidden = "unload"
 
+  vim.opt_local.relativenumber = false
+
+  vim.b.numbertoggle_disabled = 1
   vim.b.matchup_matchparen_fallback = 0
   vim.b.matchup_matchparen_enabled = 0
 

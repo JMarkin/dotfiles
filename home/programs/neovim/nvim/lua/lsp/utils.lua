@@ -36,13 +36,6 @@ local keys = {
     { desc = "GoTo: declarations", table.unpack(opts_l) },
   },
   {
-    "gh",
-    function()
-      require("fzf-lua").lsp_finder({ multiprocess = true, ignore_current_line = true })
-    end,
-    { desc = "Lsp: Finder", table.unpack(opts_l) },
-  },
-  {
     "K",
     vim.lsp.buf.hover,
     { silent = true, desc = "Lang: hover doc", table.unpack(opts_l) },
@@ -78,6 +71,9 @@ local keys = {
 ---@param client vim.lsp.Client
 ---@param bufnr integer
 local function on_attach(client, bufnr)
+  if client.name == "phoenix" or vim.b[bufnr].lsp_keymaps_set == 1 then
+    return 1
+  end
   if is_large_file(bufnr, true) then
     vim.bo[bufnr].tagfunc = nil
     return 0
@@ -125,6 +121,7 @@ local function on_attach(client, bufnr)
       for _, keymap in ipairs(prev_keymaps) do
         pcall(vim.fn.mapset, keymap)
       end
+      vim.b[bufnr].lsp_keymaps_set = 0
     end,
   })
 
@@ -165,7 +162,7 @@ local function on_attach(client, bufnr)
   end
 
   -- vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
-
+  vim.b[bufnr].lsp_keymaps_set = 1
   return 1
 end
 
@@ -235,7 +232,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
     local attached = on_attach(client, args.buf)
     if not attached then
       vim.lsp.buf_detach_client(args.buf, client)
+      vim.b[args.buf].lsp_attached = 0
     end
+
+    vim.b[args.buf].lsp_attached = 1
+
+    client.server_capabilities.semanticTokensProvider = nil
 
     if not client:supports_method(vim.lsp.protocol.Methods.textDocument_completion, args.buf) then
       return
@@ -244,6 +246,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     if not vim.lsp.completion or not vim.lsp.completion.enable then
       return
     end
+
     local chars = client.server_capabilities.completionProvider.triggerCharacters
     if chars then
       for i = string.byte("a"), string.byte("z") do
@@ -259,16 +262,35 @@ vim.api.nvim_create_autocmd("LspAttach", {
       end
     end
 
-    vim.api.nvim_create_autocmd("TextChangedP", {
-      buffer = args.buf,
-      group = group,
-      command = "let g:_ts_force_sync_parsing = v:true",
-    })
+    -- require("lsp.autocomplete").attach_completion(client, args.buf)
+  end,
+})
 
-    vim.api.nvim_create_autocmd("CompleteDone", {
-      buffer = args.buf,
-      group = group,
-      command = "let g:_ts_force_sync_parsing = v:false",
-    })
+local timer = nil --[[uv_timer_t]]
+local function reset_timer()
+  if timer then
+    timer:stop()
+    timer:close()
+  end
+  timer = nil
+end
+
+vim.api.nvim_create_autocmd("LspDetach", {
+  group = group,
+  desc = "Auto stop client when no buffer atttached",
+  callback = function(args)
+    local client_id = args.data.client_id
+    local client = vim.lsp.get_clients({ client_id = client_id })[1]
+    if not client or not vim.tbl_isempty(client.attached_buffers) then
+      return
+    end
+    reset_timer()
+    timer = assert(vim.uv.new_timer())
+    timer:start(200, 0, function()
+      reset_timer()
+      vim.schedule(function()
+        vim.lsp.stop_client(client_id, true)
+      end)
+    end)
   end,
 })

@@ -6,6 +6,9 @@ vim.defer_fn(function()
       { "InsertLeave", "CmdlineLeave" },
       {
         callback = function(event)
+          if vim.b.numbertoggle_disabled == 1 then
+            return
+          end
           if
             vim.bo[event.buf].buflisted
             and vim.opt_local.number
@@ -20,6 +23,9 @@ vim.defer_fn(function()
       { "InsertEnter", "CmdlineEnter" },
       {
         callback = function(event)
+          if vim.b.numbertoggle_disabled == 1 then
+            return
+          end
           if
             vim.bo[event.buf].buflisted
             and vim.opt_local.number

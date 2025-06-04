@@ -64,6 +64,15 @@ return {
     end,
   },
   {
+    "folke/lazydev.nvim",
+    opts = {
+      library = {
+        { path = "luvit-meta/library", words = { "vim%.uv" } },
+      },
+    },
+    ft = "lua",
+  },
+  {
     "mrcjkb/rustaceanvim",
     cond = is_not_mini,
     -- version = "^5", -- Recommended
@@ -119,6 +128,7 @@ return {
   },
   {
     "nvimdev/phoenix.nvim",
+    enabled = false,
     init = function()
       ---Default configuration values for Phoenix
       ---@type PhoenixConfig
@@ -142,7 +152,7 @@ return {
             frequency = 0.7, -- 70% weight to frequency
           },
           priority = {
-            base = 500, -- Base priority score (0-999)
+            base = 999, -- Base priority score (0-999)
             position = "after", -- Position relative to other LSP results: 'before' or 'after'
           },
         },
@@ -176,9 +186,10 @@ return {
     dev = true,
     dir = "/projects/jmarkin/gentags.lua",
     cond = vim.fn.executable("ctags") == 1,
+    event = "VeryLazy",
     opts = {
-      autostart = false,
-      async = false,
+      autostart = true,
+      async = true,
       args = {
         "--extras=+r+q",
         "--exclude=\\.*",
@@ -186,12 +197,14 @@ return {
         "--exclude=.ruff_cache",
         "--exclude=.pytest_cache",
         "--exclude=dist",
+        "--exclude=target",
         "--exclude=.git",
         "--exclude=node_modules*",
         "--exclude=BUILD",
         "--exclude=vendor*",
         "--exclude=*.min.*",
         "--exclude=__file__",
+        "--exclude=.devenv",
       },
     },
     cmd = {

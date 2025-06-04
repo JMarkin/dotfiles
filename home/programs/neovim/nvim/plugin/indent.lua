@@ -4,13 +4,8 @@ vim.opt.listchars:append({
   leadmultispace = vim.g.indentline_char,
 })
 
--- I am using tab and leadmultispace in listchars to display the indent line. The chars for tab and
--- leadmultispace should be updated based on whether the indentation has been changed.
--- * If using space as indentation: set tab to a special character for denotation and leadmultispace
--- to the indent line character followed by multiple spaces whose amounts depends on the number of
--- spaces to use in each step of indent.
--- * If using tab as indentation: set leadmultispace to a special character for denotation and tab
--- to the indent line character.
+-- I don't know where copy paste ...
+--
 local function update(is_local)
   local listchars_update = function(items)
     local listchars = vim.api.nvim_get_option_value("listchars", {})
