@@ -64,6 +64,15 @@ return {
     end,
   },
   {
+    "folke/lazydev.nvim",
+    opts = {
+      library = {
+        { path = "luvit-meta/library", words = { "vim%.uv" } },
+      },
+    },
+    ft = "lua",
+  },
+  {
     "mrcjkb/rustaceanvim",
     cond = is_not_mini,
     -- version = "^5", -- Recommended

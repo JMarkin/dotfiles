@@ -6,7 +6,7 @@ return {
       vim.cmd([[
                 syntax on
             ]])
-      vim.g.polyglot_disabled = { "ftdetect" }
+      vim.g.polyglot_disabled = { "ftdetect", "autoindent" }
     end,
   },
 }

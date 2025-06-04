@@ -262,7 +262,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
       end
     end
 
-    require("lsp.autocomplete").attach_completion(client, args.buf)
+    -- require("lsp.autocomplete").attach_completion(client, args.buf)
   end,
 })
 

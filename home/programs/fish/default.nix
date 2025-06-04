@@ -149,7 +149,7 @@
             vim $argv
         end
       '';
-      shh = /*fish*/ ''
+      shh.body = /*fish*/ ''
         if [ -t 0 ]
             set CONTEXT ""
         else
@@ -175,6 +175,18 @@
             --data $CURL_DATA \
             | ${pkgs.jaq}/bin/jaq -r '.response' | xargs -0 printf "%b"
       '';
+      kubectl-pods-logs = {
+        argumentNames = [
+          "config"
+          "ns"
+          "name"
+        ];
+        body = /*fish*/''
+          kubectl --insecure-skip-tls-verify --kubeconfig $config get --namespace $ns pods | grep $name \
+          | awk '{print $1}' \
+          | xargs -I {} kubectl --insecure-skip-tls-verify --kubeconfig $config --namespace $ns logs {} | nvim -
+        '';
+      };
     };
   };
 }

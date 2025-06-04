@@ -20,19 +20,6 @@ vim.keymap.set = function(mode, lhs, rhs, opts)
   end
 end
 
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.uv.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "--single-branch",
-    "https://github.com/folke/lazy.nvim.git",
-    lazypath,
-  })
-end
-vim.opt.runtimepath:prepend(lazypath)
-
 require("lazy").setup({ import = "plugins" }, {
   concurrency = 10,
   change_detection = {
@@ -67,7 +54,7 @@ require("lazy").setup({ import = "plugins" }, {
         -- "gzip",
         "matchit",
         "matchparen",
-        -- "netrwPlugin",
+        "netrwPlugin",
         -- "tarPlugin",
         -- "tohtml",
         "tutor",
@@ -83,10 +70,10 @@ require("lazy").setup({ import = "plugins" }, {
     require = false,
   },
   pkg = {
-    enabled = true,
+    enabled = false,
   },
   rocks = {
-    enabled = true,
+    enabled = false,
     hererocks = false,
   },
   ui = {
@@ -109,7 +96,6 @@ require("lazy").setup({ import = "plugins" }, {
 })
 
 -- from nix
-vim.opt.runtimepath:prepend(vim.fn.stdpath("data") .. "/nix")
 
 local should_profile = os.getenv("NVIM_PROFILE")
 if should_profile then

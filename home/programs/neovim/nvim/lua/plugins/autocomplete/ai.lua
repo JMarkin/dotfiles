@@ -33,9 +33,9 @@ local get_prompt = function(get_prompt_message, file_sep)
   end
 end
 
-local X5Qwen = {
+local X5SeedCoder = {
   api_key = "X5_QWEN_API",
-  name = "X5Qwen",
+  name = "X5SeedCoder",
   stream = true,
   end_point = "http://proxy-kafka.k8s.airun-dev-1.salt.x5.ru/v1/completions",
   model = "x5-airun-small-coder-prod",
@@ -60,14 +60,9 @@ local X5Qwen = {
       "<|fim-prefix|>",
       "<|fim-middle|>",
       "<|fim-suffix|>",
-      "<|fim_pad|>",
+      "<|fim-pad|>",
       "<|repo_name|>",
-      "<|file_sep|>",
-      "<|im_start|>",
-      "<|im_end|>",
-      "/src/",
-      "#- coding: utf-8",
-      "# Path:",
+      "<|file-sep|>",
     },
     max_tokens = 300,
   },
@@ -203,41 +198,42 @@ return {
   {
     "milanglacier/minuet-ai.nvim",
     cmd = { "Minuet" },
-    keys = {
-      {
-        "<C-_>",
-        function()
-          local bufnr = vim.api.nvim_get_current_buf()
-          attach(bufnr)
-          enable_auto_trigger(bufnr)
-          vim.api.nvim_create_autocmd({ "InsertLeave", "BufLeave", "BufWinLeave" }, {
-            once = true,
-            callback = function()
-              if vim.b[bufnr].minuet_lsp_enable_auto_trigger then
-                disable_auto_trigger(bufnr)
-                detach(bufnr)
-              end
-            end,
-          })
-        end,
-        mode = "i",
-      },
-    },
+    -- keys = {
+    --   {
+    --     "<C-x><C-z>",
+    --     function()
+    --       local bufnr = vim.api.nvim_get_current_buf()
+    --       attach(bufnr)
+    --       enable_auto_trigger(bufnr)
+    --       vim.api.nvim_create_autocmd({ "InsertLeave", "BufLeave", "BufWinLeave" }, {
+    --         once = true,
+    --         callback = function()
+    --           if vim.b[bufnr].minuet_lsp_enable_auto_trigger then
+    --             disable_auto_trigger(bufnr)
+    --             detach(bufnr)
+    --           end
+    --         end,
+    --       })
+    --     end,
+    --     mode = "i",
+    --   },
+    -- },
     config = function()
       -- This uses the async cache to accelerate the prompt construction.
       -- There's also the require('vectorcode').query API, which provides
       -- more up-to-date information, but at the cost of blocking the main UI.
       require("minuet").setup({
         add_single_line_entry = true,
-        n_completions = 1,
+        n_completions = 2,
         -- I recommend you start with a small context window firstly, and gradually
         -- increase it based on your local computing power.
         context_window = 4096,
         after_cursor_filter_length = 30,
+        debounce = 600,
         notify = "debug",
         provider = "openai_fim_compatible",
         provider_options = {
-          openai_fim_compatible = X5Qwen,
+          openai_fim_compatible = X5SeedCoder,
           -- openai_fim_compatible = CODEGEMMA,
         },
         request_timeout = 10,

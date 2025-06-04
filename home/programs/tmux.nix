@@ -63,7 +63,7 @@ in
       # {n}vim compability
       set -g default-terminal "screen-256color"
       set-option -a terminal-features "xterm-256color:RGB"
-      # set -ga terminal-overrides ',xterm-256color:RGB:sitm=\E[3m,*:Smulx=\E[4::%p1%dm'
+      # set -ga terminal-overrides ',xterm-256color:Ms=\\E]52;c;%p2%s\\7'
       # set -as terminal-overrides ',*:Setulc=\E[58::2::%p1%{65536}%/%d::%p1%{256}%/%{255}%&%d::%p1%{255}%&%d%;m'
       set -g set-clipboard on
       # Split horiziontal and vertical splits, instead of % and ". We also open them
@@ -119,7 +119,7 @@ in
       set -g history-limit 100000
 
       # Mouse mode on
-      set -g terminal-overrides 'xterm*:smcup@:rmcup@'
+      set -ag terminal-overrides 'xterm*:smcup@:rmcup@'
       set -g mouse on
       set -g @scroll-speed-num-lines-per-scroll 2
 
