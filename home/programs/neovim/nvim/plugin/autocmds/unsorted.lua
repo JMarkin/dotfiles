@@ -37,7 +37,7 @@ fn.augroup("autocreatedir", {
 fn.augroup("checktime", {
   { "BufEnter", "CursorHold", "CursorHoldI", "FocusGained", "TermLeave", "TermClose" },
   {
-    command = "if &buftype == '' | checktime | endif",
+    command = "if &buftype == '' && mode() != 'c' && getcmdwintype() == '' | checktime | endif",
     pattern = { "*" },
   },
 })
