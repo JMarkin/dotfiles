@@ -8,8 +8,8 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/master";
 
-    neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    # neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
+    # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     agenix.url = "github:ryantm/agenix";
@@ -51,10 +51,10 @@
         # (import ./overlays/rllama)
       ];
 
-      neovimNightly = [
-        inputs.neovim-nightly-overlay.overlays.default
-        (import ./overlays/neovide.nix)
-      ];
+      # neovimNightly = [
+      #   inputs.neovim-nightly-overlay.overlays.default
+      #   (import ./overlays/neovide.nix)
+      # ];
 
       config = {
         allowUnfree = true;
@@ -70,11 +70,11 @@
         inherit config overlays;
       };
 
-      x86PkgsNeovimNightly = import nixpkgs {
-        system = "x86_64-linux";
-        overlays = overlays ++ neovimNightly;
-        inherit config;
-      };
+      # x86PkgsNeovimNightly = import nixpkgs {
+      #   system = "x86_64-linux";
+      #   overlays = overlays ++ neovimNightly;
+      #   inherit config;
+      # };
 
       darwinPkgs = import nixpkgs {
         system = "aarch64-darwin";
@@ -82,11 +82,11 @@
         inherit overlays;
       };
 
-      darwinPkgsNeovimNightly = import nixpkgs {
-        system = "aarch64-darwin";
-        config = { allowUnfree = true; };
-        overlays = overlays ++ neovimNightly;
-      };
+      # darwinPkgsNeovimNightly = import nixpkgs {
+      #   system = "aarch64-darwin";
+      #   config = { allowUnfree = true; };
+      #   overlays = overlays ++ neovimNightly;
+      # };
 
 
 
@@ -94,7 +94,7 @@
     {
       homeConfigurations = {
         "kron@kron-work.local" = home-manager.lib.homeManagerConfiguration {
-          pkgs = darwinPkgsNeovimNightly;
+          pkgs = darwinPkgs;
 
           modules = [
             mac-app-util.homeManagerModules.default
@@ -210,10 +210,10 @@
               nixpkgs-fmt
               vim-language-server
               ruff
-              python312Packages.mypy
               lua-language-server
               stylua
-              basedpyright
+              python312Packages.mypy
+              python312Packages.jedi-language-server
             ];
           };
         aarch64-darwin = darwinPkgs.mkShell
@@ -224,10 +224,10 @@
               vim-language-server
               nixpkgs-fmt
               ruff
-              python312Packages.mypy
               lua-language-server
               stylua
-              basedpyright
+              python312Packages.mypy
+              python312Packages.jedi-language-server
             ];
           };
       };
