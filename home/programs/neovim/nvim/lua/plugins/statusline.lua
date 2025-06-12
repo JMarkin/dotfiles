@@ -6,7 +6,7 @@ return {
       require("tabby").setup({
         option = {
           lualine_theme = vim.g.lualine_theme or nil,
-          buf_name = { mode = "unique" },
+          buf_name = { mode = "tail" },
         },
       })
     end,

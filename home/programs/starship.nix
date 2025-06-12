@@ -32,11 +32,11 @@
 
 
     git_state = {
-      disabled = true;
+      disabled = false;
       format = "\\([$state( $progress_current/$progress_total)]($style)\\) ";
     };
-    git_status.disabled = true;
-    cmd_duration.disabled = true;
+    git_status.disabled = false;
+    cmd_duration.disabled = false;
 
 
     time = {
