@@ -28,58 +28,11 @@ return {
     "m-demare/hlargs.nvim",
     "yioneko/nvim-yati",
     {
-      "andymass/vim-matchup",
-      enabled = false,
-      init = function()
-        vim.g.matchup_transmute_enabled = 1
-
-        vim.g.matchup_delim_noskips = 2
-        vim.g.matchup_matchparen_deferred = 0
-        vim.g.matchup_delim_start_plaintext = 1
-
-        vim.g.matchup_matchparen_hi_surround_always = 1
-        vim.g.matchup_matchparen_nomode = "i"
-        vim.g.matchup_matchparen_deferred = 1
-        vim.g.matchup_matchparen_deferred_show_delay = 100
-        vim.g.matchup_matchparen_deferred_hide_delay = 500
-        vim.g.matchup_matchparen_offscreen = { method = "popup" }
-      end,
-    },
-    {
-      "HiPhish/rainbow-delimiters.nvim",
-      enabled = false,
-      config = function()
-        local rainbow = require("rainbow-delimiters")
-        require("rainbow-delimiters.setup").setup({
-          strategy = {
-            [""] = function(bufnr)
-              if is_large_file(bufnr, true) then
-                return nil
-              else
-                local line_count = vim.api.nvim_buf_line_count(bufnr)
-                if line_count < 100 then
-                  return rainbow.strategy["global"]
-                end
-              end
-              return rainbow.strategy["local"]
-            end,
-            json = rainbow["local"],
-          },
-          query = {
-            [""] = "rainbow-delimiters",
-            lua = "rainbow-blocks",
-            latex = "rainbow-blocks",
-          },
-          priority = {
-            [""] = 210,
-          },
-          highlight = vim.g.rainbow_delimiters_highlight,
-        })
-        rainbow.enable()
-      end,
-    },
-    {
       "nvim-treesitter/nvim-treesitter-context",
+      -- from nix
+      dir = vim.fn.stdpath("data") .. "/nix/nvim-treesitter-context",
+      dev = true,
+      pin = true,
       config = function()
         local tsc = require("treesitter-context")
         tsc.setup({
@@ -113,43 +66,14 @@ return {
       end,
     },
     {
-      "nvim-treesitter/nvim-treesitter-textobjects",
-      ft = { "c", "rust", "go", "lua", "cpp" },
-      config = function()
-        vim.defer_fn(function()
-          require("nvim-treesitter.configs").setup({
-            textobjects = {
-              disable = is_disable,
-              select = {
-                enable = true,
-                keymaps = {
-                  ["af"] = "@function.outer",
-                  ["if"] = "@function.inner",
-                  ["ac"] = "@class.outer",
-                  ["ic"] = { query = "@class.inner" },
-                },
-              },
-              move = {
-                enable = true,
-                goto_next_start = {
-                  ["]f"] = "@function.outer",
-                  ["]a"] = "@argument.outer",
-                  ["]m"] = "@method.outer",
-                },
-                goto_previous_start = {
-                  ["[f"] = "@function.outer",
-                  ["[a"] = "@argument.outer",
-                  ["[m"] = "@method.outer",
-                },
-              },
-            },
-          })
-        end, 0)
-      end,
+      "daliusd/incr.nvim",
+      opts = {
+        incr_key = "<tab>", -- increment selection key
+        decr_key = "<s-tab>", -- decrement selection key
+      },
     },
   },
   config = function()
-    require("nvim-treesitter.install").prefer_git = true
     require("nvim-treesitter.configs").setup({
       autotag = {
         enable = false,
@@ -161,7 +85,7 @@ return {
         disable = is_disable,
       },
       incremental_selection = {
-        enable = true,
+        enable = false,
         keymaps = {
           init_selection = "<cr>",
           node_incremental = "<cr>",

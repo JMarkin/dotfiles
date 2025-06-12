@@ -75,11 +75,17 @@ let
 
 in
 {
-  
+
   programs.neovim.plugins = [
     treesitterWithGrammars
+    pkgs.vimPlugins.nvim-treesitter-context
   ];
   home.file = {
+    ".local/share/nvim/nix/nvim-treesitter-context/" = {
+      recursive = true;
+      source = pkgs.vimPlugins.nvim-treesitter-context;
+    };
+
     ".local/share/nvim/nix/nvim-treesitter/" = {
       recursive = true;
       source = treesitterWithGrammars;

@@ -128,12 +128,12 @@ return {
   },
   {
     "nvimdev/phoenix.nvim",
-    enabled = true,
+    enabled = false,
     init = function()
       ---Default configuration values for Phoenix
       ---@type PhoenixConfig
       vim.g.phoenix = {
-        filetypes = { "markdown", "txt" },
+        filetypes = { "*" },
       }
     end,
   },
